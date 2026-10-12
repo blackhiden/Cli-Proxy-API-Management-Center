@@ -2,7 +2,7 @@
 
 ## [Unreleased]
 
-## [1.24.9-arsydoni4326-alt] - 2026-10-12
+## [1.24.10-arsydoni4326-alt] - 2026-10-12
 
 ### Merged
 - Merged upstream `v1.26.0` through `v1.26.2` (`upstream/main` at commit `390718e`) into `develop`.
