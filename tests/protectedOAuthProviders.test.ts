@@ -104,33 +104,23 @@ describe('Protected OAuth providers — icon files exist', () => {
   });
 });
 
-const oauthPageSource = await Bun.file('src/pages/OAuthPage.tsx').text();
+const oauthPageSource = await Bun.file('src/features/oauth/OAuthPage.tsx').text();
+const oauthProvidersSource = await Bun.file('src/features/oauth/providers.ts').text();
 const oauthApiSource = await Bun.file('src/services/api/oauth.ts').text();
 
 describe('Protected OAuth providers — page contract (protected)', () => {
-  test('OAuthPage imports from the protected OAuth domain', () => {
-    expect(oauthPageSource).toContain("from '@/features/protectedOAuth'");
+  test('OAuth providers module has codex and antigravity in OAUTH_PROVIDERS array', () => {
+    expect(oauthProvidersSource).toMatch(/id: 'codex'/);
+    expect(oauthProvidersSource).toMatch(/id: 'antigravity'/);
   });
 
-  test('OAuthPage still has codex and antigravity as built-in providers', () => {
-    expect(oauthPageSource).toMatch(/id: 'codex'/);
-    expect(oauthPageSource).toMatch(/id: 'antigravity'/);
+  test('OAuth providers module imports codex and antigravity icons', () => {
+    expect(oauthProvidersSource).toContain("import iconCodex from '@/assets/icons/codex.svg'");
+    expect(oauthProvidersSource).toContain("import iconAntigravity from '@/assets/icons/antigravity.svg'");
   });
 
-  test('OAuthPage uses PROTECTED_PROVIDER_MAP for codex and antigravity', () => {
-    expect(oauthPageSource).toMatch(/PROTECTED_PROVIDER_MAP\.get\('codex'\)/);
-    expect(oauthPageSource).toMatch(/PROTECTED_PROVIDER_MAP\.get\('antigravity'\)/);
-  });
-
-  test('OAuthPage renders the otherOAuthProviders section', () => {
-    expect(oauthPageSource).toContain('otherOAuthProviders');
-    expect(oauthPageSource).toMatch(
-      /otherOAuthProviders\.map\(\(provider\) => renderOAuthProviderCard/
-    );
-  });
-
-  test('OAuthPage CALLBACK_SUPPORTED includes both protected providers', () => {
-    const callbackMatch = oauthPageSource.match(
+  test('OAuth providers module CALLBACK_SUPPORTED includes both protected providers', () => {
+    const callbackMatch = oauthProvidersSource.match(
       /CALLBACK_SUPPORTED = new Set<string>\(\[([^\]]+)\]/
     );
     expect(callbackMatch).not.toBeNull();
@@ -139,6 +129,15 @@ describe('Protected OAuth providers — page contract (protected)', () => {
       expect(ids).toContain("'codex'");
       expect(ids).toContain("'antigravity'");
     }
+  });
+
+  test('OAuthPage uses the providers from the providers module', () => {
+    expect(oauthPageSource).toContain("import");
+    expect(oauthPageSource).toContain("from './providers'");
+  });
+
+  test('OAuth providers are rendered as tiles in the gallery', () => {
+    expect(oauthPageSource).toContain('ProviderTile');
   });
 });
 
