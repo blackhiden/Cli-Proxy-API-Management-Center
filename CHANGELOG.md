@@ -2,6 +2,51 @@
 
 ## [Unreleased]
 
+## [1.24.9-arsydoni4326-alt] - 2026-10-12
+
+### Merged
+- Merged upstream `v1.26.0` through `v1.26.2` (`upstream/main` at commit `390718e`) into `develop`.
+  Conflict resolution:
+  - `zh-TW.json`: Accepted upstream translations for new OAuth gallery UI features
+  - OAuth page files: Removed old `src/pages/OAuthPage.*` files, accepted new feature-based structure in `src/features/oauth/`
+- This merge includes a major OAuth page refactor that moves all OAuth functionality from `src/pages/` to a new feature-based structure in `src/features/oauth/`.
+
+### Added (from upstream v1.26.0-v1.26.2)
+- OAuth page completely redesigned as provider gallery with tile-based UI and focused flow dialog
+  - New `src/features/oauth/` structure with modular components (ProviderTile, OAuthFlowDialog, VertexImportDialog)
+  - Sponsor feature integration (Kimi Chinese and International sites with affiliate links)
+  - Background OAuth flow continuation (closing dialog doesn't interrupt authorization)
+  - Improved OAuth status visibility on provider tiles
+- Korean locale support (ko.json) with comprehensive translations
+- Plugin quota support via v8 Management API routes
+  - Generic plugin quota display component
+  - Plugin quota fetching through v8 plugin endpoints
+- Config UI layout improvements:
+  - Unified setting-row layout for toggles and inputs
+  - Compact hairline rows for client API keys
+  - Start-aligned add actions under list editors
+  - New field layout utilities (rowSpans.ts)
+- xAI quota improvements: shared usage breakdown display
+- GitHub token configuration support
+- Kimi tile icons optimized for sponsor cards (tile variants with contained logo)
+- Extensive test coverage: OAuth page rendering, config setting layout, plugin quota, xAI quota headers, Korean locale
+
+### Fixed
+- Plugin quotas now correctly fetched through v8 plugin routes (upstream fix #490)
+- Built-in quota cards stay ahead of plugin quotas in display order
+- OAuth status polling resumes correctly after accepted callback (upstream fix #486)
+
+### Protected Features (verified intact through merge)
+- ✅ Codex and Antigravity OAuth providers present in upstream `src/features/oauth/providers.ts`
+- ✅ OAuth result modals (protected by contract tests)
+- ✅ Update notification modal (single-show on initial load)
+- Note: Fork-specific `no_proxy` parameter and `directConnection` features need to be re-integrated
+  into the new OAuth architecture (deferred to follow-up work)
+
+### Known Issues
+- Korean locale missing fork-specific translation keys (expected for new locale)
+- Pre-existing test failures remain (cooldown section rendering, config UI state)
+
 ## [1.24.6-arsydoni4326-alt] - 2026-09-30
 
 ### Merged
