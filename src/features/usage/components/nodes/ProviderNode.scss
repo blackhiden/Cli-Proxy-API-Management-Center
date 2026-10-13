@@ -11,7 +11,8 @@
     border: 2px solid var(--color-border);
     background: var(--color-bg);
     min-width: 150px;
-    transition: all 0.3s ease;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: none;
   }
 
   .provider-icon-wrapper {
@@ -39,6 +40,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
     transition: color 0.3s ease;
+    flex: 1;
   }
 
   .provider-pulse {
@@ -69,6 +71,7 @@
   &.provider-node-active {
     .provider-node-content {
       box-shadow: 0 0 16px rgba(255, 107, 53, 0.25);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
   }
 }

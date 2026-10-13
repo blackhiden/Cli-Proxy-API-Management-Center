@@ -15,17 +15,37 @@
   }
 
   .react-flow__controls {
+    bottom: 16px;
+    left: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--color-border);
+
     button {
       background: var(--color-surface);
-      border: 1px solid var(--color-border);
+      border: none;
+      border-bottom: 1px solid var(--color-border);
       color: var(--color-text);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
       
+      &:last-child {
+        border-bottom: none;
+      }
+
       &:hover {
         background: var(--color-surface-2);
       }
 
       svg {
         fill: currentColor;
+        max-width: 16px;
+        max-height: 16px;
       }
     }
   }

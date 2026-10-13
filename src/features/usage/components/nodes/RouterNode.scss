@@ -4,32 +4,36 @@
   pointer-events: none;
   
   .router-node-content {
+    position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 12px 20px;
     border-radius: 12px;
-    border: 2px solid #fbbf24;
+    border: 2px solid #fcd34d;
     background: linear-gradient(135deg, 
-      rgba(99, 102, 241, 0.3), 
-      rgba(251, 191, 36, 0.2), 
-      rgba(34, 211, 238, 0.25)
+      rgba(99, 102, 241, 0.3) 0%, 
+      rgba(251, 191, 36, 0.2) 50%, 
+      rgba(34, 211, 238, 0.25) 100%
     );
     min-width: 130px;
     box-shadow: 0 4px 12px rgba(251, 191, 36, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .router-icon {
     width: 24px;
     height: 24px;
     margin-right: 8px;
+    animation: router-icon-pulse 3s ease-in-out infinite;
   }
 
   .router-label {
     font-size: 14px;
-    font-weight: bold;
-    color: #fbbf24;
+    font-weight: 700;
+    color: #fcd34d;
     text-shadow: 0 0 8px rgba(251, 191, 36, 0.5);
+    letter-spacing: -0.01em;
   }
 
   .router-badge {
@@ -39,9 +43,19 @@
     margin-left: 8px;
     padding: 2px 8px;
     border-radius: 9999px;
-    background: #fbbf24;
+    background: #fcd34d;
     color: #000;
     font-size: 12px;
-    font-weight: bold;
+    font-weight: 700;
+    min-width: 20px;
+  }
+}
+
+@keyframes router-icon-pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
   }
 }

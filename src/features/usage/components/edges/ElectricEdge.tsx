@@ -43,7 +43,7 @@ export const ElectricEdge = memo(({
   const filterId = `topo-electric-${id}`;
 
   return (
-    <g className="topology-edge electric">
+    <g className="topology-edge-electric">
       <defs>
         <filter id={filterId} x="-40%" y="-40%" width="180%" height="180%">
           <feTurbulence
