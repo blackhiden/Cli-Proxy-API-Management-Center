@@ -50,6 +50,19 @@ function parseApiKeysText(raw: unknown): string {
   return keys.join('\n');
 }
 
+function parseAPIKeyNames(raw: unknown, apiKeysText: string): Record<string, string> {
+  const source = asRecord(raw);
+  if (!source) return {};
+
+  const configured = new Set(apiKeysText.split('\n').filter(Boolean));
+  return Object.fromEntries(
+    Object.entries(source).flatMap(([key, value]) => {
+      const name = typeof value === 'string' ? value.trim() : '';
+      return configured.has(key) && name ? [[key, name] as const] : [];
+    })
+  );
+}
+
 type YamlDocument = ReturnType<typeof parseDocument>;
 type YamlPath = string[];
 
@@ -1240,6 +1253,7 @@ function getNextDirtyFields(
       'rmPanelRepo',
       'authDir',
       'apiKeysText',
+      'apiKeyNames',
       'debug',
       'commercialMode',
       'loggingToFile',
@@ -1455,6 +1469,10 @@ function parseVisualValuesFromYaml(yamlContent: string): VisualConfigValues {
 
     authDir: typeof v8Oauth?.['auth-dir'] === 'string' ? v8Oauth?.['auth-dir'] : '',
     apiKeysText: parseApiKeysText(asRecord(parsed.access)?.['api-keys']),
+    apiKeyNames: parseAPIKeyNames(
+      asRecord(parsed.access)?.['api-key-names'],
+      parseApiKeysText(asRecord(parsed.access)?.['api-keys'])
+    ),
     pluginsEnabled: Boolean(plugins?.enabled),
     pluginStoreSources: parseStringList(plugins?.['store-sources']),
     pluginStoreAuth: parsePluginStoreAuthRules(plugins?.['store-auth']),
@@ -1726,7 +1744,7 @@ export function useVisualConfig() {
         }
 
         if (dirtyFields.has('authDir')) setStringInDoc(doc, ['oauth', 'auth-dir'], values.authDir);
-        if (dirtyFields.has('apiKeysText')) {
+        if (dirtyFields.has('apiKeysText') || dirtyFields.has('apiKeyNames')) {
           const apiKeys = values.apiKeysText
             .split('\n')
             .map((key) => key.trim())
@@ -1735,6 +1753,18 @@ export function useVisualConfig() {
             doc.setIn(['access', 'api-keys'], apiKeys);
           } else if (docHas(doc, ['access', 'api-keys'])) {
             doc.deleteIn(['access', 'api-keys']);
+          }
+
+          const configured = new Set(apiKeys);
+          const names = Object.fromEntries(
+            Object.entries(values.apiKeyNames).filter(
+              ([key, name]) => configured.has(key) && name.trim()
+            )
+          );
+          if (Object.keys(names).length > 0) {
+            doc.setIn(['access', 'api-key-names'], names);
+          } else if (docHas(doc, ['access', 'api-key-names'])) {
+            doc.deleteIn(['access', 'api-key-names']);
           }
         }
 

@@ -24,7 +24,7 @@ APIMart is a low-cost API platform for AI image & video generation — GPT-Image
 
 ### Upgrading from v7
 
-Upgrade the backend before deploying this UI and back up `config.yaml`. The backend renders existing configuration in the v8 layout on reads; a successful v8 configuration write migrates the stored file. The editor only writes v8 fields. Client keys live in `access.api-keys`; top-level `api-keys` contains upstream provider groups.
+Upgrade the backend before deploying this UI and back up `config.yaml`. The backend renders existing configuration in the v8 layout on reads; a successful v8 configuration write migrates the stored file. The editor only writes v8 fields. Client keys live in `access.api-keys`, optional client-key labels live in `access.api-key-names`, and top-level `api-keys` contains upstream provider groups.
 
 ## Quick start
 

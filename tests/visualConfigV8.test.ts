@@ -46,6 +46,15 @@ describe('v8 visual config contract', () => {
     expect(runVisualConfig('api-keys:\n  codex: []\n').visualValues.apiKeysText).toBe('');
   });
 
+  test('client key names persist at access.api-key-names and discard stale entries', () => {
+    const config = runVisualConfig(fixture, [
+      { apiKeyNames: { 'fixture-client': 'Shell', stale: 'Stale' } },
+    ]);
+    const output = parseYaml(config.applyVisualChangesToYaml(fixture));
+    expect(output['api-keys']).toEqual(parseYaml(fixture)['api-keys']);
+    expect(output.access?.['api-key-names']).toEqual({ 'fixture-client': 'Shell' });
+  });
+
   test('OAuth edits stay OAuth-only and preserve unmoved routing and plugin fields', () => {
     const config = runVisualConfig(fixture, [
       {

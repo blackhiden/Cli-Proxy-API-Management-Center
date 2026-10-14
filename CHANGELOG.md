@@ -2,6 +2,10 @@
 
 ## [Unreleased]
 
+### Changed
+
+- Client API-key names are saved with the v8 configuration at `access.api-key-names` instead of browser-only storage. Existing local labels are copied into the configuration draft for migration on the next save.
+
 ## [1.24.10-arsydoni4326-alt] - 2026-10-12
 
 ### Merged

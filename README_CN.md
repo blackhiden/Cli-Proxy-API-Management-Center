@@ -62,6 +62,7 @@
 请先升级后端并备份 `config.yaml`。后端读取时返回 v8 配置结构，成功的 v8 配置写入会迁移磁盘文件。编辑器仅写入 v8 字段：
 
 - `access.api-keys`：访问代理的客户端密钥。
+- `access.api-key-names`：可选的客户端密钥显示名称。
 - 顶层 `api-keys`：上游提供商分组。
 
 </details>
