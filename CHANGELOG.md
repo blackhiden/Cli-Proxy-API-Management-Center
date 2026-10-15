@@ -2,9 +2,45 @@
 
 ## [Unreleased]
 
-### Changed
+## [1.26.5-arsydoni4326-alt] - 2026-10-16
 
+### Merged
+- Merged upstream commits from `390718e` to `13f94b4` (`upstream/main`) into `dev`.
+  - Clean auto-merge, no conflicts
+  - 40 files changed, 2212 insertions(+), 330 deletions(-)
+
+### Added (from upstream)
+- Claude quota enhancements:
+  - Claude extra usage and independent dollar balances display (#489)
+  - Reset grant reading logic with rate limit handling
+  - Improved quota refresh logic with resetting state
+- Quota improvements:
+  - Hour-based window duration support with translations for all locales
+  - `.quotaAmount` style updates for size consistency
+  - Simplified plan display logic (hides subscription status when no plan present)
+  - XAI pay-as-you-go disabled option display
+  - Simplified refresh action rendering
+  - `quotaPluginId` field added to AuthFileItem for backend compatibility
+- OAuth UI refinements:
+  - SponsorCard component consolidates sponsor functionality
+- Auth file quota section improvements
+
+### Fixed (from upstream)
+- Session affinity terminology in zh-CN and zh-TW locales
+
+### Changed
 - Client API-key names are saved with the v8 configuration at `access.api-key-names` instead of browser-only storage. Existing local labels are copied into the configuration draft for migration on the next save.
+
+### Protected Features (verified intact through merge)
+- ✅ Codex and Antigravity OAuth providers (contract tests pass)
+- ✅ OAuth result modals (contract tests pass, 1 todo for re-integration with new architecture)
+- ✅ Update notification modal (single-show on initial load)
+
+### Verification Results
+- TypeScript compilation: ✅ Passed
+- Production build: ✅ Succeeded (dist/index.html: 3,486.72 kB │ gzip: 1,097.38 kB)
+- Test suite: 1645 pass, 17 fail (includes Korean/Vietnamese locale coverage issues for new upstream locales, visual config rebase tests, and pre-existing cooldown section rendering test)
+- Protected feature contract tests: ✅ All pass (29 pass, 1 todo)
 
 ## [1.24.10-arsydoni4326-alt] - 2026-10-12
 
