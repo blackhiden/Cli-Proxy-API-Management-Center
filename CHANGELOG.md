@@ -2,6 +2,37 @@
 
 ## [Unreleased]
 
+## [1.26.6] - 2026-10-19
+
+### Merged
+- Merged upstream commits from `13f94b4` to `fe29633` (`upstream/main`) into `dev`.
+  - Clean auto-merge, no conflicts
+  - 6 files changed, 269 insertions(+), 67 deletions(-)
+  - Upstream attempted to delete 4,173 lines including protected features and documentation; Git auto-merge correctly preserved fork-specific files
+
+### Added (from upstream)
+- Antigravity quota enhancements:
+  - Quota bucket visibility logic for 5-hour, daily, weekly, and monthly limits
+  - Gemini Argon model added to Antigravity Gemini quota group
+  - Bucket label translation with "Remaining" suffix handling (`src/features/quota/providers/antigravity/labels.ts`)
+  - User-agent constants updated for Antigravity Hub compatibility (v2.23.0)
+  - Comprehensive label translation tests (`tests/antigravityQuotaLabels.test.ts`)
+- Auth file quota section: refresh button now hidden for idle state (click-to-refresh prompt already visible)
+
+### Protected Features (verified intact through merge)
+- ✅ OAuth result modal (OAuthResultModal.tsx)
+- ✅ Protected OAuth providers - Codex and Antigravity (protectedOAuth/ module)
+- ✅ Update notification system (UpdateModal.tsx, useUpdateStore.ts)
+- ✅ All project documentation (CODE_GRAPH.md, SPECIFICATION.md, ARCHITECTURE.md, CHANGELOG.md, CONTRIBUTING.md, ROADMAP.md, session.md, docs/)
+- ✅ Usage feature (src/features/usage/)
+- ✅ All contract tests (oauthResultModal.test.ts, protectedOAuthProviders.test.ts, updateNotification.test.ts)
+
+### Verification Results
+- TypeScript compilation: ✅ Passed
+- Production build: ✅ Succeeded (dist/index.html: 3,487.73 kB │ gzip: 1,097.75 kB)
+- Test suite: 1651 pass, 1 todo, 17 fail (pre-existing failures: Korean/Vietnamese locale coverage, visual config rebase tests, cooldown section rendering)
+- Protected feature contract tests: ✅ All pass
+
 ## [1.26.5-arsydoni4326-alt] - 2026-10-16
 
 ### Merged
