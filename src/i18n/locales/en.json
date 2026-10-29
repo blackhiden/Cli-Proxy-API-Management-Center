@@ -110,6 +110,7 @@
     "plugin_store": "Plugin Store",
     "config_management": "Config Panel",
     "logs": "Logs Viewer",
+    "skills": "AI Skills",
     "system_info": "Management Center Info"
   },
   "nav_groups": {
@@ -131,6 +132,7 @@
     "plugin_store": "Discover & install plugins",
     "logs": "Request tracing",
     "config_management": "Gateway configuration",
+    "skills": "Coding agent skill library",
     "system_info": "Runtime & diagnostics"
   },
   "dashboard": {
@@ -1349,7 +1351,26 @@
           "auth_dir": "OAuth Credential Directory (oauth.auth-dir)",
           "auth_dir_hint": "Directory path for authentication files (supports ~)"
         },
-        "system": {
+        "skills": {
+    "title": "AI Coding Skills",
+    "subtitle": "Load specialized coding agent skills to improve code quality and design",
+    "notice": "These skills are part of the antislop system: filters that help AI agents write better code, UI, and documentation by removing generic patterns and keeping purposeful content.",
+    "antislop_code": {
+      "description": "Code comment hygiene for AI coding agents: remove generic AI-slop comments, keep the valuable ones, never touch the code."
+    },
+    "antislop_ui": {
+      "description": "UI and visual skill for antislop. Use when building or editing any interface: color, layout, components, motion. Load with the core."
+    },
+    "frontend_design": {
+      "description": "Create distinctive, production-grade frontend interfaces with high design quality. Use this skill when the user asks to build web components, pages, artifacts, posters, or applications."
+    },
+    "category": {
+      "code": "Code",
+      "ui": "UI/UX",
+      "design": "Design"
+    }
+  },
+  "system": {
           "debug": "Debug Mode",
           "debug_desc": "Enable verbose debug logging",
           "commercial_mode": "Commercial Mode",

@@ -107,6 +107,7 @@
     "plugin_store": "플러그인 스토어",
     "config_management": "설정 패널",
     "logs": "로그 뷰어",
+    "skills": "AI 스킬",
     "system_info": "관리 센터 정보"
   },
   "nav_groups": {
@@ -127,6 +128,7 @@
     "plugin_store": "플러그인 탐색 및 설치",
     "logs": "요청 추적",
     "config_management": "게이트웨이 설정",
+    "skills": "코딩 에이전트 스킬 라이브러리",
     "system_info": "런타임 및 진단"
   },
   "dashboard": {
@@ -1338,7 +1340,26 @@
           "auth_dir": "OAuth 자격 증명 디렉터리 (oauth.auth-dir)",
           "auth_dir_hint": "인증 파일 디렉터리 경로 (~ 지원)"
         },
-        "system": {
+        "skills": {
+    "title": "AI 코딩 스킬",
+    "subtitle": "코드 품질과 디자인을 개선하기 위해 전문 코딩 에이전트 스킬 로드",
+    "notice": "이러한 스킬은 antislop 시스템의 일부입니다: AI 에이전트가 일반적인 패턴을 제거하고 목적 있는 콘텐츠를 유지하여 더 나은 코드, UI 및 문서를 작성할 수 있도록 돕는 필터입니다.",
+    "antislop_code": {
+      "description": "AI 코딩 에이전트를 위한 코드 주석 위생: 일반 AI 주석 제거, 가치 있는 주석 유지, 코드는 절대 건드리지 않음."
+    },
+    "antislop_ui": {
+      "description": "antislop을 위한 UI 및 시각 스킬. 인터페이스를 구축하거나 편집할 때 사용: 색상, 레이아웃, 구성 요소, 모션. 코어와 함께 로드."
+    },
+    "frontend_design": {
+      "description": "높은 디자인 품질의 독특하고 생산 등급 프론트엔드 인터페이스를 만듭니다. 사용자가 웹 구성 요소, 페이지, 아티팩트, 포스터 또는 애플리케이션을 구축하도록 요청할 때 이 스킬을 사용하세요."
+    },
+    "category": {
+      "code": "코드",
+      "ui": "UI/UX",
+      "design": "디자인"
+    }
+  },
+  "system": {
           "debug": "디버그 모드",
           "debug_desc": "상세 디버그 로깅을 활성화합니다.",
           "commercial_mode": "상용 모드",

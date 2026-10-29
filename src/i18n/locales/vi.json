@@ -109,6 +109,7 @@
     "plugin_store": "Cửa hàng Plugin",
     "config_management": "Bảng cấu hình",
     "logs": "Trình xem Log",
+    "skills": "Kỹ năng AI",
     "system_info": "Thông tin Trung tâm Quản lý"
   },
   "nav_groups": {
@@ -129,6 +130,7 @@
     "plugin_store": "Khám phá & cài đặt plugin",
     "logs": "Truy vết yêu cầu",
     "config_management": "Cấu hình gateway",
+    "skills": "Thư viện kỹ năng agent lập trình",
     "system_info": "Runtime & chẩn đoán"
   },
   "dashboard": {
@@ -1154,7 +1156,26 @@
           "auth_dir": "Thư mục xác thực (auth-dir)",
           "auth_dir_hint": "Đường dẫn thư mục chứa file xác thực (hỗ trợ ~)"
         },
-        "system": {
+        "skills": {
+    "title": "Kỹ năng lập trình AI",
+    "subtitle": "Tải các kỹ năng đại diện lập trình chuyên biệt để cải thiện chất lượng mã và thiết kế",
+    "notice": "Các kỹ năng này là một phần của hệ thống antislop: các bộ lọc giúp các đại diện AI viết mã, giao diện người dùng và tài liệu tốt hơn bằng cách loại bỏ các mẫu chung và giữ lại nội dung có mục đích.",
+    "antislop_code": {
+      "description": "Vệ sinh chú thích mã cho các đại diện lập trình AI: loại bỏ các chú thích AI chung chung, giữ lại những chú thích có giá trị, không bao giờ chạm vào mã."
+    },
+    "antislop_ui": {
+      "description": "Kỹ năng UI và hình ảnh cho antislop. Sử dụng khi xây dựng hoặc chỉnh sửa bất kỳ giao diện nào: màu sắc, bố cục, thành phần, chuyển động. Tải cùng với lõi."
+    },
+    "frontend_design": {
+      "description": "Tạo các giao diện frontend đặc biệt, sẵn sàng sản xuất với chất lượng thiết kế cao. Sử dụng kỹ năng này khi người dùng yêu cầu xây dựng các thành phần web, trang, tạo phẩm, áp phích hoặc ứng dụng."
+    },
+    "category": {
+      "code": "Mã",
+      "ui": "UI/UX",
+      "design": "Thiết kế"
+    }
+  },
+  "system": {
           "debug": "Chế độ Debug",
           "debug_desc": "Bật ghi log debug chi tiết",
           "commercial_mode": "Chế độ thương mại",

@@ -109,6 +109,7 @@
     "plugin_store": "插件商店",
     "config_management": "設定面板",
     "logs": "記錄檢視",
+    "skills": "AI 技能",
     "system_info": "中心資訊"
   },
   "nav_groups": {
@@ -129,6 +130,7 @@
     "plugin_store": "探索並安裝插件",
     "logs": "請求追蹤與排查",
     "config_management": "閘道基礎設定",
+    "skills": "編碼代理技能庫",
     "system_info": "運行與診斷資訊"
   },
   "dashboard": {
@@ -1374,7 +1376,26 @@
           "auth_dir": "OAuth 驗證檔案目錄（oauth.auth-dir）",
           "auth_dir_hint": "存放驗證檔案的目錄路徑（支援 ~）"
         },
-        "system": {
+        "skills": {
+    "title": "AI 編碼技能",
+    "subtitle": "載入專業的編碼代理技能以提高程式碼品質和設計",
+    "notice": "這些技能是 antislop 系統的一部分：幫助 AI 代理編寫更好的程式碼、UI 和文件的過濾器，透過移除通用模式並保留有目的的內容。",
+    "antislop_code": {
+      "description": "AI 編碼代理的程式碼註解衛生：移除通用 AI 註解，保留有價值的註解，絕不觸碰程式碼。"
+    },
+    "antislop_ui": {
+      "description": "antislop 的 UI 和視覺技能。在建構或編輯任何介面時使用：顏色、版面、元件、動效。與核心一起載入。"
+    },
+    "frontend_design": {
+      "description": "建立高設計品質的獨特、生產級前端介面。當使用者要求建構 Web 元件、頁面、工件、海報或應用程式時使用此技能。"
+    },
+    "category": {
+      "code": "程式碼",
+      "ui": "UI/UX",
+      "design": "設計"
+    }
+  },
+  "system": {
           "debug": "除錯模式",
           "debug_desc": "啟用詳細的除錯記錄",
           "commercial_mode": "商業模式",

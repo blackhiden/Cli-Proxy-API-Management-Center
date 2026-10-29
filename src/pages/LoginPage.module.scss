@@ -1,31 +1,39 @@
 @use '../styles/variables.scss' as *;
 
-// 主容器 - 左右分栏布局
 .container {
   min-height: 100vh;
   display: flex;
   background: var(--bg-secondary);
 }
 
-// 左侧品牌展示区
 .brandPanel {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #000000;
+  background: linear-gradient(135deg, #1a1816 0%, #0d0c0b 100%);
   padding: $spacing-2xl;
   position: relative;
   overflow: hidden;
 
-  // 移动端隐藏
   @media (max-width: $breakpoint-mobile) {
     display: none;
   }
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(to right, rgba(139, 134, 128, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(139, 134, 128, 0.08) 1px, transparent 1px);
+    background-size: 96px 96px;
+    mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 0%, transparent 75%);
+  }
 }
 
-// 品牌文字容器
 .brandContent {
   position: relative;
   z-index: 1;
@@ -37,7 +45,6 @@
   gap: 0;
 }
 
-// 品牌大字淡入动画
 @keyframes brandFadeIn {
   from {
     opacity: 0;
@@ -49,22 +56,18 @@
   }
 }
 
-// 品牌大字
 .brandWord {
-  font-size: 14vw;
-  font-weight: 900;
+  font-size: clamp(10vw, 14vw, 160px);
+  font-weight: 800;
   color: rgba(255, 255, 255, 0.9);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   line-height: 0.85;
   text-transform: uppercase;
-  font-family:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
   text-align: right;
   padding-right: 0;
   opacity: 0;
-  animation: brandFadeIn 0.8s ease-out forwards;
+  animation: brandFadeIn 0.8s var(--ease-out-strong) forwards;
 
-  // 不同字有不同的透明度和延迟，从上到下依次显现
   &:nth-child(1) {
     --target-opacity: 0.95;
     animation-delay: 0.1s;
@@ -79,9 +82,13 @@
     --target-opacity: 0.45;
     animation-delay: 0.6s;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+    opacity: var(--target-opacity, 0.9);
+  }
 }
 
-// 右侧功能交互区
 .formPanel {
   flex: 1;
   display: flex;
@@ -98,7 +105,6 @@
   }
 }
 
-// 右侧内容容器
 .formContent {
   width: 100%;
   max-width: 420px;
@@ -108,23 +114,21 @@
   gap: $spacing-xl;
 }
 
-// Logo
 .logo {
   width: 80px;
   height: 80px;
-  border-radius: $radius-lg;
+  border-radius: 14px;
   object-fit: cover;
-  box-shadow: var(--shadow-lg);
-  border: 3px solid var(--border-color);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border: 2px solid var(--border-color);
 }
 
-// 登录表单卡片
 .loginCard {
   width: 100%;
   background: var(--bg-primary);
   border: 1px solid var(--border-color);
-  border-radius: $radius-lg;
-  box-shadow: var(--shadow-lg);
+  border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   padding: $spacing-xl;
   display: flex;
   flex-direction: column;
@@ -138,7 +142,6 @@
   }
 }
 
-// 登录头部
 .loginHeader {
   display: flex;
   flex-direction: column;
@@ -146,7 +149,6 @@
   text-align: center;
 }
 
-// 标题行
 .titleRow {
   display: flex;
   align-items: center;
@@ -155,26 +157,24 @@
   flex-wrap: wrap;
 }
 
-// 标题
 .title {
-  font-size: 22px;
-  font-weight: 800;
+  font-size: 24px;
+  font-weight: 700;
   color: var(--text-primary);
+  letter-spacing: -0.01em;
 }
 
-// 副标题
 .subtitle {
   color: var(--text-secondary);
   font-size: 14px;
+  line-height: 1.5;
 }
 
-// 语言下拉选择
 .languageSelect {
   min-width: 108px;
   flex: 0 0 auto;
 }
 
-// 连接信息框
 .connectionBox {
   background: var(--bg-secondary);
   border: 1px dashed var(--border-color);
@@ -186,22 +186,25 @@
 
   .label {
     color: var(--text-secondary);
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 500;
   }
 
   .value {
-    font-weight: 700;
+    font-weight: 600;
     color: var(--text-primary);
     word-break: break-all;
+    font-family: $font-mono;
+    font-size: 14px;
   }
 
   .hint {
-    color: var(--text-secondary);
+    color: var(--text-tertiary);
     font-size: 12px;
+    line-height: 1.4;
   }
 }
 
-// 复选框行
 .toggleAdvanced {
   display: flex;
   justify-content: flex-start;
@@ -214,23 +217,20 @@
   font-weight: 500;
 }
 
-// 错误提示框
 .errorBox {
-  background: rgba($error-color, 0.1);
-  border: 1px solid rgba($error-color, 0.4);
+  background: var(--bg-error-light);
+  border: 1px solid var(--warning-border);
   border-radius: $radius-md;
   padding: $spacing-sm $spacing-md;
-  color: $error-color;
+  color: var(--warning-text);
   font-size: 14px;
+  line-height: 1.5;
 }
 
-// ========== 启动动画（右侧） ==========
-
-// 启动动画进入效果
 @keyframes splashEnter {
   from {
     opacity: 0;
-    transform: scale(0.9) translateY(20px);
+    transform: scale(0.95) translateY(10px);
   }
   to {
     opacity: 1;
@@ -238,18 +238,16 @@
   }
 }
 
-// Logo 脉冲效果
 @keyframes splashLogoPulse {
   0%,
   100% {
     transform: scale(1);
   }
   50% {
-    transform: scale(1.05);
+    transform: scale(1.04);
   }
 }
 
-// 加载条动画
 @keyframes splashLoading {
   0% {
     transform: scaleX(0);
@@ -268,34 +266,38 @@
   }
 }
 
-// 启动动画内容容器
 .splashContent {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: $spacing-md;
-  animation: splashEnter 0.6s ease-out;
+  animation: splashEnter 0.6s var(--ease-out-strong);
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }
 
-// 启动动画 Logo
 .splashLogo {
   height: 80px;
   width: auto;
-  border-radius: $radius-lg;
-  box-shadow: $shadow-lg;
-  animation: splashLogoPulse 1.5s ease-in-out infinite;
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  animation: splashLogoPulse 1.8s ease-in-out infinite;
+
+  @media (prefers-reduced-motion: reduce) {
+    animation: none;
+  }
 }
 
-// 启动动画标题
 .splashTitle {
   font-size: 28px;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--text-primary);
   margin: 0;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
 }
 
-// 启动动画副标题
 .splashSubtitle {
   font-size: 16px;
   font-weight: 500;
@@ -304,7 +306,6 @@
   margin-top: -8px;
 }
 
-// 启动动画加载条容器
 .splashLoader {
   width: 120px;
   height: 3px;
@@ -314,7 +315,6 @@
   margin-top: $spacing-md;
 }
 
-// 启动动画加载条
 .splashLoaderBar {
   width: 100%;
   height: 100%;
