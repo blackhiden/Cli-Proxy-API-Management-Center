@@ -109,6 +109,7 @@
     "plugin_store": "插件商店",
     "config_management": "配置面板",
     "logs": "日志查看",
+    "skills": "AI 技能",
     "system_info": "中心信息"
   },
   "nav_groups": {
@@ -129,6 +130,7 @@
     "plugin_store": "发现并安装插件",
     "logs": "请求追踪与排查",
     "config_management": "网关基础配置",
+    "skills": "编码代理技能库",
     "system_info": "运行与诊断信息"
   },
   "dashboard": {
@@ -1346,7 +1348,26 @@
           "auth_dir": "OAuth 认证文件目录 (oauth.auth-dir)",
           "auth_dir_hint": "存放认证文件的目录路径（支持 ~）"
         },
-        "system": {
+        "skills": {
+    "title": "AI 编码技能",
+    "subtitle": "加载专业的编码代理技能以提高代码质量和设计",
+    "notice": "这些技能是 antislop 系统的一部分：帮助 AI 代理编写更好的代码、UI 和文档的过滤器，通过移除通用模式并保留有目的的内容。",
+    "antislop_code": {
+      "description": "AI 编码代理的代码注释卫生：移除通用 AI 注释，保留有价值的注释，绝不触碰代码。"
+    },
+    "antislop_ui": {
+      "description": "antislop 的 UI 和视觉技能。在构建或编辑任何界面时使用：颜色、布局、组件、动效。与核心一起加载。"
+    },
+    "frontend_design": {
+      "description": "创建高设计质量的独特、生产级前端界面。当用户要求构建 Web 组件、页面、工件、海报或应用程序时使用此技能。"
+    },
+    "category": {
+      "code": "代码",
+      "ui": "UI/UX",
+      "design": "设计"
+    }
+  },
+  "system": {
           "debug": "调试模式",
           "debug_desc": "启用详细的调试日志",
           "commercial_mode": "商业模式",

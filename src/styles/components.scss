@@ -9,9 +9,15 @@
   border: 1px solid transparent;
   border-radius: $radius-md;
   padding: 10px 14px;
+  font-size: 15px;
   font-weight: 600;
   cursor: pointer;
-  transition: all $transition-fast;
+  transition:
+    transform var(--dur-press) var(--ease-out-strong),
+    background-color var(--dur-hover) ease,
+    border-color var(--dur-hover) ease,
+    color var(--dur-hover) ease,
+    box-shadow var(--dur-hover) var(--ease-out-strong);
   background-color: var(--bg-secondary);
   color: var(--text-primary);
 
@@ -20,9 +26,14 @@
     color: var(--primary-contrast, #fff);
     border-color: var(--primary-color);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--primary-hover);
       border-color: var(--primary-hover);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.96);
     }
   }
 
@@ -31,9 +42,13 @@
     border-color: var(--border-color);
     color: var(--text-primary);
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: var(--bg-hover, var(--bg-tertiary));
       border-color: var(--border-hover);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.96);
     }
   }
 
@@ -42,9 +57,13 @@
     border-color: transparent;
     color: var(--text-secondary);
 
-    &:hover {
+    &:hover:not(:disabled) {
       color: var(--text-primary);
       background: var(--bg-tertiary);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.96);
     }
   }
 
@@ -53,8 +72,13 @@
     border-color: $error-color;
     color: #fff;
 
-    &:hover {
+    &:hover:not(:disabled) {
       background-color: color.adjust($error-color, $lightness: -5%);
+      box-shadow: 0 2px 8px rgba($error-color, 0.3);
+    }
+
+    &:active:not(:disabled) {
+      transform: scale(0.96);
     }
   }
 
@@ -68,8 +92,17 @@
   }
 
   &:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:active:not(:disabled) {
+      transform: none;
+    }
   }
 }
 
@@ -90,11 +123,13 @@ textarea {
   border: 1px solid var(--border-color);
   border-radius: $radius-md;
   padding: 10px 12px;
+  font-size: 15px;
   background-color: var(--bg-secondary);
   color: var(--text-primary);
+  font-family: $font-family;
   transition:
-    border-color $transition-fast,
-    box-shadow $transition-fast;
+    border-color var(--dur-hover) ease,
+    box-shadow var(--dur-hover) var(--ease-out-strong);
 
   &:focus {
     outline: none;
