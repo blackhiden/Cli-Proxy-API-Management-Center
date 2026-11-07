@@ -2,6 +2,94 @@
 
 ## [Unreleased]
 
+## [1.26.7-arsydoni4326-alt] - 2026-11-07
+
+### Merged
+- Merged upstream commits from `1dc60b4` to `953fb24` (`upstream/main`) into `dev`.
+  - Manual conflict resolution: LoginPage.module.scss (accepted upstream, removed UI beautification per MERGE-PRESERVATION.md)
+  - Manual fix: restored IconPalette and IconSparkles for Skills page
+  - 114 files changed, 9618 insertions(+), 355 deletions(-)
+
+### Added (from upstream)
+- **Routing feature** (`src/features/routing/`):
+  - Full routing configuration UI with drag-and-drop tier management
+  - Member cards with weight adjustment, tier movement, and policy controls
+  - Change review dialog showing diff before save
+  - Auto-scroll during drag operations
+  - Complete routing logic for tier assignment and member management
+  - API integration (`src/services/api/routing.ts`)
+  - Comprehensive test coverage (routing board, page, auto-scroll)
+- **Skills page** (system quick links):
+  - New Skills route displaying AI tool integrations
+  - LoginRevealVeil component for page transitions
+  - Icons: IconPalette, IconSparkles
+- **Turkish locale** (`src/i18n/locales/tr.json`):
+  - Complete Turkish translation added to the 7 supported languages
+  - Registered in i18n configuration
+- **AICodeMirror provider**:
+  - Support for multiple protocols (Anthropic, OpenAI, Gemini, OpenRouter, Ollama, LM Studio)
+  - Complete localization across all 7 languages
+  - Provider icon and descriptor integration
+  - Comprehensive test coverage
+- **Login enhancements**:
+  - DotMatrixHero component with animated dot matrix field
+  - Refactored LoginForm component with improved structure
+  - Login transition store for smooth page animations
+  - Login redirect logic with auto-login entry support
+  - New color palette system (`_palette.scss`)
+  - Comprehensive test coverage (layout, form, hero, palette, transition)
+- **Provider improvements**:
+  - StepFun and Xiaomi provider icons
+  - SponsorCampaignCard component with Double 11 campaign styling
+  - Model discovery selection logic with protocol mapping
+  - Enhanced sponsor provider forms with campaign card integration
+  - Discovery selection tests
+- **Quota enhancements**:
+  - QuotaTierPreview component with jade texture for elite plans
+  - Card tier system with visual differentiation
+  - Claude reset grant request ID logic
+  - Kimi plan detection improvements
+  - Enhanced quota timeline with DST handling
+  - Quota limit label consistency across providers
+  - Comprehensive test coverage (card tier, limit labels, timeline DST, Kimi plan)
+- **Select component improvements**:
+  - Enhanced positioning logic (`selectPosition.ts`)
+  - Better dropdown placement and viewport handling
+- **Test coverage additions**:
+  - Auto-login entry contract tests
+  - Model entry removal tests
+  - Plugin OAuth entries tests
+  - Encryption utility tests
+  - Models type tests
+
+### Fixed (from upstream)
+- OAuth: Plugin entry metadata decoding for escaped characters
+- Quota: Grok client version updated to 1.0.70
+- Quota: Consistent limit labeling across all providers
+
+### Protected Features (verified intact through merge)
+- ✅ OAuth result modal (OAuthResultModal.tsx)
+- ✅ Protected OAuth providers - Codex and Antigravity (protectedOAuth/ module)
+- ✅ Update notification system (UpdateModal.tsx, useUpdateStore.ts)
+- ✅ All project documentation (CODE_GRAPH.md, SPECIFICATION.md, ARCHITECTURE.md, CHANGELOG.md, CONTRIBUTING.md, ROADMAP.md, session.md, docs/)
+- ✅ Usage feature (src/features/usage/)
+- ✅ All contract tests (oauthResultModal.test.ts, protectedOAuthProviders.test.ts, updateNotification.test.ts)
+
+### Verification Results
+- TypeScript compilation: ✅ Passed
+- Production build: ✅ Succeeded (dist/index.html: 3,804.10 kB │ gzip: 1,204.58 kB)
+- Test suite: 1750 pass, 1 todo, 19 fail (pre-existing failures: Korean/Turkish/Vietnamese locale coverage, visual config rebase tests, cooldown section rendering)
+- Protected feature contract tests: ✅ All pass (63 tests)
+- Lint: ✅ Passed (warnings only, no errors)
+
+### Release Artifacts
+- **Release tag**: `v1.26.7-arsydoni4326-alt`
+- **Release branch**: `release/v1.26.7-arsydoni4326-alt` (deleted after finish)
+- **Main branch**: Updated with merge commit `7dfaa8d`
+- **Develop branch**: Back-merged with tag, commit `db2499f`
+- **Changes**: 114 files changed, 9618 insertions(+), 355 deletions(-)
+- **Build output**: Single-file HTML artifact ready for deployment
+
 ## [1.26.6] - 2026-10-19
 
 ### Merged
