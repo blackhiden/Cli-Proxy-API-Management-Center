@@ -29,18 +29,6 @@
     height: var(--hero-band);
     pointer-events: none;
   }
-
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(to right, rgba(139, 134, 128, 0.08) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(139, 134, 128, 0.08) 1px, transparent 1px);
-    background-size: 96px 96px;
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 0%, transparent 75%);
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 50%, #000 0%, transparent 75%);
-  }
 }
 
 .formPanel {
@@ -68,197 +56,15 @@
   }
 }
 
-.topBar {
-}
-
-.logo {
-  width: 80px;
-  height: 80px;
-  border-radius: 14px;
-  object-fit: cover;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  border: 2px solid var(--border-color);
-}
-
-.loginCard {
-  width: 100%;
-  background: var(--bg-primary);
-  border: 1px solid var(--border-color);
-  border-radius: 14px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
-  padding: $spacing-xl;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-lg;
-
-  @media (max-width: $breakpoint-mobile) {
-    padding: $spacing-lg;
-    box-shadow: none;
-    border: none;
-    background: transparent;
-  }
-}
-
-.loginHeader {
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-sm;
-  text-align: center;
-}
-
-.titleRow {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: $spacing-sm;
-  flex-wrap: wrap;
-}
-
-.title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--text-primary);
-  letter-spacing: -0.01em;
-}
-
-.subtitle {
-  color: var(--text-secondary);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-.languageSelect {
-  min-width: 108px;
-  flex: 0 0 auto;
-}
-
-.connectionBox {
-  background: var(--bg-secondary);
-  border: 1px dashed var(--border-color);
-  border-radius: $radius-md;
-  padding: $spacing-md;
-  display: flex;
-  flex-direction: column;
-  gap: $spacing-xs;
-
-  .label {
-    color: var(--text-secondary);
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  .value {
-    font-weight: 600;
-    color: var(--text-primary);
-    word-break: break-all;
-    font-family: $font-mono;
-    font-size: 14px;
-  }
-
-  .hint {
-    color: var(--text-tertiary);
-    font-size: 12px;
-    line-height: 1.4;
-  }
-}
-
-.toggleAdvanced {
-  display: flex;
-  justify-content: flex-start;
-  width: 100%;
-}
-
-.toggleLabel {
-  color: var(--text-secondary);
-  font-size: 14px;
-  font-weight: 500;
-}
-
-.errorBox {
-  background: var(--bg-error-light);
-  border: 1px solid var(--warning-border);
-  border-radius: $radius-md;
-  padding: $spacing-sm $spacing-md;
-  color: var(--warning-text);
-  font-size: 14px;
-  line-height: 1.5;
-}
-
-@keyframes splashEnter {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-=======
 @keyframes chromeFade {
   from {
     opacity: 0;
->>>>>>> upstream/main
   }
   to {
     opacity: 1;
   }
 }
 
-<<<<<<< HEAD
-@keyframes splashLogoPulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.04);
-  }
-}
-
-@keyframes splashLoading {
-  0% {
-    transform: scaleX(0);
-    transform-origin: left;
-  }
-  50% {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-  50.01% {
-    transform-origin: right;
-  }
-  100% {
-    transform: scaleX(0);
-    transform-origin: right;
-  }
-}
-
-.splashContent {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: $spacing-md;
-  animation: splashEnter 0.6s var(--ease-out-strong);
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-}
-
-.splashLogo {
-  height: 80px;
-  width: auto;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-  animation: splashLogoPulse 1.8s ease-in-out infinite;
-
-  @media (prefers-reduced-motion: reduce) {
-    animation: none;
-  }
-}
-
-.splashTitle {
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin: 0;
-  letter-spacing: -0.02em;
-=======
 .topBar {
   display: flex;
   align-items: center;
@@ -510,7 +316,6 @@
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text-primary);
->>>>>>> upstream/main
 }
 
 .splashSubtitle {
