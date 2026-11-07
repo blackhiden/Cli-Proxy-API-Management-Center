@@ -1,0 +1,205 @@
+.page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: $spacing-2xl $spacing-lg;
+}
+
+.header {
+  margin-bottom: $spacing-2xl;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0 0 $spacing-sm;
+  letter-spacing: -0.02em;
+}
+
+.subtitle {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: $spacing-lg;
+  margin-bottom: $spacing-2xl;
+}
+
+.card {
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  transition: all var(--dur-hover) var(--ease-out-strong);
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--accent-color);
+    opacity: 0;
+    transition: opacity var(--dur-hover) var(--ease-out-strong);
+  }
+
+  &:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+
+    &::before {
+      opacity: 1;
+    }
+  }
+
+  &[data-category='code'] {
+    --accent-color: var(--primary-color);
+  }
+
+  &[data-category='ui'] {
+    --accent-color: var(--amber-color);
+  }
+
+  &[data-category='design'] {
+    --accent-color: var(--success-color);
+  }
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: $radius-md;
+  background: var(--bg-tertiary);
+  color: var(--accent-color);
+  flex-shrink: 0;
+  transition: all var(--dur-hover) var(--ease-out-strong);
+
+  svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .card:hover & {
+    background: color-mix(in srgb, var(--accent-color) 12%, transparent);
+    transform: scale(1.05);
+  }
+}
+
+.skillName {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  font-family: $font-mono;
+  letter-spacing: -0.01em;
+}
+
+.description {
+  font-size: 0.938rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin: 0 0 $spacing-lg;
+  min-height: 3.2em;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: $spacing-md;
+  border-top: 1px solid var(--border-color);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: $radius-full;
+  font-size: 0.813rem;
+  font-weight: 500;
+  background: color-mix(in srgb, var(--accent-color) 10%, transparent);
+  color: var(--accent-color);
+  border: 1px solid color-mix(in srgb, var(--accent-color) 20%, transparent);
+  transition: all var(--dur-hover) var(--ease-out-strong);
+
+  .card:hover & {
+    background: color-mix(in srgb, var(--accent-color) 15%, transparent);
+    border-color: color-mix(in srgb, var(--accent-color) 30%, transparent);
+  }
+}
+
+.notice {
+  padding: $spacing-lg;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-color);
+  border-radius: $radius-md;
+  text-align: center;
+
+  p {
+    margin: 0;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: $breakpoint-mobile) {
+  .page {
+    padding: $spacing-xl $spacing-md;
+  }
+
+  .header {
+    margin-bottom: $spacing-xl;
+  }
+
+  .title {
+    font-size: 1.5rem;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    gap: $spacing-md;
+  }
+
+  .card {
+    padding: $spacing-md;
+  }
+
+  .cardHeader {
+    gap: $spacing-sm;
+  }
+
+  .iconWrapper {
+    width: 40px;
+    height: 40px;
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .skillName {
+    font-size: 1.125rem;
+  }
+}

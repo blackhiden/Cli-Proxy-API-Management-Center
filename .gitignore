@@ -20,11 +20,13 @@ node_modules
 dist
 dist-ssr
 *.local
-skills
+/skills
+!src/features/skills/
 
 # Editor directories and files
 settings.local.json
 .codex
+.agents
 .vscode/*
 !.vscode/extensions.json
 .idea
