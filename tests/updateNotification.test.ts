@@ -87,7 +87,7 @@ describe('UpdateModal', () => {
     expect(markup).toContain(`href="${UPSTREAM_REPOSITORY_URL}"`);
     expect(markup).toContain('aria-expanded="false"');
     expect(UPSTREAM_CHANGELOG_URL).toBe(
-      'https://github.com/arsydoni4326-alt/CLIProxyAPI/blob/main/frontend/CHANGELOG.md'
+      'https://github.com/blackhiden/CLIProxyAPI/blob/main/frontend/CHANGELOG.md'
     );
   });
 
