@@ -115,7 +115,9 @@ export function AuthFilesPage() {
     modelsFileName,
     modelsFileType,
     modelsError,
+    modelVerifications,
     showModels,
+    verifyModel,
     closeModelsModal,
     invalidateModels,
   } = useAuthFilesModels();
@@ -788,8 +790,10 @@ export function AuthFilesPage() {
         error={modelsError}
         models={modelsList}
         excluded={excluded}
+        verifications={modelVerifications}
         onClose={closeModelsModal}
         onCopyText={copyTextWithNotification}
+        onVerifyModel={(model) => void verifyModel(model)}
       />
 
       <AuthFileDetailsSheet

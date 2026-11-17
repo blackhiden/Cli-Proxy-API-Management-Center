@@ -13,7 +13,8 @@
 
 .item {
   display: flex;
-  align-items: baseline;
+  align-items: center;
+  justify-content: space-between;
   gap: 8px;
   flex-wrap: wrap;
   padding: 8px 10px;
@@ -28,6 +29,51 @@
   &:active {
     transform: scale(0.99);
   }
+}
+
+.modelDetails {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex: 1 1 240px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.modelActions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.verificationBadge {
+  border: 1px solid;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1.5;
+  padding: 1px 7px;
+  white-space: nowrap;
+}
+
+.successBadge {
+  color: var(--success-badge-text);
+  background: var(--success-badge-bg);
+  border-color: var(--success-badge-border);
+}
+
+.failureBadge {
+  color: var(--failure-badge-text);
+  background: var(--failure-badge-bg);
+  border-color: var(--failure-badge-border);
+}
+
+.failureReason {
+  flex-basis: 100%;
+  color: var(--failure-badge-text);
+  font-size: 11px;
+  overflow-wrap: anywhere;
 }
 
 @media (hover: hover) and (pointer: fine) {

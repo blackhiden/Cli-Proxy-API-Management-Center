@@ -542,6 +542,12 @@ export interface AuthFileCooldownResetResponse {
   models: string[];
 }
 
+export interface AuthFileModelVerificationResponse {
+  status: string;
+  verified: boolean;
+  error?: string;
+}
+
 export const authFilesApi = {
   list: async (lookup?: AuthFileLookup) =>
     normalizeAuthFilesResponse(
@@ -582,6 +588,9 @@ export const authFilesApi = {
     apiClient.post<AuthFileCooldownResetResponse>('/routing/cooldown/reset', {
       auth_index: authIndex,
     }),
+
+  verifyModel: (name: string, model: string) =>
+    apiClient.post<AuthFileModelVerificationResponse>('/credentials/verify', { name, model }),
 
   uploadFiles: async (files: File[]): Promise<AuthFileBatchUploadResult> => {
     const requestedNames = files.map((file) => file.name);

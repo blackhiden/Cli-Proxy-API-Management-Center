@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/Button';
 import { EmptyState } from '@/components/ui/EmptyState';
 import type { AuthFileModelItem } from '@/features/authFiles/constants';
 import { isModelExcluded } from '@/features/authFiles/constants';
+import type { ModelVerification } from '@/features/authFiles/hooks/useAuthFilesModels';
 import styles from './AuthFileModelsModal.module.scss';
 
 export type AuthFileModelsModalProps = {
@@ -14,13 +15,27 @@ export type AuthFileModelsModalProps = {
   error: 'unsupported' | null;
   models: AuthFileModelItem[];
   excluded: Record<string, string[]>;
+  verifications: Record<string, ModelVerification>;
   onClose: () => void;
   onCopyText: (text: string) => void;
+  onVerifyModel: (model: string) => void;
 };
 
 export function AuthFileModelsModal(props: AuthFileModelsModalProps) {
   const { t } = useTranslation();
-  const { open, fileName, fileType, loading, error, models, excluded, onClose, onCopyText } = props;
+  const {
+    open,
+    fileName,
+    fileType,
+    loading,
+    error,
+    models,
+    excluded,
+    verifications,
+    onClose,
+    onCopyText,
+    onVerifyModel,
+  } = props;
 
   return (
     <Modal
@@ -55,6 +70,7 @@ export function AuthFileModelsModal(props: AuthFileModelsModalProps) {
         <div className={styles.list}>
           {models.map((model) => {
             const excludedModel = isModelExcluded(model.id, fileType, excluded);
+            const verification = verifications[model.id];
             return (
               <div
                 key={model.id}
@@ -70,16 +86,54 @@ export function AuthFileModelsModal(props: AuthFileModelsModalProps) {
                     : t('common.copy', { defaultValue: '点击复制' })
                 }
               >
-                <span className={styles.modelId}>{model.id}</span>
-                {model.display_name && model.display_name !== model.id && (
-                  <span className={styles.modelDisplayName}>{model.display_name}</span>
-                )}
-                {model.type && <span className={styles.modelType}>{model.type}</span>}
-                {excludedModel && (
-                  <span className={styles.excludedBadge}>
-                    {t('auth_files.models_excluded_badge', { defaultValue: '已禁用' })}
-                  </span>
-                )}
+                <div className={styles.modelDetails}>
+                  <span className={styles.modelId}>{model.id}</span>
+                  {model.display_name && model.display_name !== model.id && (
+                    <span className={styles.modelDisplayName}>{model.display_name}</span>
+                  )}
+                  {model.type && <span className={styles.modelType}>{model.type}</span>}
+                  {excludedModel && (
+                    <span className={styles.excludedBadge}>
+                      {t('auth_files.models_excluded_badge', { defaultValue: '已禁用' })}
+                    </span>
+                  )}
+                  {verification?.status === 'failed' && verification.error && (
+                    <span className={styles.failureReason} role="status">
+                      {verification.error}
+                    </span>
+                  )}
+                </div>
+                <div className={styles.modelActions}>
+                  {verification?.status === 'success' && (
+                    <span
+                      className={`${styles.verificationBadge} ${styles.successBadge}`}
+                      role="status"
+                    >
+                      {t('auth_files.model_test_success')}
+                    </span>
+                  )}
+                  {verification?.status === 'failed' && (
+                    <span
+                      className={`${styles.verificationBadge} ${styles.failureBadge}`}
+                      role="status"
+                    >
+                      {t('auth_files.model_test_failed')}
+                    </span>
+                  )}
+                  <Button
+                    variant="secondary"
+                    size="sm"
+                    loading={verification?.status === 'pending'}
+                    disabled={verification?.status === 'pending'}
+                    aria-label={t('auth_files.model_test_action_label', { model: model.id })}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      onVerifyModel(model.id);
+                    }}
+                  >
+                    {t('auth_files.model_test_action')}
+                  </Button>
+                </div>
               </div>
             );
           })}

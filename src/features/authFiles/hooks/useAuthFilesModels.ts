@@ -6,6 +6,7 @@ import type { AuthFileItem } from '@/types';
 import type { AuthFileModelItem } from '@/features/authFiles/constants';
 
 type ModelsError = 'unsupported' | null;
+export type ModelVerification = { status: 'pending' | 'success' | 'failed'; error?: string };
 
 export type UseAuthFilesModelsResult = {
   modelsModalOpen: boolean;
@@ -14,7 +15,9 @@ export type UseAuthFilesModelsResult = {
   modelsFileName: string;
   modelsFileType: string;
   modelsError: ModelsError;
+  modelVerifications: Record<string, ModelVerification>;
   showModels: (item: AuthFileItem) => Promise<void>;
+  verifyModel: (model: string) => Promise<void>;
   closeModelsModal: () => void;
   /** 文件集变更后失效缓存；不传 names 则全部清空。 */
   invalidateModels: (names?: string[]) => void;
@@ -30,14 +33,20 @@ export function useAuthFilesModels(): UseAuthFilesModelsResult {
   const [modelsFileName, setModelsFileName] = useState('');
   const [modelsFileType, setModelsFileType] = useState('');
   const [modelsError, setModelsError] = useState<ModelsError>(null);
+  const [modelVerifications, setModelVerifications] = useState<Record<string, ModelVerification>>({});
   const modelsCacheRef = useRef<Map<string, AuthFileModelItem[]>>(new Map());
   const modelsCacheVersionRef = useRef(0);
   const modelsConnectionRef = useRef(apiClient.getConnectionRevision());
   const modelsFileVersionRef = useRef<Map<string, number>>(new Map());
   const activeModelsRequestIdRef = useRef(0);
+  const verificationSessionRef = useRef(0);
+  const activeVerificationRef = useRef<Set<string>>(new Set());
 
   const closeModelsModal = useCallback(() => {
     activeModelsRequestIdRef.current += 1;
+    verificationSessionRef.current += 1;
+    activeVerificationRef.current.clear();
+    setModelVerifications({});
     setModelsModalOpen(false);
     setModelsLoading(false);
   }, []);
@@ -64,6 +73,9 @@ export function useAuthFilesModels(): UseAuthFilesModelsResult {
       }
       const cacheKey = item.name.trim();
       const requestId = ++activeModelsRequestIdRef.current;
+      verificationSessionRef.current += 1;
+      activeVerificationRef.current.clear();
+      setModelVerifications({});
 
       setModelsFileName(item.name);
       setModelsFileType(item.type || '');
@@ -112,6 +124,50 @@ export function useAuthFilesModels(): UseAuthFilesModelsResult {
     [invalidateModels, showNotification, t]
   );
 
+  const verifyModel = useCallback(async (model: string) => {
+    const fileName = modelsFileName;
+    const session = verificationSessionRef.current;
+    const connectionRevision = apiClient.getConnectionRevision();
+    const activeKey = `${session}:${model}`;
+    if (!fileName || activeVerificationRef.current.has(activeKey)) return;
+
+    activeVerificationRef.current.add(activeKey);
+    setModelVerifications((current) => ({ ...current, [model]: { status: 'pending' } }));
+
+    try {
+      const result = await authFilesApi.verifyModel(fileName, model);
+      if (
+        session !== verificationSessionRef.current ||
+        connectionRevision !== apiClient.getConnectionRevision()
+      ) {
+        return;
+      }
+      setModelVerifications((current) => ({
+        ...current,
+        [model]: result.verified
+          ? { status: 'success' }
+          : { status: 'failed', error: result.error || t('auth_files.model_test_failed') },
+      }));
+    } catch (err) {
+      if (
+        session !== verificationSessionRef.current ||
+        connectionRevision !== apiClient.getConnectionRevision()
+      ) {
+        return;
+      }
+      const message = err instanceof Error ? err.message.trim() : '';
+      setModelVerifications((current) => ({
+        ...current,
+        [model]: {
+          status: 'failed',
+          error: (message || t('auth_files.model_test_failed')).slice(0, 500),
+        },
+      }));
+    } finally {
+      activeVerificationRef.current.delete(activeKey);
+    }
+  }, [modelsFileName, t]);
+
   return {
     modelsModalOpen,
     modelsLoading,
@@ -119,7 +175,9 @@ export function useAuthFilesModels(): UseAuthFilesModelsResult {
     modelsFileName,
     modelsFileType,
     modelsError,
+    modelVerifications,
     showModels,
+    verifyModel,
     closeModelsModal,
     invalidateModels,
   };

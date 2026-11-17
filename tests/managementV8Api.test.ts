@@ -322,4 +322,24 @@ describe('v8 management API contracts', () => {
     await configFileApi.saveConfigYaml('config: yaml');
     expect(put.mock.calls.at(-1)?.slice(0, 2)).toEqual(['/config.yaml', 'config: yaml']);
   });
+
+  test('credential model verification uses the selected name and exact model', async () => {
+    const post = mock('post', { status: 'ok', verified: true });
+    expect(await authFilesApi.verifyModel('credential.json', 'provider/model-v2')).toEqual({
+      status: 'ok',
+      verified: true,
+    });
+    expect(post).toHaveBeenCalledWith('/credentials/verify', {
+      name: 'credential.json',
+      model: 'provider/model-v2',
+    });
+  });
+
+  test('credential model verification propagates the backend failure message', async () => {
+    const post = mock('post');
+    post.mockRejectedValue(new Error('credential verification unavailable'));
+    await expect(authFilesApi.verifyModel('credential.json', 'provider/model-v2')).rejects.toThrow(
+      'credential verification unavailable'
+    );
+  });
 });
