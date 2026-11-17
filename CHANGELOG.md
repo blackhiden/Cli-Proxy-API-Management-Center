@@ -2,6 +2,25 @@
 
 ## [Unreleased]
 
+## [1.28.2] - 2026-11-17
+
+### Merged
+- Merged `upstream/main` commit `706c7c6` into `dev` (139 files changed).
+- Resolved the provider workbench overlap by retaining fork `resolveProxyUrl` behavior and
+  upstream's exported `buildProviderKeyConfig` used by sensitive-replacement tests.
+- Preserved protected OAuth providers, OAuth login proxy behavior, and OAuth result modal
+  contracts. Updated provider direct-connection hints to use the upstream `CheckboxField` InfoTip.
+
+### Added (from upstream)
+- Sensitive text replacement configuration for providers and payload replacement rules.
+- Reusable field-label, checkbox-hint, and tooltip components, with localization and validation.
+
+### Validation
+- Build and lint pass; focused merge/protected-feature suites pass (123 tests, one existing OAuth
+  result-modal integration follow-up remains TODO).
+- Full suite currently has 18 pre-existing failures; visual-config rebase, locale-coverage, and
+  login-transition failures were also reproduced on the pre-merge `dev` base.
+
 ## [1.26.7-arsydoni4326-alt] - 2026-11-07
 
 ### Merged
