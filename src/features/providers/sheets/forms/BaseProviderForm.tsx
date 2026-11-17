@@ -606,19 +606,13 @@ export function BaseProviderForm({
           </div>
         ) : null}
 
-        <label className={styles.checkboxRow}>
-          <input
-            type="checkbox"
-            className={styles.checkboxBox}
-            checked={form.directConnection}
-            disabled={mutating}
-            onChange={(e) => updateField('directConnection', e.target.checked)}
-          />
-          <span className={styles.checkboxText}>
-            <span>{t('providersPage.form.directConnection')}</span>
-            <small>{t('providersPage.form.directConnectionHint')}</small>
-          </span>
-        </label>
+        <CheckboxField
+          label={t('providersPage.form.directConnection')}
+          hint={t('providersPage.form.directConnectionHint')}
+          checked={form.directConnection}
+          disabled={mutating}
+          onChange={(checked) => updateField('directConnection', checked)}
+        />
 
         {descriptor.supportsProxyUrl ? (
           <div className={styles.field}>

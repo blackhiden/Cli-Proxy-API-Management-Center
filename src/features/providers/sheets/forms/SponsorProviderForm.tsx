@@ -41,6 +41,7 @@ import type {
 } from '../../types';
 import { ModelDiscoveryPanel } from './ModelDiscoveryPanel';
 import { ModelEntriesEditor } from './ModelEntriesEditor';
+import { CheckboxField } from './CheckboxField';
 import { useModelDiscovery, type UseModelDiscoveryResult } from './useModelDiscovery';
 import { useSponsorUsageCheck, type SponsorUsageMessages } from './useSponsorUsageCheck';
 import styles from './sharedForm.module.scss';
@@ -637,19 +638,13 @@ function SponsorKeyEntryCard({
             </div>
           ) : null}
 
-          <label className={styles.checkboxRow}>
-            <input
-              type="checkbox"
-              className={styles.checkboxBox}
-              checked={entry.directConnection ?? false}
-              disabled={mutating}
-              onChange={(event) => updateEntry({ directConnection: event.target.checked })}
-            />
-            <span className={styles.checkboxText}>
-              <span>{t('providersPage.form.directConnection')}</span>
-              <small>{t('providersPage.form.directConnectionHint')}</small>
-            </span>
-          </label>
+          <CheckboxField
+            label={t('providersPage.form.directConnection')}
+            hint={t('providersPage.form.directConnectionHint')}
+            checked={entry.directConnection ?? false}
+            disabled={mutating}
+            onChange={(checked) => updateEntry({ directConnection: checked })}
+          />
 
           <div className={styles.field}>
             <label className={styles.label} htmlFor={`${formId}-group-${index}-proxy`}>
