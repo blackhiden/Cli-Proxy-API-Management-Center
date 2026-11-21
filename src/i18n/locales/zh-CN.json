@@ -1480,6 +1480,12 @@
           "bootstrap_hint": "流式传输首包前的重试次数；设为 0、负整数或留空表示禁用启动重试",
           "nonstream_keepalive": "非流式 Keepalive 间隔 (秒)",
           "nonstream_keepalive_hint": "非流式响应时每隔 N 秒发送空行；设置为 0、负整数或留空表示禁用保活",
+          "request_timeout": "请求超时（软预算）",
+          "request_timeout_hint": "长请求预算，例如 10m 或 600s。用于保持连接并在超出时记录日志，不会取消请求。0 表示禁用。",
+          "hard_request_deadline": "硬请求截止时间",
+          "hard_request_deadline_hint": "用于非流式执行和流式启动阶段的可选截止时间，不会取消已建立的流。0 表示禁用。",
+          "provider_request_timeouts": "按提供商覆盖请求超时",
+          "provider_request_timeouts_hint": "将 codex、claude、xai、antigravity 或 devin 映射到时长的 JSON 对象，例如 {\"codex\":\"10m\"}。",
           "disabled": "已禁用"
         },
         "payload": {

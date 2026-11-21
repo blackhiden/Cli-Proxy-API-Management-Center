@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/Button';
 import { Modal } from '@/components/ui/Modal';
 import { ToggleSwitch } from '@/components/ui/ToggleSwitch';
 import { InfoTip, Tooltip } from '@/components/ui/Tooltip';
+import { UPSTREAM_REPOSITORY_URL } from '@/components/common/updateChangelog';
 import {
   IconGithub,
   IconBookOpen,
@@ -25,6 +26,7 @@ import { apiClient, configApi, modelsApi, versionApi } from '@/services/api';
 import { useApiKeysForModels } from '@/hooks/useApiKeysForModels';
 import { formatDateTimeValue } from '@/utils/format';
 import { classifyModels } from '@/utils/models';
+import { resolveUpdateAvailability } from '@/utils/updateNotification';
 import { STORAGE_KEY_AUTH } from '@/utils/constants';
 import { INLINE_LOGO_JPEG } from '@/assets/logoInline';
 import iconGemini from '@/assets/icons/gemini.svg';
@@ -61,32 +63,6 @@ const MODEL_CATEGORY_ICONS: Record<string, string | { light: string; dark: strin
   minimax: iconMinimax,
   xiaomi: iconXiaomi,
   stepfun: { light: iconStepfun, dark: iconStepfunDark },
-};
-
-const parseVersionSegments = (version?: string | null) => {
-  if (!version) return null;
-  const cleaned = version.trim().replace(/^v/i, '');
-  if (!cleaned) return null;
-  const parts = cleaned
-    .split(/[^0-9]+/)
-    .filter(Boolean)
-    .map((segment) => Number.parseInt(segment, 10))
-    .filter(Number.isFinite);
-  return parts.length ? parts : null;
-};
-
-const compareVersions = (latest?: string | null, current?: string | null) => {
-  const latestParts = parseVersionSegments(latest);
-  const currentParts = parseVersionSegments(current);
-  if (!latestParts || !currentParts) return null;
-  const length = Math.max(latestParts.length, currentParts.length);
-  for (let i = 0; i < length; i++) {
-    const l = latestParts[i] || 0;
-    const c = currentParts[i] || 0;
-    if (l > c) return 1;
-    if (l < c) return -1;
-  }
-  return 0;
 };
 
 export function SystemPage() {
@@ -297,7 +273,6 @@ export function SystemPage() {
       const data = await versionApi.checkLatest();
       const latestRaw = data?.['latest-version'] ?? data?.latest_version ?? data?.latest ?? '';
       const latest = typeof latestRaw === 'string' ? latestRaw : String(latestRaw ?? '');
-      const comparison = compareVersions(latest, auth.serverVersion);
       const latestCommit = data?.['latest-commit'] ?? data?.latest_commit ?? '';
 
       if (!latest && !latestCommit) {
@@ -305,13 +280,15 @@ export function SystemPage() {
         return;
       }
 
-      // Update the global update store to potentially show modal
       const currentCommit = auth.serverCommit;
-      const updateAvailable = !!(currentCommit && latestCommit && currentCommit !== latestCommit);
-      
+      const { updateAvailable, comparison } = resolveUpdateAvailability({
+        latestVersion: latest,
+        currentVersion: auth.serverVersion,
+      });
+
       useUpdateStore.getState().setUpdateInfo({
         updateAvailable,
-        latestVersion: typeof latest === 'string' ? latest : null,
+        latestVersion: latest || null,
         latestCommit: typeof latestCommit === 'string' ? latestCommit : null,
         currentCommit: typeof currentCommit === 'string' ? currentCommit : null,
       });
@@ -426,7 +403,7 @@ export function SystemPage() {
         <Card title={t('system_info.quick_links_title')}>
           <div className={styles.quickLinks}>
             <a
-              href="https://github.com/router-for-me/CLIProxyAPI"
+              href={UPSTREAM_REPOSITORY_URL}
               target="_blank"
               rel="noopener noreferrer"
               className={styles.linkCard}

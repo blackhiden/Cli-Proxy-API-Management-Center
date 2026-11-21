@@ -2,6 +2,14 @@
 
 ## [Unreleased]
 
+### Fixed
+
+- Update notifications now compare semantic versions instead of raw commit hashes. A fork build
+  that is ahead of the upstream release (for example current `v8.0.82` vs upstream `v8.0.60`) no
+  longer opens a false "Update Available" modal. Commit hashes remain display metadata only.
+- The System page main-repository quick link now uses the same `blackhiden/CLIProxyAPI` URL as the
+  update modal.
+
 ## [1.28.2] - 2026-11-17
 
 ### Merged

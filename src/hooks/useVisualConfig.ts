@@ -22,6 +22,8 @@ import { assertConfigListsUnchanged, ConfigDraftConflictError } from '@/services
 import {
   ADDITION_FIELDS,
   ICE_KEY,
+  REQUEST_TIMEOUT_PROVIDERS,
+  parseProviderRequestTimeouts,
   readVisualAdditions,
   writeVisualAdditions,
   writeICEServers,
@@ -1647,6 +1649,11 @@ function getNextDirtyFields(
       );
     }
   }
+  for (const key of ['requestTimeout', 'hardRequestDeadline', 'providerRequestTimeouts'] as const) {
+    if (Object.prototype.hasOwnProperty.call(patch, key)) {
+      updateDirty(key, nextValues[key] === baselineValues[key]);
+    }
+  }
 
   return nextDirtyFields;
 }
@@ -1861,6 +1868,14 @@ function parseVisualValuesFromYaml(yamlContent: string): VisualConfigValues {
       bootstrapRetries: String(streaming?.['bootstrap-retries'] ?? ''),
       nonstreamKeepaliveInterval: String(v8Requests?.['nonstream-keepalive-interval'] ?? ''),
     },
+    providerRequestTimeouts: JSON.stringify(
+      Object.fromEntries(
+        REQUEST_TIMEOUT_PROVIDERS.flatMap((provider) => {
+          const value = asRecord(v8Upstream?.[provider])?.['request-timeout'];
+          return typeof value === 'string' ? [[provider, value] as const] : [];
+        })
+      )
+    ),
   };
 
   return newValues;
@@ -1963,6 +1978,21 @@ export function useVisualConfig() {
         }
         const values = visualValues;
         writeVisualAdditions(doc, values, dirtyFields);
+        if (dirtyFields.has('providerRequestTimeouts')) {
+          const nextOverrides = parseProviderRequestTimeouts(values.providerRequestTimeouts) ?? {};
+          const baselineOverrides =
+            parseProviderRequestTimeouts(baselineValues.providerRequestTimeouts) ?? {};
+          for (const provider of REQUEST_TIMEOUT_PROVIDERS) {
+            const path = ['upstream', provider, 'request-timeout'];
+            const nextValue = nextOverrides[provider];
+            if (nextValue !== undefined) {
+              ensureMapInDoc(doc, ['upstream', provider]);
+              setStringInDoc(doc, path, nextValue);
+            } else if (baselineOverrides[provider] !== undefined && doc.hasIn(path)) {
+              deletePathInDoc(doc, path);
+            }
+          }
+        }
         writeVisualServer(
           doc,
           values,

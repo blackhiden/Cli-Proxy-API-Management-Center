@@ -437,8 +437,8 @@ main.tsx
 #### Update Notification Flow
 1. Root shell mounted once per document load; hash navigation keeps it mounted.
 2. After first successful connection, calls `versionApi.checkLatest()` once.
-3. Compares backend-reported latest commit with connected server commit.
-4. When newer commit available, `UpdateModal` renders.
+3. Compares backend-reported latest version with connected server version; commit hashes are display metadata only.
+4. When the upstream version is newer, `UpdateModal` renders.
 5. Hash navigation **never** triggers automatic update check or opens notification.
 
 #### OAuth Flow

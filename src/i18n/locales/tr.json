@@ -1457,6 +1457,12 @@
           "bootstrap_hint": "İlk Bayttan Önceki Yeniden Denemeler. 0, Negatif Tam Sayı veya Boş Alan Başlangıç Yeniden Denemelerini Kapatır",
           "nonstream_keepalive": "Akış Dışı Canlı Tutma Aralığı (Saniye)",
           "nonstream_keepalive_hint": "Akış Dışı Yanıtlar için Her N Saniyede Boş Satır Gönder. 0, Negatif Tam Sayı veya Boş Alan Canlı Tutmayı Kapatır",
+          "request_timeout": "İstek Zaman Aşımı (yumuşak bütçe)",
+          "request_timeout_hint": "10m veya 600s gibi uzun istek bütçesi. Bağlantıyı açık tutar ve aşımda günlük kaydı oluşturur; isteği iptal etmez. 0 devre dışı bırakır.",
+          "hard_request_deadline": "Sabit İstek Son Süresi",
+          "hard_request_deadline_hint": "Akış dışı yürütme ve akış başlatma için isteğe bağlı son süre. Kurulmuş bir akışı iptal etmez. 0 devre dışı bırakır.",
+          "provider_request_timeouts": "Sağlayıcı İstek Zaman Aşımı Geçersiz Kılmaları",
+          "provider_request_timeouts_hint": "codex, claude, xai, antigravity veya devin'i bir süreyle eşleştiren JSON nesnesi, örnek: {\"codex\":\"10m\"}.",
           "disabled": "Devre Dışı"
         },
         "payload": {

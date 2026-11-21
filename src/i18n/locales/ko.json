@@ -1478,6 +1478,12 @@
           "bootstrap_hint": "첫 번째 바이트 전의 재시도 횟수입니다. 0, 음의 정수 또는 빈 필드는 부트스트랩 재시도를 비활성화합니다.",
           "nonstream_keepalive": "비스트리밍 Keepalive 간격(초)",
           "nonstream_keepalive_hint": "비스트리밍 응답 시 N초마다 빈 줄을 전송합니다. 0, 음의 정수 또는 빈 필드는 keepalive를 비활성화합니다.",
+          "request_timeout": "요청 시간 제한(소프트 예산)",
+          "request_timeout_hint": "10m 또는 600s와 같은 장기 요청 예산입니다. 연결을 유지하고 초과 시 로그를 남기며 요청을 취소하지 않습니다. 0은 비활성화입니다.",
+          "hard_request_deadline": "하드 요청 기한",
+          "hard_request_deadline_hint": "비스트리밍 실행과 스트리밍 부트스트랩에 적용되는 선택적 기한입니다. 이미 시작된 스트림은 취소하지 않습니다. 0은 비활성화입니다.",
+          "provider_request_timeouts": "공급자별 요청 시간 제한 재정의",
+          "provider_request_timeouts_hint": "codex, claude, xai, antigravity, devin을 기간에 매핑하는 JSON 객체입니다. 예: {\"codex\":\"10m\"}.",
           "disabled": "비활성화됨"
         },
         "payload": {

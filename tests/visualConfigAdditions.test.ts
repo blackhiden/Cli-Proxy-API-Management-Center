@@ -9,6 +9,7 @@ import {
   ICE_KEY,
   ICE_PATH,
   goDurationSeconds,
+  parseProviderRequestTimeouts,
 } from '@/features/config/visualConfigAdditions';
 import { ConfigDraftConflictError } from '../src/services/api/configPatch';
 import { runVisualConfig } from './helpers/visualConfig';
@@ -332,5 +333,37 @@ describe('addition validation boundaries', () => {
       expect(
         errors({ [ICE_KEY]: [{ id: 'a', urlsText, username: '', credential: '' }] })[ICE_KEY]
       ).toBe('invalid_ice_servers');
+  });
+
+  test('request timeout fields accept Go durations, bare seconds and disabled spellings', () => {
+    for (const value of ['', '0', '0s', 'none', '600', '10m', '1500ms']) {
+      expect(errors({ requestTimeout: value }).requestTimeout).toBeUndefined();
+      expect(errors({ hardRequestDeadline: value }).hardRequestDeadline).toBeUndefined();
+    }
+    for (const value of ['abc', '-5s', '10x']) {
+      expect(errors({ requestTimeout: value }).requestTimeout).toBe('invalid_duration');
+      expect(errors({ hardRequestDeadline: value }).hardRequestDeadline).toBe('invalid_duration');
+    }
+  });
+
+  test('provider request timeout overrides validate and write canonical v8 paths', () => {
+    expect(parseProviderRequestTimeouts('{"codex":"10m","claude":600}')).toBeNull();
+    expect(parseProviderRequestTimeouts('{"unknown":"10m"}')).toBeNull();
+    expect(parseProviderRequestTimeouts('{"codex":"10m"}')).toEqual({ codex: '10m' });
+
+    const yaml = 'upstream:\n  codex:\n    request-timeout: "5m"\n';
+    const loaded = runVisualConfig(yaml);
+    expect(loaded.visualValues.providerRequestTimeouts).toBe('{"codex":"5m"}');
+
+    const config = runVisualConfig(yaml, [
+      { providerRequestTimeouts: '{"codex":"10m","claude":"2m"}' },
+    ]);
+    const out = parseDocument(config.applyVisualChangesToYaml(yaml));
+    expect(out.getIn(['upstream', 'codex', 'request-timeout'])).toBe('10m');
+    expect(out.getIn(['upstream', 'claude', 'request-timeout'])).toBe('2m');
+
+    const removed = runVisualConfig(yaml, [{ providerRequestTimeouts: '{}' }]);
+    const removedOut = parseDocument(removed.applyVisualChangesToYaml(yaml));
+    expect(removedOut.getIn(['upstream', 'codex', 'request-timeout'])).toBeUndefined();
   });
 });
