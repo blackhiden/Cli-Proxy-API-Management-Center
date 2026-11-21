@@ -13,8 +13,8 @@
 1. The root shell is mounted once per browser document load; hash-route changes keep it mounted.
 2. The root shell waits for the first successful connection in that document, then calls
    `versionApi.checkLatest()` once.
-3. The root shell compares the backend-reported latest commit with the connected server commit and stores the transient result in `useUpdateStore`.
-4. When a newer commit is available, `UpdateModal` renders above the route outlet.
+3. The root shell compares the backend-reported latest version with the connected server version and stores the transient result in `useUpdateStore`. Commit hashes are display metadata only.
+4. When the upstream version is newer, `UpdateModal` renders above the route outlet.
 5. The modal displays version metadata from the connected-session store and offers a repository/changelog link. The System page may invoke the same check explicitly.
 
 ## Deployment constraints

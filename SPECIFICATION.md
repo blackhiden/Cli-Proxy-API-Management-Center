@@ -7,7 +7,7 @@ The Management Center is a React single-page frontend for the CLI Proxy API Mana
 ## Update notifications
 
 - The frontend requests the backend's update-check endpoint after the first successful connection in a newly loaded browser document.
-- An automatic update notification opens only when that initial check finds a newer upstream server commit.
+- An automatic update notification opens only when that initial check finds a newer upstream version. Commit hashes are display metadata and never trigger the notification by themselves.
 - Update notification state is transient; a new browser load must obtain a fresh result before opening a modal.
 - Client-side hash navigation, including navigation from `#/ai-providers` to `#/auth-files`, must not initiate an automatic update check or open the notification.
 - A full browser load, including a first visit, F5, Ctrl+R, or browser reload, creates a new root mount and may show the notification when an update is available.

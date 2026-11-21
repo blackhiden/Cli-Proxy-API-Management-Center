@@ -9,7 +9,7 @@ import { ProtectedRoute } from '@/router/ProtectedRoute';
 import { useAuthStore, useLanguageStore, useThemeStore, useUpdateStore } from '@/stores';
 import { versionApi } from '@/services/api';
 import { UpdateModal } from '@/components/common/UpdateModal';
-import { shouldCheckInitialUpdate } from '@/utils/updateNotification';
+import { resolveUpdateAvailability, shouldCheckInitialUpdate } from '@/utils/updateNotification';
 
 function RootShell() {
   const { updateInfo, updateModalOpen, setUpdateModalOpen, setUpdateInfo } = useUpdateStore();
@@ -26,13 +26,18 @@ function RootShell() {
         return;
       }
 
+      const latestVersionText = typeof latestVersion === 'string' ? latestVersion : null;
+      const latestCommitText = typeof latestCommit === 'string' ? latestCommit : null;
       const currentCommit = auth.serverCommit;
-      const updateAvailable = !!(currentCommit && latestCommit && currentCommit !== latestCommit);
+      const { updateAvailable } = resolveUpdateAvailability({
+        latestVersion: latestVersionText,
+        currentVersion: auth.serverVersion,
+      });
 
       setUpdateInfo({
         updateAvailable,
-        latestVersion: typeof latestVersion === 'string' ? latestVersion : null,
-        latestCommit: typeof latestCommit === 'string' ? latestCommit : null,
+        latestVersion: latestVersionText,
+        latestCommit: latestCommitText,
         currentCommit: typeof currentCommit === 'string' ? currentCommit : null,
       });
 
@@ -45,7 +50,7 @@ function RootShell() {
     } catch (error) {
       console.error('Update check failed:', error);
     }
-  }, [auth.serverCommit, setUpdateInfo, setUpdateModalOpen]);
+  }, [auth.serverCommit, auth.serverVersion, setUpdateInfo, setUpdateModalOpen]);
   // A hash-route change keeps RootShell mounted. This ref therefore permits one automatic
   // check for the initial browser document only, after its first successful connection.
   useEffect(() => {

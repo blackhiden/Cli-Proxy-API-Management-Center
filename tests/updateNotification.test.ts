@@ -9,7 +9,11 @@ import {
   UPSTREAM_REPOSITORY_URL,
 } from '../src/components/common/updateChangelog';
 import { useAuthStore } from '../src/stores/useAuthStore';
-import { shouldCheckInitialUpdate } from '../src/utils/updateNotification';
+import {
+  compareVersions,
+  resolveUpdateAvailability,
+  shouldCheckInitialUpdate,
+} from '../src/utils/updateNotification';
 import en from '../src/i18n/locales/en.json';
 import zhCN from '../src/i18n/locales/zh-CN.json';
 import zhTW from '../src/i18n/locales/zh-TW.json';
@@ -60,6 +64,58 @@ describe('automatic update notification', () => {
   test('does not repeat after a hash-route navigation leaves the root shell mounted', () => {
     const hasChecked = true;
     expect(shouldCheckInitialUpdate({ hasChecked, connectionStatus: 'connected' })).toBe(false);
+  });
+});
+
+describe('update availability', () => {
+  test('compares semantic version segments numerically', () => {
+    expect(compareVersions('v8.0.60', 'v8.0.82')).toBe(-1);
+    expect(compareVersions('v8.0.82', '8.0.60')).toBe(1);
+    expect(compareVersions('v8.0.82', 'v8.0.82')).toBe(0);
+    expect(compareVersions('v8.0.100', 'v8.0.82')).toBe(1);
+    expect(compareVersions('v8.0.9', 'v8.0.10')).toBe(-1);
+  });
+
+  test('does not report an update when the current version is ahead', () => {
+    expect(
+      resolveUpdateAvailability({
+        latestVersion: 'v8.0.60',
+        currentVersion: 'v8.0.82',
+      })
+    ).toEqual({ updateAvailable: false, comparison: -1 });
+  });
+
+  test('does not report an update for equal versions or a missing latest version', () => {
+    expect(
+      resolveUpdateAvailability({
+        latestVersion: 'v8.0.82',
+        currentVersion: 'v8.0.82',
+      })
+    ).toEqual({ updateAvailable: false, comparison: 0 });
+    expect(
+      resolveUpdateAvailability({
+        latestVersion: null,
+        currentVersion: 'v8.0.82',
+      })
+    ).toEqual({ updateAvailable: false, comparison: null });
+  });
+
+  test('reports an update only when the upstream version is newer', () => {
+    expect(
+      resolveUpdateAvailability({
+        latestVersion: 'v8.0.83',
+        currentVersion: 'v8.0.82',
+      })
+    ).toEqual({ updateAvailable: true, comparison: 1 });
+  });
+
+  test('does not report an update when a version is missing or malformed', () => {
+    expect(
+      resolveUpdateAvailability({ latestVersion: 'v8.0.83', currentVersion: null })
+    ).toEqual({ updateAvailable: false, comparison: null });
+    expect(
+      resolveUpdateAvailability({ latestVersion: 'unknown', currentVersion: 'v8.0.82' })
+    ).toEqual({ updateAvailable: false, comparison: null });
   });
 });
 
