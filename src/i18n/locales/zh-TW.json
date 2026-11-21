@@ -1508,6 +1508,12 @@
           "bootstrap_hint": "串流傳輸首包前的重試次數；設為 0、負整數或留空表示停用啟動重試",
           "nonstream_keepalive": "非串流 Keepalive 間隔（秒）",
           "nonstream_keepalive_hint": "非串流回應時每隔 N 秒發送空行；設定為 0、負整數或留空表示停用保活",
+          "request_timeout": "請求逾時（軟預算）",
+          "request_timeout_hint": "長請求預算，例如 10m 或 600s。用於保持連線並在超出時記錄日誌，不會取消請求。0 表示停用。",
+          "hard_request_deadline": "硬請求截止時間",
+          "hard_request_deadline_hint": "用於非串流執行與串流啟動階段的選擇性截止時間，不會取消已建立的串流。0 表示停用。",
+          "provider_request_timeouts": "依提供者覆寫請求逾時",
+          "provider_request_timeouts_hint": "將 codex、claude、xai、antigravity 或 devin 對應至時長的 JSON 物件，例如 {\"codex\":\"10m\"}。",
           "disabled": "已停用"
         },
         "payload": {

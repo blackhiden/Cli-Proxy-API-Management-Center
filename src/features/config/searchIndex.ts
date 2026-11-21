@@ -533,6 +533,27 @@ export const CONFIG_FIELD_SEARCH_INDEX: ConfigFieldSearchEntry[] = [
     hintKey: L('sections.streaming.nonstream_keepalive_hint'),
     yamlKeys: ['requests', 'nonstream-keepalive-interval'],
   },
+  {
+    fieldId: 'requestTimeout',
+    sectionId: 'streaming',
+    labelKey: L('sections.streaming.request_timeout'),
+    hintKey: L('sections.streaming.request_timeout_hint'),
+    yamlKeys: ['requests', 'request-timeout'],
+  },
+  {
+    fieldId: 'hardRequestDeadline',
+    sectionId: 'streaming',
+    labelKey: L('sections.streaming.hard_request_deadline'),
+    hintKey: L('sections.streaming.hard_request_deadline_hint'),
+    yamlKeys: ['requests', 'hard-request-deadline'],
+  },
+  {
+    fieldId: 'providerRequestTimeouts',
+    sectionId: 'streaming',
+    labelKey: L('sections.streaming.provider_request_timeouts'),
+    hintKey: L('sections.streaming.provider_request_timeouts_hint'),
+    yamlKeys: ['upstream', 'codex', 'request-timeout'],
+  },
   // ── advanced ──────────────────────────────────────────────────────────────
   {
     fieldId: 'quotaAntigravityCredits',

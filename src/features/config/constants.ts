@@ -79,6 +79,9 @@ export const SECTION_VALIDATION_FIELDS: Record<VisualSectionId, readonly VisualC
       'streaming.keepaliveSeconds',
       'streaming.bootstrapRetries',
       'streaming.nonstreamKeepaliveInterval',
+      'requestTimeout',
+      'hardRequestDeadline',
+      'providerRequestTimeouts',
     ],
     advanced: [
       'claudeHeaderTimezone',
@@ -177,6 +180,9 @@ export const FIELD_VALUE_KEYS: Record<string, readonly string[]> = {
   streamingKeepaliveSeconds: ['streaming.keepaliveSeconds'],
   streamingBootstrapRetries: ['streaming.bootstrapRetries'],
   streamingNonstreamKeepalive: ['streaming.nonstreamKeepaliveInterval'],
+  requestTimeout: ['requestTimeout'],
+  hardRequestDeadline: ['hardRequestDeadline'],
+  providerRequestTimeouts: ['providerRequestTimeouts'],
   // ── advanced ──────────────────────────────────────────────────────────────
   quotaAntigravityCredits: ['quotaAntigravityCredits'],
   pluginsEnabled: ['pluginsEnabled'],

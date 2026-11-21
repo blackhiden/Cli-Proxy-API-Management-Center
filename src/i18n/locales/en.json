@@ -1490,6 +1490,12 @@
           "bootstrap_hint": "Retries before the first byte; 0, a negative integer, or an empty field disables bootstrap retries",
           "nonstream_keepalive": "Non-stream Keepalive Interval (seconds)",
           "nonstream_keepalive_hint": "Send blank lines every N seconds for non-streaming responses; 0, a negative integer, or an empty field disables keepalive",
+          "request_timeout": "Request Timeout (soft budget)",
+          "request_timeout_hint": "Long-request budget such as 10m or 600s. Keeps the connection active and logs when exceeded; it never cancels the request. 0 disables it.",
+          "hard_request_deadline": "Hard Request Deadline",
+          "hard_request_deadline_hint": "Opt-in deadline for non-streaming execution and streaming bootstrap. It does not cancel an established stream. 0 disables it.",
+          "provider_request_timeouts": "Provider Request Timeout Overrides",
+          "provider_request_timeouts_hint": "JSON object mapping codex, claude, xai, antigravity, or devin to a duration, for example {\"codex\":\"10m\"}.",
           "disabled": "Disabled"
         },
         "payload": {

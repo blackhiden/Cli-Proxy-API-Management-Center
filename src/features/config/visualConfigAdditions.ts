@@ -32,6 +32,16 @@ export const ADDITION_FIELDS = [
     kind: 'string',
   },
   {
+    key: 'requestTimeout',
+    path: 'requests.request-timeout'.split('.'),
+    kind: 'string',
+  },
+  {
+    key: 'hardRequestDeadline',
+    path: 'requests.hard-request-deadline'.split('.'),
+    kind: 'string',
+  },
+  {
     key: 'claudeHeaderTimezone',
     path: 'upstream.claude.header-defaults.timezone'.split('.'),
     kind: 'string',
@@ -276,6 +286,47 @@ export function goDurationSeconds(input: string): number | undefined {
   if (nanos > (negative ? 9223372036854775808n : 9223372036854775807n)) return undefined;
   return Number(negative ? -nanos : nanos) / 1e9;
 }
+export const REQUEST_TIMEOUT_PROVIDERS = [
+  'codex',
+  'claude',
+  'xai',
+  'antigravity',
+  'devin',
+] as const;
+
+const DISABLED_DURATIONS = new Set(['0', '0s', 'none', 'unlimited', 'disabled', 'off', 'never']);
+
+/** Accepts Go durations, bare non-negative seconds, and disabled spellings. */
+export function isValidRequestDuration(input: string): boolean {
+  const value = input.trim();
+  if (!value) return true;
+  if (DISABLED_DURATIONS.has(value.toLowerCase())) return true;
+  if (/^\d+$/.test(value)) return Number.isSafeInteger(Number(value));
+  const seconds = goDurationSeconds(value);
+  return seconds !== undefined && seconds >= 0;
+}
+
+/** Parses the provider override textarea into a provider → duration map. */
+export function parseProviderRequestTimeouts(input: string): Record<string, string> | null {
+  const value = input.trim();
+  if (!value) return {};
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(value);
+  } catch {
+    return null;
+  }
+  if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) return null;
+  const result: Record<string, string> = {};
+  for (const [provider, duration] of Object.entries(parsed)) {
+    const normalized = provider.trim().toLowerCase();
+    if (!(REQUEST_TIMEOUT_PROVIDERS as readonly string[]).includes(normalized)) return null;
+    if (typeof duration !== 'string' || !isValidRequestDuration(duration)) return null;
+    result[normalized] = duration.trim();
+  }
+  return result;
+}
+
 function validIP(raw: string): boolean {
   if (!raw.includes(':'))
     return (
@@ -297,6 +348,9 @@ export function validateVisualAdditions(
   const errors: VisualConfigValidationErrors = {
     transientErrorCooldownSeconds: undefined,
     videoResultAuthCacheTTL: undefined,
+    requestTimeout: undefined,
+    hardRequestDeadline: undefined,
+    providerRequestTimeouts: undefined,
     claudeHeaderTimezone: undefined,
     codexStreamBootstrapTimeout: undefined,
     antigravityConnectionPoolIdleTimeout: undefined,
@@ -342,6 +396,14 @@ export function validateVisualAdditions(
     else if (codex && duration < 0) errors[key] = 'invalid_duration';
     else if (key === 'videoResultAuthCacheTTL' && duration <= 0) errors[key] = 'positive_duration';
     // Pool timeout <= 0 switches to short-lived connections; > 210s is clamped by the backend.
+  }
+  for (const key of ['requestTimeout', 'hardRequestDeadline'] as const) {
+    if (dirtyFields && !dirtyFields.has(key)) continue;
+    if (!isValidRequestDuration(values[key])) errors[key] = 'invalid_duration';
+  }
+  if (!dirtyFields || dirtyFields.has('providerRequestTimeouts')) {
+    if (parseProviderRequestTimeouts(values.providerRequestTimeouts) === null)
+      errors.providerRequestTimeouts = 'invalid_duration';
   }
   const timezone = values.claudeHeaderTimezone.trim();
   // Go time.LoadLocation also accepts Local (the backend host's local timezone).

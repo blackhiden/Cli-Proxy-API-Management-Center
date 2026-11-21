@@ -239,6 +239,9 @@ describe('v8 YAML search paths', () => {
     ['claudeHeaderUserAgent', 'upstream.claude.header-defaults.user-agent'],
     ['xaiInjectXSearch', 'upstream.xai.inject-x-search'],
     ['streamingNonstreamKeepalive', 'requests.nonstream-keepalive-interval'],
+    ['requestTimeout', 'requests.request-timeout'],
+    ['hardRequestDeadline', 'requests.hard-request-deadline'],
+    ['providerRequestTimeouts', 'upstream.codex.request-timeout'],
     ['payloadDefaultRules', 'requests.payload.default'],
     ['pluginStoreAuth', 'plugins.store-auth'],
   ]) {

@@ -37,7 +37,10 @@ export type VisualConfigFieldPath =
   | 'authAutoRefreshWorkers'
   | 'streaming.keepaliveSeconds'
   | 'streaming.bootstrapRetries'
-  | 'streaming.nonstreamKeepaliveInterval';
+  | 'streaming.nonstreamKeepaliveInterval'
+  | 'requestTimeout'
+  | 'hardRequestDeadline'
+  | 'providerRequestTimeouts';
 
 export type VisualConfigValidationErrorCode =
   | 'invalid_trusted_proxies'
@@ -227,6 +230,10 @@ export type VisualConfigValues = {
   payloadFilterRules: PayloadFilterRule[];
   payloadReplaceRules: PayloadReplaceRule[];
   streaming: StreamingConfig;
+  requestTimeout: string;
+  hardRequestDeadline: string;
+  /** JSON object mapping provider name to soft request-timeout override. */
+  providerRequestTimeouts: string;
 };
 
 export const makeClientId = () => {
@@ -338,4 +345,7 @@ export const DEFAULT_VISUAL_VALUES: VisualConfigValues = {
     bootstrapRetries: '',
     nonstreamKeepaliveInterval: '',
   },
+  requestTimeout: '',
+  hardRequestDeadline: '',
+  providerRequestTimeouts: '',
 };

@@ -1305,6 +1305,12 @@
           "bootstrap_hint": "Số lần thử lại khi khởi động stream (trước byte đầu tiên)",
           "nonstream_keepalive": "Khoảng keepalive phi stream (giây)",
           "nonstream_keepalive_hint": "Gửi dòng trống mỗi N giây cho phản hồi phi stream để tránh timeout nhàn rỗi, đặt 0 hoặc để trống để tắt",
+          "request_timeout": "Thời gian chờ yêu cầu (ngân sách mềm)",
+          "request_timeout_hint": "Ngân sách yêu cầu dài như 10m hoặc 600s. Giữ kết nối hoạt động và ghi nhật ký khi vượt quá; không bao giờ hủy yêu cầu. 0 để tắt.",
+          "hard_request_deadline": "Hạn chót yêu cầu cứng",
+          "hard_request_deadline_hint": "Hạn chót tùy chọn cho thực thi không stream và khởi tạo stream. Không hủy stream đã thiết lập. 0 để tắt.",
+          "provider_request_timeouts": "Ghi đè thời gian chờ theo nhà cung cấp",
+          "provider_request_timeouts_hint": "Đối tượng JSON ánh xạ codex, claude, xai, antigravity hoặc devin tới thời lượng, ví dụ {\"codex\":\"10m\"}.",
           "disabled": "Đã tắt"
         },
         "payload": {

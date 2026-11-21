@@ -83,6 +83,44 @@ export function SectionStreaming({
           adornment={isNonstreamKeepaliveOff ? disabledBadge : undefined}
         />
       </SettingList>
+
+      <SettingList>
+        <TextSetting
+          fieldId="requestTimeout"
+          size="sm"
+          label={t('config_management.visual.sections.streaming.request_timeout')}
+          description={t('config_management.visual.sections.streaming.request_timeout_hint')}
+          placeholder="0"
+          value={values.requestTimeout}
+          onChange={(requestTimeout) => onChange({ requestTimeout })}
+          disabled={disabled}
+          error={getValidationMessage(t, validationErrors?.requestTimeout)}
+        />
+        <TextSetting
+          fieldId="hardRequestDeadline"
+          size="sm"
+          label={t('config_management.visual.sections.streaming.hard_request_deadline')}
+          description={t('config_management.visual.sections.streaming.hard_request_deadline_hint')}
+          placeholder="0"
+          value={values.hardRequestDeadline}
+          onChange={(hardRequestDeadline) => onChange({ hardRequestDeadline })}
+          disabled={disabled}
+          error={getValidationMessage(t, validationErrors?.hardRequestDeadline)}
+        />
+        <TextSetting
+          fieldId="providerRequestTimeouts"
+          size="sm"
+          label={t('config_management.visual.sections.streaming.provider_request_timeouts')}
+          description={t(
+            'config_management.visual.sections.streaming.provider_request_timeouts_hint'
+          )}
+          placeholder='{"codex":"10m"}'
+          value={values.providerRequestTimeouts}
+          onChange={(providerRequestTimeouts) => onChange({ providerRequestTimeouts })}
+          disabled={disabled}
+          error={getValidationMessage(t, validationErrors?.providerRequestTimeouts)}
+        />
+      </SettingList>
     </SectionCard>
   );
 }
