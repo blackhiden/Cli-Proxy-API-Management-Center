@@ -21,7 +21,6 @@ dist
 dist-ssr
 *.local
 /skills
-!src/features/skills/
 
 # Editor directories and files
 settings.local.json

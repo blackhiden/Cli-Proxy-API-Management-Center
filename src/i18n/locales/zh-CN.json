@@ -114,7 +114,6 @@
     "plugins": "插件",
     "config_management": "配置面板",
     "logs": "日志查看",
-    "skills": "AI 技能",
     "system_info": "中心信息"
   },
   "nav_groups": {
@@ -135,7 +134,6 @@
     "plugins": "安装、更新与配置",
     "logs": "请求追踪与排查",
     "config_management": "网关基础配置",
-    "skills": "编码代理技能库",
     "system_info": "运行与诊断信息"
   },
   "dashboard": {
@@ -1354,25 +1352,6 @@
         "auth": {
           "auth_dir": "OAuth 认证文件目录 (oauth.auth-dir)"
         },
-        "skills": {
-    "title": "AI 编码技能",
-    "subtitle": "加载专业的编码代理技能以提高代码质量和设计",
-    "notice": "这些技能是 antislop 系统的一部分：帮助 AI 代理编写更好的代码、UI 和文档的过滤器，通过移除通用模式并保留有目的的内容。",
-    "antislop_code": {
-      "description": "AI 编码代理的代码注释卫生：移除通用 AI 注释，保留有价值的注释，绝不触碰代码。"
-    },
-    "antislop_ui": {
-      "description": "antislop 的 UI 和视觉技能。在构建或编辑任何界面时使用：颜色、布局、组件、动效。与核心一起加载。"
-    },
-    "frontend_design": {
-      "description": "创建高设计质量的独特、生产级前端界面。当用户要求构建 Web 组件、页面、工件、海报或应用程序时使用此技能。"
-    },
-    "category": {
-      "code": "代码",
-      "ui": "UI/UX",
-      "design": "设计"
-    }
-  },
   "system": {
           "debug": "调试模式",
           "commercial_mode": "商业模式",
@@ -1590,10 +1569,11 @@
         "payload_invalid_number": "请输入有效数字",
         "payload_invalid_boolean": "请选择 true 或 false",
         "payload_invalid_json": "请输入有效的 JSON",
-        "payload_replace_invalid_target": "仅支持用户消息：target.role 必须为 user。",
-        "payload_replace_invalid_positions": "请选择所有用户消息，或提供非空的正整数位置列表，两者不能同时指定。",
+        "payload_replace_invalid_target": "目标角色必须为 user、system 或 developer。",
+        "payload_replace_invalid_positions": "请选择该角色的所有消息，或输入非空的正整数位置列表，两者不能同时指定。",
+        "payload_replace_invalid_paths": "请至少输入一个非空 JSON 路径。路径不能与角色、all 或 positions 同时指定。",
         "payload_replace_invalid_models": "请至少添加一个模型，模型名称不能为空，且条件必须有效。",
-        "payload_replace_invalid_replacements": "请至少添加一项替换。每项必须且只能包含一个字符串到字符串的映射，源文本不能为空；替换文本为空时会删除源文本。"
+        "payload_replace_invalid_replacements": "请至少添加一项有效替换。字面量源文本不能为空；正则使用 Go RE2。替换文本为空时会删除匹配文本。"
       },
       "common": {
         "edit": "编辑",
@@ -1603,20 +1583,28 @@
         "add": "添加"
       },
       "payload_replace": {
-        "title": "用户文本替换",
-        "description": "在覆盖规则之后、过滤规则之前应用。按列表顺序对现有用户文本进行字面替换。",
+        "title": "Payload 文本替换",
+        "description": "在覆盖之后、过滤之前执行，按列表顺序替换已有字符串。",
         "target": "作用范围",
         "replacements": "替换项",
-        "target_all": "所有用户消息",
-        "target_positions": "用户消息位置",
-        "target_hint": "位置从 1 开始，按最终上游请求体中的用户消息计数，包括没有可编辑文本的用户消息。请选择所有消息，或输入以逗号分隔的位置。",
+        "target_all": "该角色的所有消息",
+        "target_positions": "消息位置",
+        "target_hint": "按所选角色在最终上游 Payload 中的消息排序，从 1 开始；没有可编辑文本的消息也计数。多个位置用逗号分隔。",
         "from": "源文本",
         "to": "替换文本（留空则删除）",
         "add_replacement": "添加替换",
         "move_up": "上移",
         "move_down": "下移",
         "reset_invalid": "重置无效规则",
-        "invalid_hint": "此规则包含不支持或格式错误的值。请先在 YAML 中修复或重置规则，再进行编辑。"
+        "invalid_hint": "此规则包含不支持或格式错误的值。请先在 YAML 中修复或重置规则，再进行编辑。",
+        "target_selector": "目标类型",
+        "target_paths": "JSON 路径",
+        "paths_hint": "路径相对于上游 Payload 根节点。不存在或非字符串的值会被跳过。",
+        "from_or_pattern": "源文本或正则",
+        "replacement_type": "替换类型",
+        "literal": "字面量",
+        "regex": "正则 (RE2)",
+        "pattern": "RE2 正则表达式"
       }
     }
   },

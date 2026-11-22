@@ -2,6 +2,27 @@
 
 ## [Unreleased]
 
+## [1.28.5] - 2026-11-22
+
+### Merged
+
+- Merged `upstream/main` at `f7aae75` into `dev` (20 files changed, 598 insertions, 170 deletions).
+  The merge was clean; no conflict resolution was required.
+- Preserved all protected fork features: OAuth `noProxy`/direct connection behavior, protected
+  Codex and Antigravity OAuth providers, OAuth result modal, update notification system, and usage
+  feature.
+- Preserved the local full rescan of `docs/CODE_GRAPH.md` and advanced its scan checkpoint to the
+  merge commit.
+
+### Added (from upstream)
+
+- Enhanced payload replacement rules editor, visual-config rebase handling, search indexing, and
+  localized validation messages across all seven locales.
+- Model handling now incorporates display names and updated filtering logic, with new discovery
+  selection tests.
+- Upstream added and then reverted the CSS custom-property fix for #558; the net upstream state is
+  unchanged.
+
 ### Fixed
 
 - Update notifications now compare semantic versions instead of raw commit hashes. A fork build
@@ -9,6 +30,21 @@
   longer opens a false "Update Available" modal. Commit hashes remain display metadata only.
 - The System page main-repository quick link now uses the same `blackhiden/CLIProxyAPI` URL as the
   update modal.
+
+### Removed
+
+- Removed an unused sidebar entry, route, page, translations, and tests.
+
+### Validation
+
+- Focused protected-feature suites: 38 pass, 1 known todo, 0 fail.
+- `bun run verify`: 2419 pass, 1 todo, 19 fail. The failure set is identical to the pre-merge
+  baseline at `b39642d` (2402 pass, 1 todo, 19 fail): locale completeness, LoginRevealVeil,
+  visual-config rebase, and the request-timeout scalar parity test.
+- `bun run lint`: 0 errors, 4 pre-existing warnings in unrelated test files.
+- `bun run build`: passed; single-file `dist/index.html` is 4,101.02 kB (gzip 1,329.82 kB).
+- Browser verification of the changed upstream UI was not performed in this workflow; no backend or
+  mocked-auth session was available for the affected configuration routes.
 
 ## [1.28.2] - 2026-11-17
 
@@ -34,7 +70,6 @@
 ### Merged
 - Merged upstream commits from `1dc60b4` to `953fb24` (`upstream/main`) into `dev`.
   - Manual conflict resolution: LoginPage.module.scss (accepted upstream, removed UI beautification per MERGE-PRESERVATION.md)
-  - Manual fix: restored IconPalette and IconSparkles for Skills page
   - 114 files changed, 9618 insertions(+), 355 deletions(-)
 
 ### Added (from upstream)
@@ -46,10 +81,6 @@
   - Complete routing logic for tier assignment and member management
   - API integration (`src/services/api/routing.ts`)
   - Comprehensive test coverage (routing board, page, auto-scroll)
-- **Skills page** (system quick links):
-  - New Skills route displaying AI tool integrations
-  - LoginRevealVeil component for page transitions
-  - Icons: IconPalette, IconSparkles
 - **Turkish locale** (`src/i18n/locales/tr.json`):
   - Complete Turkish translation added to the 7 supported languages
   - Registered in i18n configuration
