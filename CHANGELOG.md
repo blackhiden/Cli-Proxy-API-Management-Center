@@ -10,6 +10,10 @@
 - The System page main-repository quick link now uses the same `blackhiden/CLIProxyAPI` URL as the
   update modal.
 
+### Removed
+
+- Removed an unused sidebar entry, route, page, translations, and tests.
+
 ## [1.28.2] - 2026-11-17
 
 ### Merged
@@ -34,7 +38,6 @@
 ### Merged
 - Merged upstream commits from `1dc60b4` to `953fb24` (`upstream/main`) into `dev`.
   - Manual conflict resolution: LoginPage.module.scss (accepted upstream, removed UI beautification per MERGE-PRESERVATION.md)
-  - Manual fix: restored IconPalette and IconSparkles for Skills page
   - 114 files changed, 9618 insertions(+), 355 deletions(-)
 
 ### Added (from upstream)
@@ -46,10 +49,6 @@
   - Complete routing logic for tier assignment and member management
   - API integration (`src/services/api/routing.ts`)
   - Comprehensive test coverage (routing board, page, auto-scroll)
-- **Skills page** (system quick links):
-  - New Skills route displaying AI tool integrations
-  - LoginRevealVeil component for page transitions
-  - Icons: IconPalette, IconSparkles
 - **Turkish locale** (`src/i18n/locales/tr.json`):
   - Complete Turkish translation added to the 7 supported languages
   - Registered in i18n configuration

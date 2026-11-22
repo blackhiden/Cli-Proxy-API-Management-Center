@@ -31,7 +31,6 @@ import {
   IconSidebarRouting,
   IconSidebarSystem,
   IconChevronDown,
-  IconSparkles,
 } from '@/components/ui/icons';
 import { INLINE_LOGO_JPEG } from '@/assets/logoInline';
 import {
@@ -68,7 +67,6 @@ const sidebarIcons: Record<string, ReactNode> = {
   plugins: <IconSidebarPlugins size={18} />,
   config: <IconSidebarConfig size={18} />,
   logs: <IconSidebarLogs size={18} />,
-  skills: <IconSparkles size={18} />,
   system: <IconSidebarSystem size={18} />,
 };
 
@@ -692,12 +690,6 @@ export function MainLayout() {
               },
             ]
           : []),
-        {
-          path: '/skills',
-          labelKey: 'nav.skills',
-          metaKey: 'nav_meta.skills',
-          icon: sidebarIcons.skills,
-        },
         {
           path: '/system',
           labelKey: 'nav.system_info',

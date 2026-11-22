@@ -1,7 +1,6 @@
 # UI/UX Beautification Summary
 
-**Completed:** 2026-10-29  
-**Agent Skills Used:** `antislop-ui`, `antislop-code`, `frontend-design`
+**Completed:** 2026-10-29
 
 ## What Was Done
 
