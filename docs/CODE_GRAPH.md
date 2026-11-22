@@ -1,17 +1,49 @@
 # CODE_GRAPH: CLI Proxy API Management Center
 
-**Last Updated:** 2026-10-15  
+**Last Updated:** 2026-11-22  
+**Last Scanned Commit:** `7b9fcf7a98ce89ec1fb71e4644b1bb5744c36fdc`  
+**Scan Mode:** Full rescan (no previous scan hash was recorded)  
 **Purpose:** High-level structural map for AI agents and developers to understand the project architecture instantly and reduce file-reading overhead.
 
 ---
 
 ## Table of Contents
+
+- [Scan Metadata & Incremental Workflow](#scan-metadata--incremental-workflow)
 - [Visual Architecture](#visual-architecture)
 - [Structured Code Graph Index](#structured-code-graph-index)
 - [Data Flow Patterns & Architectural Invariants](#data-flow-patterns--architectural-invariants)
 - [Gotchas & Pitfalls](#gotchas--pitfalls)
 - [Testing Commands & Execution Workflows](#testing-commands--execution-workflows)
 - [Quick Reference: Key Files by Task](#quick-reference-key-files-by-task)
+- [Self-Check & Maintenance](#self-check--maintenance)
+
+---
+
+## Scan Metadata & Incremental Workflow
+
+This document is the persistent scan checkpoint for the repository. The hash above is the commit that was fully inspected for this version of the graph.
+
+### Next scan
+
+1. Read `Last Scanned Commit` from this file.
+2. If the hash is missing or invalid, perform a full scan.
+3. Otherwise, inspect only changes since that commit:
+
+   ```bash
+   git diff --name-only 7b9fcf7a98ce89ec1fb71e4644b1bb5744c36fdc..HEAD -- \
+     src tests package.json vite.config.ts tsconfig.json .github docs
+   ```
+
+4. Review the changed files, update only the affected sections of this graph, then replace `Last Scanned Commit` with the new `git rev-parse HEAD` value.
+5. Do not advance the hash before the graph reflects the scanned commit.
+
+### Scan scope for this revision
+
+- Full source tree under `src/` and `tests/`.
+- Build/test configuration: `package.json`, `vite.config.ts`, `tsconfig.json`, `.github/workflows/`.
+- All root and `docs/` Markdown files.
+- Backend contract evidence was not re-fetched from `../CLIProxyAPI`; this scan maps the frontend as implemented and treats `AGENTS.md` plus source code as authoritative where older docs disagree.
 
 ---
 
@@ -23,75 +55,120 @@
 graph TD
   subgraph Entry
     MainTSX["src/main.tsx"]
-    AppTSX["src/App.tsx"]
+    AppTSX["src/App.tsx<br/>createHashRouter + RootShell"]
   end
+
   subgraph Routing
-    MainRoutes["src/router/MainRoutes.tsx"]
+    LoginPage["src/pages/LoginPage.tsx<br/>pages/login/*"]
     ProtectedRoute["src/router/ProtectedRoute.tsx"]
     MainLayout["src/components/layout/MainLayout.tsx"]
+    MainRoutes["src/router/MainRoutes.tsx"]
   end
+
   subgraph Features
-    Dashboard["src/features/dashboard"]
-    Providers["src/features/providers"]
-    AuthFiles["src/features/authFiles"]
-    OAuth["src/features/oauth"]
-    Quota["src/features/quota"]
-    Config["src/features/config"]
-    Logs["src/features/logs"]
-    Plugins["src/features/plugins"]
-    Usage["src/features/usage"]
-    ProtectedOAuth["src/features/protectedOAuth"]
+    Dashboard["dashboard"]
+    Providers["providers"]
+    AuthFiles["authFiles"]
+    OAuth["oauth"]
+    ProtectedOAuth["protectedOAuth<br/>contract-only"]
+    Quota["quota"]
+    RoutingFeature["routing"]
+    Config["config"]
+    Logs["logs"]
+    Plugins["plugins"]
+    Usage["usage<br/>mock data"]
   end
+
+  subgraph Pages
+    SystemPage["pages/SystemPage.tsx"]
+    AuthEditors["pages/AuthFilesOAuth*EditPage.tsx"]
+    LogsReExport["pages/LogsPage.tsx<br/>re-export"]
+  end
+
   subgraph Shared
-    Components["src/components/"]
-    Hooks["src/hooks/"]
-    Utils["src/utils/"]
-    Stores["src/stores/"]
-    Types["src/types/"]
-    Services["src/services/api/"]
-    I18n["src/i18n/"]
-    Styles["src/styles/"]
+    SharedHub["Shared modules"]
+    Components["components/"]
+    Hooks["hooks/"]
+    Utils["utils/"]
+    Stores["stores/"]
+    API["services/api/"]
+    Storage["services/storage/"]
+    Types["types/"]
+    I18n["i18n/"]
+    Styles["styles/"]
+    Assets["assets/"]
+    SharedHub --> Components
+    SharedHub --> Hooks
+    SharedHub --> Utils
+    SharedHub --> Stores
+    SharedHub --> API
+    SharedHub --> Storage
+    SharedHub --> Types
+    SharedHub --> I18n
+    SharedHub --> Styles
+    SharedHub --> Assets
   end
+
   MainTSX --> AppTSX
-  AppTSX --> MainRoutes
+  AppTSX --> LoginPage
   AppTSX --> ProtectedRoute
-  AppTSX --> MainLayout
-  MainRoutes -->|routes| Dashboard
+  ProtectedRoute --> MainLayout
+  MainLayout --> MainRoutes
+  MainRoutes --> Dashboard
   MainRoutes --> Providers
   MainRoutes --> AuthFiles
   MainRoutes --> OAuth
   MainRoutes --> Quota
+  MainRoutes --> RoutingFeature
   MainRoutes --> Config
   MainRoutes --> Logs
   MainRoutes --> Plugins
   MainRoutes --> Usage
-  MainRoutes --> ProtectedOAuth
-  AppTSX --> Stores
-  AppTSX --> Services
-  AppTSX --> Components
-  AppTSX --> Hooks
-  AppTSX --> Utils
-  AppTSX --> I18n
-  AppTSX --> Styles
-  Features --> Shared
+  MainRoutes --> SystemPage
+  MainRoutes --> AuthEditors
+  MainRoutes --> LogsReExport
+  OAuth -.->|contract tests only| ProtectedOAuth
+  Dashboard --> SharedHub
+  Providers --> SharedHub
+  AuthFiles --> SharedHub
+  OAuth --> SharedHub
+  Quota --> SharedHub
+  RoutingFeature --> SharedHub
+  Config --> SharedHub
+  Logs --> SharedHub
+  Plugins --> SharedHub
+  Usage --> SharedHub
+  AppTSX --> SharedHub
 ```
 
 ### ASCII Overview
 
 ```
 main.tsx
-  └─> App.tsx
-        ├─> router/MainRoutes.tsx
-        │     └─> features/* (Dashboard, Providers, AuthFiles, OAuth, Quota, Config, Logs, Plugins, Usage, ProtectedOAuth)
-        ├─> router/ProtectedRoute.tsx
-        ├─> components/layout/MainLayout.tsx
-        ├─> stores/
-        ├─> services/api/
-        ├─> components/
-        ├─> hooks/
-        ├─> utils/
-        ├─> i18n/
-        └─> styles/
+  └─> App.tsx (createHashRouter + RootShell)
+        ├─> /login -> pages/LoginPage.tsx -> pages/login/*
+        ├─> /* -> router/ProtectedRoute.tsx
+        │         └─> components/layout/MainLayout.tsx
+        │               └─> router/MainRoutes.tsx
+        │                     ├─> features/dashboard
+        │                     ├─> features/providers
+        │                     ├─> features/authFiles
+        │                     ├─> features/oauth
+        │                     ├─> features/quota
+        │                     ├─> features/routing
+        │                     ├─> features/config
+        │                     ├─> features/logs
+        │                     ├─> features/plugins
+        │                     ├─> features/usage
+        │                     └─> pages/SystemPage + auth-file editors
+        └─> RootShell overlays: NotificationContainer, ConfirmationModal,
+              UpdateModal, LoginRevealVeil
+
+Shared: components/, hooks/, utils/, stores/, services/api/,
+        services/storage/, types/, i18n/, styles/, assets/
+
+Dev-only: /__preview/quota-tiers is added only when import.meta.env.DEV is true
+          and is dropped from the production single-file bundle.
 ```
 
 ---
@@ -101,590 +178,406 @@ main.tsx
 ### Entry Points
 
 #### [src/main.tsx]
-- **Role:** SPA entry point; sets up i18n, favicon, and renders `<App />` into the DOM.
+
+- **Role:** SPA entry point; sets document title/translation attributes, injects the inline favicon, and renders `<App />`.
 - **Exports:** None (side-effect entry).
-- **Dependencies:** App.tsx, i18n, assets/logoInline, styles/global.scss, react, react-dom.
+- **Dependencies:** `App.tsx`, `i18n`, `assets/logoInline`, `styles/global.scss`, React, React DOM.
 - **Incoming References:** Vite/HTML entry.
-- **Key Functions/Logic:**
-  - Sets document title, disables translation, injects favicon.
-  - Renders `<App />` inside `<I18nextProvider>` and `<StrictMode>`.
+- **Key Logic:** Wraps `App` in `<StrictMode>` and `<I18nextProvider>`.
 
 #### [src/App.tsx]
-- **Role:** Root shell for routing, theme/language setup, update modal, and notification containers.
-- **Exports:** Default App component.
-- **Dependencies:** react-router-dom, pages/LoginPage, components/common, layout/MainLayout, router/ProtectedRoute, stores, services/api, utils/updateNotification.
-- **Incoming References:** main.tsx.
+
+- **Role:** Owns the hash router, root shell overlays, theme/language bootstrap, and automatic update check.
+- **Exports:** Default `App` component.
+- **Dependencies:** `react-router-dom`, `pages/LoginPage`, `components/common/*`, `components/layout/MainLayout`, `router/ProtectedRoute`, `stores`, `services/api`, `utils/updateNotification`.
+- **Incoming References:** `main.tsx`.
 - **Key Functions/Logic:**
-  - `RootShell()`: Handles update notification logic once per document load after first successful connection.
-  - `App()`: Initializes theme and language, sets document lang, renders HashRouter.
+  - `RootShell()`: renders notification/confirmation/update overlays and `<Outlet />`; performs one automatic update check per browser document after the first successful connection.
+  - `createHashRouter([...])`: `/login` is public; `/*` is wrapped by `ProtectedRoute` and `MainLayout`.
+  - `devPreviewRoutes`: dev-only `/__preview/quota-tiers` lazy route; statically false in production.
+  - `App()`: initializes theme, syncs i18n language, sets `document.documentElement.lang`, renders `RouterProvider`.
 
 ---
 
 ### Routing Layer
 
 #### [src/router/MainRoutes.tsx]
-- **Role:** Defines authenticated route table for the main app.
+
+- **Role:** Authenticated route table rendered inside `MainLayout`.
 - **Exports:** `MainRoutes` component.
-- **Dependencies:** react-router-dom, features/*, pages/*, stores.
-- **Incoming References:** App.tsx.
-- **Key Functions/Logic:**
-  - `createMainRoutes(supportsPlugin)`: Returns route config array; conditionally includes plugin routes based on backend support.
-  - `MainRoutes({ location })`: Uses Zustand `useAuthStore` to check plugin support, returns `useRoutes()`.
+- **Dependencies:** `react-router-dom`, all feature pages, auth-file editor pages, `pages/SystemPage`, `useAuthStore`.
+- **Incoming References:** `components/layout/MainLayout.tsx`.
+- **Routes:**
+  - Dashboard: `/`, `/dashboard`.
+  - Providers: `/quick-start` (fixed `apikeyFun` brand), `/ai-providers`.
+  - Auth files: `/auth-files`, `/auth-files/oauth-excluded`, `/auth-files/oauth-model-alias`.
+  - OAuth: `/oauth`.
+  - Routing: `/routing`.
+  - Quota: `/quota`; Usage: `/usage`; Logs: `/logs`; Config: `/config`; System: `/system`.
+  - Plugin routes are conditional on `useAuthStore.supportsPlugin`: `/plugins`, `/plugins?view=store` via `/plugin-store` redirect, and `/plugin-pages/:pluginId/:menuIndex`.
+  - Legacy aliases `/settings` and `/api-keys` redirect to `/config`; unknown routes redirect to `/`.
+  - Plugin paths redirect to `/` when the backend does not advertise plugin support.
 
 #### [src/router/ProtectedRoute.tsx]
-- **Role:** Guards authenticated routes; redirects to `/login` if not authenticated.
-- **Exports:** ProtectedRoute component.
-- **Dependencies:** stores/useAuthStore, react-router-dom.
-- **Incoming References:** App.tsx.
+
+- **Role:** Guards authenticated routes; redirects unauthenticated users to `/login` with the original location in router state.
+- **Exports:** `ProtectedRoute`.
+- **Dependencies:** `useAuthStore`, `react-router-dom`, `router/loginRedirect`.
+- **Incoming References:** `App.tsx`.
+
+#### [src/router/loginRedirect.ts]
+
+- **Role:** Defines `LoginRedirectState` and `resolveLoginRedirect(state)`; prevents redirecting back to `/login`.
+- **Incoming References:** `ProtectedRoute.tsx`, `pages/LoginPage.tsx`.
+
+#### [src/router/index.tsx]
+
+- **Role:** Placeholder comment only. The real router is created in `App.tsx`.
 
 ---
 
-### Layout & Common Components
+### Layout & Shared Components
 
 #### [src/components/layout/MainLayout.tsx]
-- **Role:** Main layout wrapper for authenticated app (sidebar, header, outlet).
-- **Exports:** MainLayout component.
-- **Dependencies:** Shared UI components, Zustand stores, hooks, utils.
-- **Incoming References:** App.tsx.
+
+- **Role:** Authenticated shell: sidebar, header actions, theme/language menus, page transitions, global refresh, and route outlet.
+- **Exports:** `MainLayout`.
+- **Dependencies:** UI components, `PageTransition`, `MainRoutes`, `authFilesApi`, `pluginsApi`, stores, plugin resources, provider sponsor helpers, header refresh, constants.
+- **Incoming References:** `App.tsx` via `ProtectedRoute`.
+- **Key Logic:**
+  - Sidebar groups: `operate`, `gateway`, `observe`, `control`, plus dynamic `plugin-pages`.
+  - Quick-start item moves between `operate` and `gateway` depending on `hasApiKeyFunConfig(config)`.
+  - Loads plugin resource entries and auth-file count with stale-request guards and refresh events.
+  - `handleRefreshAll()` clears config cache, force-refetches config, reloads plugin resources/auth-file count, and triggers header refresh handlers.
+  - Keyboard sidebar toggle via `utils/sidebarShortcut`; accessible rail tooltips and ARIA labels.
 
 #### [src/components/common/*]
-- **Role:** Shared common components (NotificationContainer, ConfirmationModal, UpdateModal, etc.).
-- **Exports:** UI components.
-- **Dependencies:** hooks, utils, stores, i18n.
-- **Incoming References:** App.tsx, features, pages.
+
+- **Role:** Cross-page overlays and transition helpers.
+- **Key Files:** `NotificationContainer.tsx`, `ConfirmationModal.tsx`, `UpdateModal.tsx`, `OAuthResultModal.tsx`, `LoginRevealVeil.tsx`, `PageTransition.tsx`, `PageTransitionLayer.ts`, `notificationTimer.ts`, `updateChangelog.ts`.
+- **Incoming References:** `App.tsx`, `MainLayout.tsx`, feature pages.
+- **Notes:** `OAuthResultModal` is protected but currently not wired into the OAuth page; see Gotchas.
 
 #### [src/components/ui/*]
-- **Role:** Reusable UI primitives (Button, Modal, Input, etc.).
-- **Exports:** UI primitives.
-- **Dependencies:** styles, hooks, i18n.
-- **Incoming References:** features, pages, common components.
+
+- **Role:** Reusable UI primitives and small helpers.
+- **Key Files:** `Button.tsx`, `Card.tsx`, `Input.tsx`, `Modal.tsx`, `Select.tsx`, `ToggleSwitch.tsx`, `AutocompleteInput.tsx`, `EmptyState.tsx`, `LoadingSpinner.tsx`, `FieldLabel.tsx`, `icons.tsx`, `selectPosition.ts`, `scrollLock.ts`, `cardLayout.ts`, and `Collapsible/`, `Sheet/`, `Skeleton/`, `Table/`, `Tooltip/`.
+- **Incoming References:** Features, pages, layout, common components.
+
+#### [src/components/excludedModels/*], [src/components/modelAlias/*], [src/components/providers/*]
+
+- **Role:** Shared domain UI that is used by more than one feature but not promoted to generic UI primitives.
+- **Examples:** excluded-model rules/picker, model-alias mapping diagram, provider status bar, sensitive-replacement editor, recent-request hook.
 
 ---
 
 ### Features (Domain Modules)
 
 #### [src/features/dashboard/*]
-- **Role:** Dashboard page with metrics and system overview.
-- **Exports:** DashboardPage component.
-- **Dependencies:** components, hooks, utils, services/api, stores.
-- **Incoming References:** MainRoutes.tsx.
+
+- **Role:** Dashboard overview: connection status, version/build metadata, traffic metrics, provider/credential counts, and quick links.
+- **Exports:** `DashboardPage`.
+- **Key Files:** `DashboardPage.tsx`, `hooks/useDashboardOverview.ts`, `components/LiveWire.tsx`, `components/Meter.tsx`, `components/Sparkline.tsx`, `components/ThroughputChart.tsx`, `utils.ts`, `types.ts`.
+- **Dependencies:** stores, `authFilesApi`, shared UI, motion hooks, format utils.
 
 #### [src/features/providers/*]
-- **Role:** Provider workbench (AI provider config, testing, model management).
-- **Exports:** ProvidersWorkbenchPage, provider descriptors, adapters.
-- **Dependencies:** components, hooks, utils, services/api, stores, types.
-- **Incoming References:** MainRoutes.tsx.
-- **Key Files:**
-  - `descriptors.ts`: Provider UI capabilities and metadata.
-  - `adapters.ts`: Maps provider configs to shared resource model.
+
+- **Role:** Provider workbench for keys, headers, proxies, model mappings, sponsor providers, and connectivity tests.
+- **Exports:** `ProvidersWorkbenchPage`, descriptors, adapters, provider helpers.
+- **Key Files:** `descriptors.ts` (UI capabilities), `adapters.ts` (config-to-resource mapping), `useProviderWorkbench.ts`, `ProvidersWorkbenchPage.tsx`, `sheets/`, `sponsor*.ts`, `aiCodeMirror.ts`, `modelEntries.ts`, `errorRules.ts`, `thinkingLevels.ts`, `discoverySelection.ts`.
+- **Dependencies:** `providersApi`, `modelsApi`, `apiCallApi`, config store, shared UI, types.
+- **Incoming References:** `MainRoutes.tsx` for `/ai-providers` and `/quick-start`.
 
 #### [src/features/authFiles/*]
-- **Role:** Auth file management (credentials, OAuth, policies, cooldowns).
-- **Exports:** AuthFilesPage component.
-- **Dependencies:** components, hooks, utils, services/api, stores, types.
-- **Incoming References:** MainRoutes.tsx.
+
+- **Role:** Credential vault: upload/download/delete, filtering, sorting, refresh, cooldowns, credential policy, model rules, and inline quota sections.
+- **Exports:** `AuthFilesPage`, event helpers, cache invalidation, identity/logic/ui-state helpers.
+- **Key Files:** `AuthFilesPage.tsx`, `components/`, `hooks/`, `modelRules/`, `authFilesEvents.ts`, `cacheInvalidation.ts`, `credentialPolicy.ts`, `cooldowns.ts`, `identity.ts`, `logic.ts`, `manualRefresh.ts`, `oauthEditorState.ts`, `uiState.ts`.
+- **Dependencies:** `authFilesApi`, `modelsApi`, quota adapters, stores, shared UI.
+- **Incoming References:** `MainRoutes.tsx`, `MainLayout.tsx` (count badge), `pages/AuthFilesOAuth*EditPage.tsx`.
 
 #### [src/features/oauth/*]
-- **Role:** OAuth provider gallery with tile-based UI and focused flow dialog.
-- **Exports:** OAuthPage, ProviderTile, OAuthFlowDialog, VertexImportDialog, providers list.
-- **Dependencies:** components, hooks, utils, services/api, stores, types, protectedOAuth.
-- **Incoming References:** MainRoutes.tsx.
-- **Key Files:**
-  - `providers.ts`: Built-in OAuth provider definitions.
-  - `OAuthPage.tsx`: Main OAuth gallery UI.
-  - `OAuthFlowDialog.tsx`: Focused OAuth flow modal.
+
+- **Role:** OAuth gallery with provider tiles, focused flow dialog, plugin OAuth entries, sponsor cards, Vertex import, SIWC binding, and background authorization continuation.
+- **Exports:** `OAuthPage`, provider card definitions, flow hooks.
+- **Key Files:** `OAuthPage.tsx`, `providers.ts`, `components/OAuthHeader.tsx`, `components/ProviderTile.tsx`, `components/OAuthFlowDialog.tsx`, `components/VertexImportDialog.tsx`, `components/SiwcBindDialog.tsx`, `components/SponsorCard.tsx`, `components/LoginProxyField.tsx`, `hooks/useOAuthFlows.ts`, `hooks/useVertexImport.ts`, `callbackUrl.ts`, `devinOAuth.ts`, `loginProxy.ts`, `oauthAttempts.ts`, `siwcBinding.ts`.
+- **Dependencies:** `oauthApi`, `vertexApi`, `pluginsApi`, `authFilesApi`, stores, shared UI, provider sponsor helpers.
+- **Incoming References:** `MainRoutes.tsx`.
 
 #### [src/features/protectedOAuth/*]
-- **Role:** Protected OAuth provider definitions (Codex, Antigravity) that must never be removed.
-- **Exports:** Protected provider definitions, IDs, helper functions.
-- **Dependencies:** assets/icons, types.
-- **Incoming References:** features/oauth.
-- **Contract Tests:** `tests/protectedOAuthProviders.test.ts` (21 tests) enforces this feature.
+
+- **Role:** Contract-only domain module for the owner-mandated Codex and Antigravity OAuth providers.
+- **Exports:** `PROTECTED_OAUTH_PROVIDER_DEFINITIONS`, `PROTECTED_OAUTH_PROVIDER_IDS`, `PROTECTED_WEBUI_PROVIDER_IDS`, `PROTECTED_CALLBACK_PROVIDER_IDS`, `isProtectedOAuthProvider`, and the definition type.
+- **Dependencies:** `assets/icons/antigravity.svg`, `assets/icons/codex.svg`.
+- **Incoming References:** `tests/protectedOAuthProviders.test.ts` only. It is not imported by runtime source at this commit.
+- **Enforcement:** `tests/protectedOAuthProviders.test.ts` checks the domain module, locale keys, icon files, OAuth provider source, API source, and page source.
 
 #### [src/features/quota/*]
-- **Role:** Quota management and monitoring for all providers.
-- **Exports:** QuotaPage component, quota utilities.
-- **Dependencies:** components, hooks, utils, services/api, stores, types.
-- **Incoming References:** MainRoutes.tsx.
 
-#### [src/features/usage/*]
-- **Role:** Usage statistics and analytics.
-- **Exports:** UsagePage component.
-- **Dependencies:** components, hooks, utils, services/api, stores.
-- **Incoming References:** MainRoutes.tsx.
+- **Role:** Quota cards and timelines for Antigravity, Claude, Codex, Devin, Kimi, Meta, plugin quotas, and xAI.
+- **Exports:** `QuotaPage`, `QUOTA_ADAPTERS`, quota logic/UI helpers.
+- **Key Files:** `QuotaPage.tsx`, `providers/index.ts` (adapter registry), `providers/<provider>/data.ts` and `*QuotaBody.tsx`, `hooks/useQuotaBatchLoader.ts`, `hooks/useQuotaActions.ts`, `cardTier.ts`, `resetSchedule.ts`, `quotaTimelineModel.ts`, `preview/QuotaTierPreview.tsx`.
+- **Dependencies:** `authFilesApi`, `apiCallApi`, provider-specific API modules, `useQuotaStore`, `utils/quota/*`, shared UI.
+- **Incoming References:** `MainRoutes.tsx`; `features/authFiles` uses the same adapter registry for inline quota sections.
+
+#### [src/features/routing/*]
+
+- **Role:** Routing priority board: drag-and-drop tiers, member weights, policies, change review, and save plan.
+- **Exports:** `RoutingPage`.
+- **Key Files:** `RoutingPage.tsx`, `logic.ts`, `format.ts`, `useDragAutoScroll.ts`, `components/TierLadder.tsx`, `components/WeightDialog.tsx`, `components/PolicyPanel.tsx`, `components/ChangeReviewDialog.tsx`, `components/RoutingSaveBar.tsx`.
+- **Dependencies:** `services/api/routing.ts`, `types/routing.ts`, config/auth stores, shared UI, `useUnsavedChangesGuard`, `useHeaderRefresh`, shared clock.
+- **Save Contract:** Builds a local draft plan, writes credentials one by one, patches config once, then reloads the board so partial failures are visible.
+- **Incoming References:** `MainRoutes.tsx`.
 
 #### [src/features/config/*]
-- **Role:** Visual configuration editor (YAML-based config UI).
-- **Exports:** ConfigPage component.
-- **Dependencies:** components, hooks, utils, services/api, stores, types, codemirror.
-- **Incoming References:** MainRoutes.tsx.
+
+- **Role:** Visual and YAML configuration editor with search, validation, diff preview, and draft recovery.
+- **Exports:** `ConfigPage`, config UI/state helpers.
+- **Key Files:** `ConfigPage.tsx`, `hooks/useConfigDocument.ts`, `hooks/useFieldJump.ts`, `hooks/useSourceSearch.ts`, `components/`, `sections/`, `visualConfig*.ts`, `apiKeyNames.ts`, `searchIndex.ts`, `sponsors.ts`, `uiState.ts`, `types.ts`.
+- **Dependencies:** `configFileApi`, `configPatch`, `apiClient`, `useVisualConfig`, CodeMirror, config/theme/notification stores.
+- **Incoming References:** `MainRoutes.tsx`.
 
 #### [src/features/logs/*]
-- **Role:** Log viewer for backend error logs.
-- **Exports:** LogsPage component.
-- **Dependencies:** components, hooks, utils, services/api, stores.
-- **Incoming References:** MainRoutes.tsx, pages/LogsPage.tsx (re-export).
+
+- **Role:** Log workspace with incremental tail, search/filter, management-traffic hiding, fullscreen, error-log viewer, and downloads.
+- **Exports:** `LogsPage`.
+- **Key Files:** `LogsPage.tsx`, `hooks/useLogStream.ts`, `hooks/useLogFilters.ts`, `hooks/useLogScroller.ts`, `model/logBuffer.ts`, `model/logSelectors.ts`, `model/logRequests.ts`, `model/errorLogViewer.ts`, `model/logFullscreen.ts`.
+- **Dependencies:** `logsApi`, config/auth/notification stores, shared UI, clipboard/download utils.
+- **Incoming References:** `MainRoutes.tsx`, `pages/LogsPage.tsx` (re-export).
 
 #### [src/features/plugins/*]
-- **Role:** Plugin management (install, configure, resource pages).
-- **Exports:** PluginsPage, PluginStorePage, PluginResourcePage components.
-- **Dependencies:** components, hooks, utils, services/api, stores, types.
-- **Incoming References:** MainRoutes.tsx.
+
+- **Role:** Installed-plugin management, plugin store views, plugin resource pages, status, versions, logos, and OAuth entries.
+- **Exports:** `PluginsPage`, `PluginResourcePage`, plugin helpers.
+- **Key Files:** `PluginsPage.tsx`, `PluginResourcePage.tsx`, `pluginsView.ts`, `pluginResources.ts`, `pluginStoreEntries.ts`, `pluginStatus.ts`, `pluginConfigDraft.ts`, `pluginLogo.ts`, `pluginPolling.ts`, `pluginReleaseVersions.ts`, `pluginSearch.ts`, `hooks/`.
+- **Dependencies:** `pluginsApi`, `pluginStoreApi`, `apiCallApi`, auth store, shared UI.
+- **Incoming References:** `MainRoutes.tsx` (gated), `MainLayout.tsx` (dynamic sidebar resources), `features/oauth` (plugin OAuth entries).
+
+#### [src/features/usage/*]
+
+- **Role:** Usage & analytics page with a React Flow topology diagram and static overview cards.
+- **Exports:** `UsagePage`.
+- **Key Files:** `UsagePage.tsx`, `components/FlowTopology.tsx`, `components/nodes/RouterNode.tsx`, `components/nodes/ProviderNode.tsx`, `components/edges/ElectricEdge.tsx`.
+- **Dependencies:** `reactflow`, `useHeaderRefresh`, local SCSS.
+- **Current Limitation:** Uses mock provider data and hard-coded English copy; no backend usage API is wired at this commit.
+- **Incoming References:** `MainRoutes.tsx`.
 
 ---
 
 ### Pages (Non-Feature Routes)
 
 #### [src/pages/LoginPage.tsx]
-- **Role:** Login page for management key authentication.
-- **Exports:** LoginPage component.
-- **Dependencies:** components, hooks, utils, stores, i18n.
-- **Incoming References:** App.tsx.
+
+- **Role:** Management-key login, auto-login splash, localized error mapping, language selection, and redirect restoration.
+- **Exports:** `LoginPage`, `LoginPhase`, `LOGIN_BRAND_NAME`.
+- **Dependencies:** `useAuthStore`, `useLanguageStore`, `useNotificationStore`, `useLoginTransitionStore`, `Select`, `DotMatrixHero`, `LoginForm`, `resolveLoginRedirect`, `LegacyBackendError`.
+- **Incoming References:** `App.tsx`.
+
+#### [src/pages/login/*]
+
+- **Role:** Login presentation split into `DotMatrixHero.tsx`, `dotMatrixField.ts`, `LoginForm.tsx`, `_palette.scss`, and their SCSS modules.
+- **Incoming References:** `pages/LoginPage.tsx`.
 
 #### [src/pages/SystemPage.tsx]
-- **Role:** System information page (versions, backend info, manual update check).
-- **Exports:** SystemPage component.
-- **Dependencies:** components, hooks, utils, stores, services/api.
-- **Incoming References:** MainRoutes.tsx.
+
+- **Role:** System information, manual update check, model catalog, request-log toggle, local login-data clearing, and repository links.
+- **Exports:** `SystemPage`.
+- **Dependencies:** `apiClient`, `configApi`, `modelsApi`, `versionApi`, stores, `useApiKeysForModels`, `resolveUpdateAvailability`, `updateChangelog`, icons.
+- **Incoming References:** `MainRoutes.tsx`.
 
 #### [src/pages/AuthFilesOAuthExcludedEditPage.tsx]
-- **Role:** Excluded model editor for auth file OAuth.
-- **Exports:** AuthFilesOAuthExcludedEditPage component.
-- **Dependencies:** components, hooks, utils, stores.
-- **Incoming References:** MainRoutes.tsx.
+
+- **Role:** Full-page editor for auth-file OAuth excluded-model rules.
+- **Dependencies:** `authFilesApi`, shared excluded-model components, stores.
+- **Incoming References:** `MainRoutes.tsx`.
 
 #### [src/pages/AuthFilesOAuthModelAliasEditPage.tsx]
-- **Role:** Model alias editor for auth file OAuth.
-- **Exports:** AuthFilesOAuthModelAliasEditPage component.
-- **Dependencies:** components, hooks, utils, stores.
-- **Incoming References:** MainRoutes.tsx.
+
+- **Role:** Full-page editor for auth-file OAuth model aliases.
+- **Dependencies:** `authFilesApi`, shared model-alias components, stores.
+- **Incoming References:** `MainRoutes.tsx`.
 
 #### [src/pages/LogsPage.tsx]
-- **Role:** Re-export of features/logs/LogsPage.
-- **Exports:** LogsPage (re-export).
-- **Dependencies:** features/logs.
-- **Incoming References:** MainRoutes.tsx.
+
+- **Role:** Re-export shim: `export { LogsPage } from '@/features/logs/LogsPage'`.
+- **Incoming References:** `MainRoutes.tsx`.
 
 ---
 
 ### State Management (Zustand Stores)
 
 #### [src/stores/useAuthStore.ts]
-- **Role:** Session state (authenticated, management key, server version, connection status, plugin support).
-- **Exports:** useAuthStore hook.
-- **Dependencies:** zustand, services/api, services/storage.
-- **Incoming References:** App.tsx, ProtectedRoute, features, pages.
-- **Key State:**
-  - `isAuthenticated`, `managementKey`, `serverVersion`, `serverCommit`, `connectionStatus`, `supportsPlugin`.
+
+- **Role:** Session state, login/logout, auto-login restore, server version/build/commit, plugin support, and connection status.
+- **Key State:** `isAuthenticated`, `apiBase`, `managementKey`, `rememberPassword`, `serverVersion`, `serverBuildDate`, `serverCommit`, `supportsPlugin`, `connectionStatus`.
+- **Key Logic:** Clears config/models/quota caches on login and logout; probes a legacy backend only after a v8 config 404; listens for `unauthorized`, `server-version-update`, `server-commit-update`, and `server-plugin-support-update` events.
+- **Persistence:** `cli-proxy-auth` via `obfuscatedStorage`; pre-v2 credentials are discarded rather than migrated.
 
 #### [src/stores/useConfigStore.ts]
-- **Role:** Configuration state with TTL cache and in-flight request deduplication.
-- **Exports:** useConfigStore hook.
-- **Dependencies:** zustand, services/api, types.
-- **Incoming References:** features/config, features/providers, features/authFiles.
-- **Key Functions:**
-  - `fetchConfig(forceRefresh?: boolean)`: Full-config fetch with cache.
-  - Cache invalidation on logout/connection switch.
 
-#### [src/stores/useLanguageStore.ts]
-- **Role:** i18n language state.
-- **Exports:** useLanguageStore hook.
-- **Dependencies:** zustand, i18n.
-- **Incoming References:** App.tsx, components/layout.
-
-#### [src/stores/useThemeStore.ts]
-- **Role:** Theme state (light/dark/system).
-- **Exports:** useThemeStore hook.
-- **Dependencies:** zustand, utils.
-- **Incoming References:** App.tsx, components/layout.
-
-#### [src/stores/useUpdateStore.ts]
-- **Role:** Update notification state (transient, per document load).
-- **Exports:** useUpdateStore hook.
-- **Dependencies:** zustand.
-- **Incoming References:** App.tsx, pages/SystemPage.
-
-#### [src/stores/useNotificationStore.ts]
-- **Role:** Toast notification state.
-- **Exports:** useNotificationStore hook.
-- **Dependencies:** zustand.
-- **Incoming References:** components/common/NotificationContainer, features.
+- **Role:** Full-config cache with TTL, in-flight deduplication, and stale-request guards.
+- **Key Functions:** `fetchConfig(forceRefresh?)`, `updateConfigValue(section, value)`, `clearCache(section?)`, `isCacheValid()`.
+- **Cache:** `CACHE_EXPIRY_MS = 30 * 1000`; one full-config cache, not section-based fetching.
+- **Stale Guard:** `configRequestToken` invalidates in-flight responses after connection switch, logout, or refresh.
 
 #### [src/stores/useModelsStore.ts]
-- **Role:** Model list state.
-- **Exports:** useModelsStore hook.
-- **Dependencies:** zustand, services/api.
-- **Incoming References:** features/providers.
+
+- **Role:** Model list cache and fetch state.
+- **Incoming References:** `SystemPage`, provider model discovery, auth-file model catalog sync.
 
 #### [src/stores/useQuotaStore.ts]
-- **Role:** Quota state.
-- **Exports:** useQuotaStore hook.
-- **Dependencies:** zustand, services/api.
-- **Incoming References:** features/quota.
+
+- **Role:** Route-surviving quota cache for all quota providers and Codex credit-overage operations.
+- **Key Helpers:** `captureQuotaCacheGeneration(name?)`, `commitIfQuotaCacheCurrent(generation, commit, name?)`.
+- **Stale Guard:** Global `cacheGeneration` plus per-file `fileGenerations` prevent old quota responses from overwriting newer session state.
+
+#### [src/stores/useNotificationStore.ts]
+
+- **Role:** Toast notifications and confirmation-modal state.
+- **Incoming References:** `NotificationContainer`, `ConfirmationModal`, features, pages.
+
+#### [src/stores/useThemeStore.ts]
+
+- **Role:** Theme selection (`auto`, `white`, `light`, `dark`) and resolved theme.
+- **Incoming References:** `App.tsx`, `MainLayout.tsx`, features.
+
+#### [src/stores/useLanguageStore.ts]
+
+- **Role:** Active language and i18n synchronization.
+- **Incoming References:** `App.tsx`, `MainLayout.tsx`, `LoginPage.tsx`.
+
+#### [src/stores/useUpdateStore.ts]
+
+- **Role:** Transient update info and modal open state; reset per browser document load.
+- **Incoming References:** `App.tsx`, `SystemPage.tsx`.
+
+#### [src/stores/useLoginTransitionStore.ts]
+
+- **Role:** Login reveal phase (`idle`/`revealing`), reveal id, and reduced-motion-aware timings.
+- **Incoming References:** `LoginPage.tsx`, `MainLayout.tsx`, `LoginRevealVeil.tsx`.
+
+#### [src/stores/index.ts]
+
+- **Role:** Barrel exports for all stores, including quota cache-generation helpers.
 
 ---
 
-### Services (API Layer)
+### Services (API & Storage Layer)
 
 #### [src/services/api/client.ts]
-- **Role:** Centralized Management API client (prefix, bearer auth, error normalization, response-header handling).
-- **Exports:** `apiClient` instance (axios wrapper).
-- **Dependencies:** axios, stores/useAuthStore, utils.
-- **Incoming References:** All domain API modules.
+
+- **Role:** Centralized axios client for the v8 Management API.
+- **Exports:** `apiClient`.
 - **Key Features:**
-  - Injects `Authorization: Bearer <MANAGEMENT_KEY>` header.
-  - Emits `unauthorized`, `server-version-update`, `server-plugin-support-update` events.
-  - Normalizes API errors.
+  - `MANAGEMENT_API_PREFIX` is `/v8/management`; domain modules use paths relative to that base.
+  - Injects `Authorization: Bearer <MANAGEMENT_KEY>` and JSON content type.
+  - Default timeout `REQUEST_TIMEOUT_MS = 30 * 1000`; `setConfig()` can override it.
+  - Reads version/build/commit/plugin-support headers and dispatches `server-version-update`, `server-commit-update`, and `server-plugin-support-update` events.
+  - Dispatches `unauthorized` on HTTP 401; normalizes errors through `apiError.ts`.
+  - `getConnectionRevision()` and `captureConnection(isCurrent?)` pin credentials and suppress response side effects after connection changes.
 
-#### [src/services/api/config.ts]
-- **Role:** Config API (fetch, update, patch).
-- **Exports:** `configApi` functions.
-- **Dependencies:** client, transformers, types.
-- **Incoming References:** stores/useConfigStore, features/config.
+#### [src/services/api/apiCall.ts]
 
-#### [src/services/api/providers.ts]
-- **Role:** Provider API (list, test, model options).
-- **Exports:** Provider API functions.
-- **Dependencies:** client, transformers, types.
-- **Incoming References:** features/providers, stores.
+- **Role:** Generic proxied request helper via `/requests/api-call`; normalizes status/header/body and exposes `captureApiCallApi()`.
+- **Incoming References:** Provider connectivity tests, quota providers, plugin release checks, sponsor usage checks.
 
-#### [src/services/api/authFiles.ts]
-- **Role:** Auth file API (list, refresh, update policies).
-- **Exports:** Auth file API functions.
-- **Dependencies:** client, transformers, types.
-- **Incoming References:** features/authFiles, stores.
+#### [src/services/api/config.ts], [configFile.ts], [configPatch.ts], [configValue.ts]
 
-#### [src/services/api/oauth.ts]
-- **Role:** OAuth API (auth URL, status, callback, import).
-- **Exports:** OAuth API functions.
-- **Dependencies:** client, types.
-- **Incoming References:** features/oauth.
+- **Role:** Full config read, raw `config.yaml` read/write, config patch planning/application, and connection-guarded config reads.
+- **Incoming References:** `useConfigStore`, `features/config`, `features/routing`, `SystemPage`.
 
-#### [src/services/api/quota.ts]
-- **Role:** Quota API (fetch quota for all providers).
-- **Exports:** Quota API functions.
-- **Dependencies:** client, types.
-- **Incoming References:** features/quota, stores.
+#### [src/services/api/providers.ts], [providerModels.ts], [transformers.ts]
+
+- **Role:** Provider group reads/writes, model option normalization, and backend-field normalization/serialization.
+- **Incoming References:** `features/providers`, `features/config`, `useModelsStore`.
+
+#### [src/services/api/authFiles.ts], [authFileCooldowns.ts], [authFilePolicyAdapter.ts]
+
+- **Role:** Credential list/upload/download/delete, status/fields patches, refresh, cooldown reset, model verification, OAuth excluded models/aliases, and credential policy adaptation.
+- **Incoming References:** `features/authFiles`, `features/oauth`, `features/quota`, `MainLayout`, auth-file editor pages.
+
+#### [src/services/api/oauth.ts], [vertex.ts]
+
+- **Role:** OAuth auth URL/status/callback/cancel, SIWC binding, built-in provider IDs, and Vertex import.
+- **Incoming References:** `features/oauth`.
 
 #### [src/services/api/logs.ts]
-- **Role:** Logs API (fetch error logs).
-- **Exports:** Logs API functions.
-- **Dependencies:** client.
-- **Incoming References:** features/logs.
+
+- **Role:** Incremental `/observability/logs` reads, clear, error-log listing/download, and response-to-text normalization.
+- **Incoming References:** `features/logs`.
 
 #### [src/services/api/plugins.ts]
-- **Role:** Plugin API (list, install, configure, resources).
-- **Exports:** Plugin API functions.
-- **Dependencies:** client, types.
-- **Incoming References:** features/plugins.
+
+- **Role:** Installed plugins, plugin enable/config/delete, plugin store entries, and backend-declared install/update paths.
+- **Incoming References:** `features/plugins`, `MainLayout`, `features/oauth`, plugin quota adapter.
+
+#### [src/services/api/routing.ts]
+
+- **Role:** Routing board normalization, plan building, credential writes, config patch generation, and `RoutingConflictError`.
+- **Incoming References:** `features/routing`.
+
+#### [src/services/api/models.ts], [version.ts], [apiKeys.ts], [apiKeyUsage.ts]
+
+- **Role:** Model catalog, latest-version check, client API-key replacement, and API-key usage snapshots.
+- **Incoming References:** `SystemPage`, `useModelsStore`, dashboard, provider recent-request stats.
+
+#### [src/services/api/antigravitySubscription.ts], [claudeUsage.ts], [claudeResetGrants.ts], [devinQuota.ts], [kimiQuota.ts], [metaQuota.ts]
+
+- **Role:** Provider-specific quota/subscription parsing and request helpers.
+- **Incoming References:** `features/quota/providers/*`.
 
 #### [src/services/api/legacyBackendProbe.ts]
-- **Role:** Detects outdated backend (v0) after v8 login 404; shows clearer error.
-- **Exports:** `probeForLegacyBackend` function.
-- **Dependencies:** axios.
-- **Incoming References:** stores/useAuthStore.
-- **Note:** Only sanctioned v0 touchpoint; never supplies application data or acts as login fallback.
+
+- **Role:** Sanctioned v0 touchpoint. Exports `LegacyBackendError` and `probeLegacyBackend(apiBase, managementKey)`; called only after a v8 login config fetch returns 404.
+- **Constraint:** Never supplies application data and is never a login fallback.
+
+#### [src/services/api/apiError.ts], [src/services/api/index.ts]
+
+- **Role:** Error response parsing and a barrel that re-exports the common API surface. Some modules are imported directly by path.
 
 #### [src/services/storage/secureStorage.ts]
-- **Role:** Browser localStorage wrapper with lightweight obfuscation (`enc::v1::...`).
-- **Exports:** Storage functions.
-- **Dependencies:** utils/encryption.
-- **Incoming References:** stores.
-- **Note:** Reversible obfuscation, not encryption; not a security boundary.
+
+- **Role:** `obfuscatedStorage` wrapper around localStorage using `utils/encryption`.
+- **Note:** Reversible obfuscation (`enc::v1::...`), not encryption or a security boundary.
 
 ---
 
-### Types, Hooks, Utils, i18n, Styles
+### Types, Hooks, Utils, i18n, Styles, Assets
 
-#### [src/types/*.ts]
-- **Role:** Shared TypeScript types for API contracts, config, providers, plugins, quota, auth files, etc.
-- **Exports:** Type definitions.
-- **Key Files:** `api.ts`, `config.ts`, `provider.ts`, `authFile.ts`, `quota.ts`, `plugin.ts`, `visualConfig.ts`.
+#### [src/types/*]
+
+- **Role:** Shared TypeScript contracts.
+- **Files:** `common.ts`, `api.ts`, `config.ts`, `auth.ts`, `provider.ts`, `authFile.ts`, `oauth.ts`, `quota.ts`, `plugin.ts`, `index.ts`, `style.d.ts`.
+- **Direct-import modules:** `routing.ts` and `visualConfig.ts` are consumed directly by routing/config code rather than through `types/index.ts`.
 
 #### [src/hooks/*]
-- **Role:** Shared React hooks (motion, localStorage, time, unsaved changes, visual config).
-- **Key Hooks:** `motion.ts`, `useVisualConfig.ts`, `useLocalStorage.ts`, `useNow.ts`, `useUnsavedChangesGuard.ts`.
+
+- **Role:** Shared React hooks.
+- **Files:** `motion.ts`, `useActionBarHeightVar.ts`, `useApiKeysForModels.ts`, `useEdgeSwipeBack.ts`, `useHeaderRefresh.ts`, `useInterval.ts`, `useLocalStorage.ts`, `useMediaQuery.ts`, `useNow.ts`, `useUnsavedChangesGuard.ts`, `useVisualConfig.ts`.
+- **Motion helpers:** `prefersReducedMotion`, `useRevealOnScroll`, `useRevealGroup`, `useCountUp`.
 
 #### [src/utils/*]
-- **Role:** Shared utilities (apiKey, constants, encryption, format, language, etc.).
-- **Key Files:** `constants.ts`, `encryption.ts`, `format.ts`, `language.ts`, `updateNotification.ts`.
+
+- **Role:** Pure helpers for connection URLs, constants, encryption, formatting, language, models, provider keys, recent requests, sidebar shortcuts, timestamps, validation, and update availability.
+- **Key Files:** `connection.ts`, `constants.ts`, `encryption.ts`, `format.ts`, `language.ts`, `models.ts`, `updateNotification.ts`, `sidebarShortcut.ts`.
+- **Subdirectories:** `utils/quota/*` (parsers, resolvers, formatters, reset instants, plan tiers, xAI paid detection), `utils/time/*` (durations, shared clock, timezone).
 
 #### [src/i18n/*]
-- **Role:** Internationalization setup and locale files (en, zh-CN, zh-TW, ru, vi, ko).
-- **Files:** `index.ts`, `locales/en.json`, `locales/zh-CN.json`, etc.
+
+- **Role:** i18next setup and locale catalogs.
+- **Locales:** `en`, `zh-CN`, `zh-TW`, `ru`, `vi`, `ko`, `tr`.
+- **Fallback:** `zh-CN`; initial language comes from `utils/language.getInitialLanguage()`.
 
 #### [src/styles/*]
-- **Role:** Global and modular SCSS styles, themes, variables.
-- **Key Files:** `global.scss`, `themes.scss`, `variables.scss` (auto-injected by Vite).
+
+- **Role:** Global styles and theme tokens.
+- **Files:** `global.scss`, `themes.scss`, `variables.scss`, `components.scss`, `layout.scss`, `mixins.scss`, `reset.scss`.
+- **Build Note:** Vite auto-injects `variables.scss` into SCSS modules; modules should not re-import it.
+
+#### [src/assets/*]
+
+- **Role:** Bundled logo (`logoInline.ts`) and provider/OAuth icons under `icons/`.
+- **Build Note:** Assets must remain inlineable for the single-file output.
 
 ---
 
-## Data Flow Patterns & Architectural Invariants
-
-### Primary Data Flows
-
-#### Auth Flow
-1. User enters management key and API address on LoginPage.
-2. Auth state is stored in `useAuthStore`.
-3. All API requests use `apiClient`, which injects the bearer token.
-4. `ProtectedRoute` guards authenticated routes.
-
-#### Config/State Flow
-- `useConfigStore` fetches and caches full backend config (TTL, deduplication).
-- Mutations update the store and invalidate caches.
-- No section-based fetching; always use full-config fetch.
-
-#### Update Notification Flow
-1. Root shell mounted once per document load; hash navigation keeps it mounted.
-2. After first successful connection, calls `versionApi.checkLatest()` once.
-3. Compares backend-reported latest version with connected server version; commit hashes are display metadata only.
-4. When the upstream version is newer, `UpdateModal` renders.
-5. Hash navigation **never** triggers automatic update check or opens notification.
-
-#### OAuth Flow
-- All OAuth results shown as modal (never toast), enforced by contract tests.
-- Protected providers (Codex, Antigravity) must never be removed.
-- OAuth flow dialog can be closed without interrupting authorization.
-
-### Architectural Invariants
-
-#### Single-file build
-- Vite + `vite-plugin-singlefile` produces `dist/index.html` with all assets inlined.
-- Hash routing required; no server-side routing.
-- Releases rename `dist/index.html` to `management.html`.
-
-#### API contract
-- Only v8 Management API (`/v8/management/*`); no v0 fallback except legacy probe.
-- All API modules build on `apiClient`.
-- Plugin resources preserve backend-declared paths.
-
-#### State management
-- Zustand stores are single source of truth.
-- Config store uses full-config fetch with TTL cache and in-flight deduplication.
-- Cache invalidation on logout/connection switch.
-
-#### i18n
-- All user-facing text must be in all locale files (en, zh-CN, zh-TW, ru, vi, ko).
-- Fallback language is `zh-CN`.
-
-#### Protected features (owner mandate)
-- **OAuth result modal:** Never remove, replace with toasts, or auto-dismiss. Enforced by `tests/oauthResultModal.test.ts`.
-- **Protected OAuth providers (Codex, Antigravity):** Never remove or replace. Enforced by `tests/protectedOAuthProviders.test.ts`.
-- **Update notification:** Single-show on initial document load only; never on hash navigation.
-
----
-
-## Gotchas & Pitfalls
-
-### Critical Rules (Break These = CI Failure)
-
-- **Never remove or downgrade protected OAuth providers (Codex, Antigravity) or OAuth result modal.**  
-  - Enforced by contract tests (`tests/protectedOAuthProviders.test.ts`, `tests/oauthResultModal.test.ts`).
-  - Removing import from `@/features/protectedOAuth` in `OAuthPage.tsx` causes compilation error.
-
-- **Never break single-file output or hash routing.**
-  - Build must produce one `dist/index.html` with all assets inlined.
-  - Router must use `createHashRouter`.
-
-- **Never introduce v0 API fallbacks except in `src/services/api/legacyBackendProbe.ts`.**
-  - Probe only shows clearer error; never supplies application data.
-
-- **Always update all locale files for new/changed text.**
-  - Missing translations show raw keys (e.g., `update_modal.title`).
-
-### Common Mistakes
-
-- **Do not commit credentials, management keys, auth files, or generated `dist/` output.**
-- **Do not bypass `apiClient` for backend requests.**
-- **Do not split config fetching by section; always use full-config fetch.**
-- **Do not introduce another package manager's lockfile.** Use Bun 1.3.14.
-- **Do not change protected features without explicit owner approval.**
-- **Do not open update notification modal on hash navigation.**
-
-### Performance & Security
-
-- Config store uses TTL cache (5 min) and in-flight deduplication.
-- Stale-request guards prevent old responses overwriting new session state.
-- Management keys stored with lightweight obfuscation (`enc::v1::...`); not encryption.
-- Never hardcode secrets; redact from logs, screenshots, fixtures.
-
----
-
-## Testing Commands & Execution Workflows
-
-### Quick Commands
-
-```bash
-# Install dependencies (frozen lockfile)
-bun install --frozen-lockfile
-
-# Run all tests
-bun run test
-
-# Run a single test file
-bun test tests/apiError.test.ts
-
-# Full verification (test + lint + build)
-bun run verify
-
-# Lint only
-bun run lint
-
-# Type check only
-bun run type-check
-
-# Format code
-bun run format
-
-# Dev server (http://localhost:5173 by default)
-bun run dev
-
-# Production build (outputs dist/index.html with inlined assets)
-bun run build
-
-# Preview built output
-bun run preview
-```
-
-### Verification Workflow
-
-Before committing or creating a PR:
-
-1. **Format changed files:**
-   ```bash
-   bun run format
-   ```
-
-2. **Run verification:**
-   ```bash
-   bun run verify
-   ```
-   This runs:
-   - `bun run test` (all Bun tests)
-   - `bun run lint` (ESLint)
-   - `bun run build` (TypeScript compilation + Vite build)
-
-3. **Optional: Type check separately:**
-   ```bash
-   bun run type-check
-   ```
-
-4. **For UI changes: Verify in browser and include screenshots/notes in PR.**
-
-### Test Organization
-
-- **Location:** `tests/*.test.ts`
-- **Framework:** Bun test (`bun:test`)
-- **Fixtures:** `tests/fixtures/`
-- **Helpers:** `tests/helpers/`
-
-**Test Types:**
-- Pure logic tests (utilities, transformers, validation)
-- React SSR tests (static markup via `renderToStaticMarkup`)
-- Source/contract checks (protected features, API contracts)
-
-**No configured browser DOM test harness.** Static markup tests do not verify browser interactions.
-
-### Protected Feature Contract Tests
-
-These tests **must pass** and should never be modified without explicit owner approval:
-
-- `tests/protectedOAuthProviders.test.ts` (21 tests)
-  - Verifies Codex and Antigravity OAuth providers remain present.
-  - Checks domain module exports, i18n keys, icon files, page rendering, API wiring.
-
-- `tests/oauthResultModal.test.ts`
-  - Verifies OAuth result modal feature is not removed, replaced, or downgraded.
-  - Checks modal component, wiring, strict message rule, styles.
-
----
-
-## Quick Reference: Key Files by Task
-
-### Add a New API Endpoint
-1. `src/services/api/<domain>.ts` (API module)
-2. `src/features/<feature>/` (feature logic/UI)
-3. `src/types/<domain>.ts` (types)
-4. Update contract tests in `tests/` if needed
-
-### Add/Edit a Feature Page
-1. `src/features/<feature>/`
-2. `src/router/MainRoutes.tsx` (if new route)
-3. `src/components/` (shared UI if needed)
-4. `src/types/` (types)
-5. `src/stores/` (state if needed)
-6. Update i18n in all locale files (en, zh-CN, zh-TW, ru, vi, ko)
-
-### Change Config/State Logic
-1. `src/stores/useConfigStore.ts`
-2. `src/services/api/config.ts`
-3. `src/features/config/`
-4. `src/types/config.ts`
-
-### Add/Edit OAuth Provider
-1. `src/features/oauth/providers.ts`
-2. `src/features/protectedOAuth/` (for protected providers)
-3. `src/features/oauth/` (UI/logic)
-4. Update contract tests and i18n
-
-### Modify Provider Logic
-1. `src/features/providers/descriptors.ts` (UI capabilities)
-2. `src/features/providers/adapters.ts` (config mapping)
-3. `src/services/api/providers.ts` (API)
-4. `src/types/provider.ts` (types)
-
-### Update Styles/Theme
-1. `src/styles/` (global, themes, variables, etc.)
-2. SCSS modules beside components/pages (e.g., `Component.module.scss`)
-
-### Add/Edit i18n Text
-1. `src/i18n/locales/en.json`
-2. `src/i18n/locales/zh-CN.json`
-3. `src/i18n/locales/zh-TW.json`
-4. `src/i18n/locales/ru.json`
-5. `src/i18n/locales/vi.json`
-6. `src/i18n/locales/ko.json`
-
-### Add/Edit Zustand Store
-1. `src/stores/<storeName>.ts`
-2. `src/stores/index.ts` (export)
-
-### Add/Edit Shared Hook
-1. `src/hooks/<hookName>.ts`
-
-### Add/Edit Shared Utility
-1. `src/utils/<utilName>.ts`
-
-### Add/Edit Shared Component
-1. `src/components/ui/<ComponentName>.tsx` (primitives)
-2. `src/components/common/<ComponentName>.tsx` (common features)
-
----
-
-## Self-Check & Maintenance
-
-### Verification Checklist
-- ✅ All entry points, routing, state, and API layers are mapped.
-- ✅ Protected features and contract tests are documented.
-- ✅ Architectural invariants (single-file build, hash routing, v8 API-only) are explicit.
-- ✅ Gotchas and anti-patterns are documented.
-- ✅ Testing commands and workflows are complete.
-- ✅ Quick reference enables agents to minimize file reads/searches for common tasks.
-
-### Maintenance Policy
-- Update this document when:
-  - New features or domains are added.
-  - Routing or build configuration changes.
-  - Protected features are added or modified (with owner approval).
-  - Testing workflows change.
-  - New architectural constraints are introduced.
-
-- Keep this document in sync with:
-  - `AGENTS.md` (repository guidance)
-  - `ARCHITECTURE.md` (runtime composition)
-  - `SPECIFICATION.md` (behavioral contracts)
-  - `session.md` (current session context)
-
----
-
-**This Code Graph is ready for persistent use by AI agents and automated developers.**
