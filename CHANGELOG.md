@@ -2,6 +2,21 @@
 
 ## [Unreleased]
 
+## [1.28.6] - 2026-11-22
+
+### Changed
+
+- Recorded the current `dev`/`main` merge history as release `v1.28.6`. No application source
+  files changed after `v1.28.5`; the release contains the existing back-merge commits and release
+  documentation only.
+
+### Validation
+
+- Git Flow preflight verified the clean tree, latest tag `v1.28.5`, calculated version `v1.28.6`,
+  installed `git-flow` 1.12.3, and configured `main`/`dev` branches.
+- Release documentation checked with `git diff --check`; no application code changed in this
+  release.
+
 ## [1.28.5] - 2026-11-22
 
 ### Merged
