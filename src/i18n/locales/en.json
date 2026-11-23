@@ -92,7 +92,9 @@
     "error_legacy_backend": "This backend accepts v0 Management API but does not provide v8. Upgrade CLIProxyAPI to v8 or later to use this management page.",
     "error_server": "Backend failed while handling the management request, check the server logs",
     "error_cors": "Cross-origin request blocked, please check server configuration",
-    "error_ssl": "SSL/TLS certificate verification failed"
+    "error_ssl": "SSL/TLS certificate verification failed",
+    "hide_key": "Hide key",
+    "show_key": "Show key"
   },
   "header": {
     "refresh_all": "Refresh All",
@@ -733,6 +735,14 @@
     "import_another": "Import another"
   },
   "oauth_excluded": {
+    "delete": "Delete provider",
+
+    "delete_confirm": "Delete excluded models for {{provider}}?",
+
+    "delete_success": "Excluded models deleted",
+
+    "delete_failed": "Failed to delete excluded models",
+
     "title": "OAuth Model Disablement",
     "models_label": "Models to disable",
     "save_success": "Model disablement updated",
@@ -742,11 +752,7 @@
     "upgrade_required": "Current CPA version does not support OAuth model disablement. Please upgrade.",
     "upgrade_required_title": "Please upgrade CLI Proxy API",
     "upgrade_required_desc": "The current server version does not support fetching OAuth model disablement. Please upgrade to the latest CPA (CLI Proxy API) version and try again.",
-    "delete_title": "Delete Exclusion",
-    "delete": "Delete provider",
-    "delete_confirm": "Delete excluded models for {{provider}}?",
-    "delete_success": "Excluded models deleted",
-    "delete_failed": "Failed to delete excluded models"
+    "delete_title": "Delete Exclusion"
   },
   "excluded_models": {
     "trigger_summary": "{{excluded}} excluded · {{available}} available",
@@ -783,6 +789,13 @@
   "oauth_model_alias": {
     "mapping_row": "Alias mapping {{number}}",
     "remove_mapping": "Delete alias mapping {{number}}",
+    "delete_confirm": "Delete model aliases for {{provider}}?",
+    "delete_link_title": "Unlink mapping",
+    "delete_link_confirm": "Unlink mapping from <code>{{sourceModel}}</code> ({{provider}}) to alias <code>{{alias}}</code>?",
+    "delete_alias_title": "Delete alias",
+    "delete_alias_confirm": "Delete alias <code>{{alias}}</code> and unlink all related models?",
+    "delete_success": "Model aliases deleted",
+    "delete_failed": "Failed to delete model aliases",
     "title": "OAuth Model Aliases",
     "model_source_loading": "Loading models...",
     "model_source_unsupported": "The current CPA version does not support fetching model lists (manual input still works).",
@@ -827,14 +840,7 @@
     "upgrade_required": "This feature requires a newer CLI Proxy API (CPA) version. Please upgrade.",
     "upgrade_required_title": "Please upgrade CLI Proxy API",
     "upgrade_required_desc": "The current server does not support the OAuth model aliases API. Please upgrade to the latest CLI Proxy API (CPA) version.",
-    "delete_title": "Delete Mappings",
-    "delete_confirm": "Delete model aliases for {{provider}}?",
-    "delete_link_title": "Unlink mapping",
-    "delete_link_confirm": "Unlink mapping from <code>{{sourceModel}}</code> ({{provider}}) to alias <code>{{alias}}</code>?",
-    "delete_alias_title": "Delete alias",
-    "delete_alias_confirm": "Delete alias <code>{{alias}}</code> and unlink all related models?",
-    "delete_success": "Model aliases deleted",
-    "delete_failed": "Failed to delete model aliases"
+    "delete_title": "Delete Mappings"
   },
   "model_rules": {
     "section_label": "Model rules",
@@ -1404,7 +1410,7 @@
         "auth": {
           "auth_dir": "OAuth Credential Directory (oauth.auth-dir)"
         },
-        "system": {
+  "system": {
           "debug": "Debug Mode",
           "commercial_mode": "Commercial Mode",
           "commercial_mode_desc": "Disable high-overhead middleware to support high concurrency",
@@ -1529,6 +1535,8 @@
         }
       },
       "api_keys": {
+        "name_save_error": "Could not save to browser storage. Check browser storage settings.",
+
         "label": "Client API Keys (access.api-keys)",
         "add": "Add API Key",
         "generate": "Generate",
@@ -1550,8 +1558,7 @@
           "fair": "Fair",
           "good": "Good",
           "strong": "Strong"
-        },
-        "name_save_error": "Could not save to browser storage. Check browser storage settings."
+        }
       },
       "payload_rules": {
         "rule": "Rule",
@@ -1677,6 +1684,7 @@
     "view_changelog": "View full changelog on GitHub",
     "version_unknown": "Unknown"
   },
+
   "footer": {
     "api_version": "CLI Proxy API Version",
     "build_date": "Build Time",
@@ -1687,18 +1695,9 @@
     "chinese": "中文",
     "chinese_tw": "Traditional Chinese (Taiwan)",
     "english": "English",
-    "russian": "Русский",
-    "vietnamese": "Tiếng Việt",
-    "korean": "한국어",
-    "turkish": "Turkish"
+    "russian": "Русский"
   },
   "notification": {
-    "trusted_proxies_restart_required": "Trusted proxy settings saved. Restart the backend to apply them.",
-    "region_label": "Notifications",
-    "type_success": "Success",
-    "type_info": "Information",
-    "type_warning": "Warning",
-    "type_error": "Error",
     "request_log_updated": "Request logging setting updated",
     "login_storage_cleared": "Local login data cleared",
     "data_refreshed": "Data refreshed successfully",
@@ -1712,13 +1711,16 @@
     "login_failed": "Login failed",
     "commercial_mode_restart_required": "Commercial mode setting changed. Please restart the service for it to take effect",
     "copy_failed": "Copy failed",
-    "link_copied": "Link copied to clipboard"
+    "link_copied": "Link copied to clipboard",
+    "load_failed": "Load failed",
+    "save_failed": "Save failed"
   },
   "sidebar": {
     "toggle_expand": "Expand sidebar",
     "toggle_collapse": "Collapse sidebar",
     "expand": "Expand",
     "collapse": "Collapse",
+    "subtitle": "CLI Proxy API Console",
     "auth_files_count": "Authentication files: {{count}}"
   },
   "theme": {
@@ -2037,6 +2039,15 @@
     "gate_step3_prompt": "To confirm, type \"{{token}}\" in the box below",
     "gate_step3_action": "Install this plugin"
   },
+  "plugin_resource": {
+    "page_count": "{{count}} pages",
+    "load_failed": "Failed to load plugin page",
+    "unavailable": "Plugin page unavailable",
+    "not_found": "Plugin page not found",
+    "not_found_desc": "This plugin page is not declared by the current backend plugin list.",
+    "empty_src": "Plugin page URL is empty",
+    "empty_src_desc": "This plugin menu does not provide an embeddable page URL."
+  },
   "system_info": {
     "models_refresh_button": "Refresh list",
     "models_refresh_success": "Available models refreshed: {{count}}.",
@@ -2066,6 +2077,57 @@
     "clear_login_desc": "Clear locally saved login data and sign out.",
     "clear_login_button": "Clear login data",
     "clear_login_confirm": "Clear local login data and sign out now?"
+  },
+  "notification": {
+    "trusted_proxies_restart_required": "Trusted proxy settings saved. Restart the backend to apply them.",
+    "region_label": "Notifications",
+    "type_success": "Success",
+    "type_info": "Information",
+    "type_warning": "Warning",
+    "type_error": "Error",
+    "request_log_updated": "Request logging setting updated",
+    "login_storage_cleared": "Local login data cleared",
+    "data_refreshed": "Data refreshed successfully",
+    "connection_required": "Please establish connection first",
+    "refresh_failed": "Refresh failed",
+    "update_failed": "Update failed",
+    "add_failed": "Add failed",
+    "delete_failed": "Delete failed",
+    "upload_failed": "Upload failed",
+    "download_failed": "Download failed",
+    "login_failed": "Login failed",
+    "commercial_mode_restart_required": "Commercial mode setting changed. Please restart the service for it to take effect",
+    "copy_failed": "Copy failed",
+    "link_copied": "Link copied to clipboard"
+  },
+  "language": {
+    "switch": "Language",
+    "chinese": "中文",
+    "chinese_tw": "Traditional Chinese (Taiwan)",
+    "english": "English",
+    "russian": "Русский",
+    "vietnamese": "Tiếng Việt",
+    "korean": "한국어",
+    "turkish": "Turkish"
+  },
+  "theme": {
+    "switch": "Theme",
+    "light": "Wool Paper",
+    "white": "Pure White",
+    "dark": "Dark",
+    "auto": "Follow system"
+  },
+  "sidebar": {
+    "toggle_expand": "Expand sidebar",
+    "toggle_collapse": "Collapse sidebar",
+    "expand": "Expand",
+    "collapse": "Collapse",
+    "auth_files_count": "Authentication files: {{count}}"
+  },
+  "footer": {
+    "api_version": "CLI Proxy API Version",
+    "build_date": "Build Time",
+    "version": "Management UI Version"
   },
   "providersPage": {
     "connections": {

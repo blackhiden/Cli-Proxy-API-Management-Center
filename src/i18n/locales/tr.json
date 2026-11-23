@@ -102,6 +102,8 @@
     "status": "Bağlantı Durumu:"
   },
   "nav": {
+    "usage": "Kullanım ve Analitik",
+
     "dashboard": "Pano",
     "quick_start": "Hızlı Başlangıç",
     "ai_providers": "AI Sağlayıcıları",
@@ -112,8 +114,7 @@
     "plugins": "Eklentiler",
     "config_management": "Yapılandırma Paneli",
     "logs": "Günlük Görüntüleyici",
-    "system_info": "Yönetim Merkezi Bilgisi",
-    "usage": "Kullanım ve Analitik"
+    "system_info": "Yönetim Merkezi Bilgisi"
   },
   "nav_groups": {
     "operate": "İşlet",
@@ -123,6 +124,10 @@
     "control": "Denetim"
   },
   "nav_meta": {
+    "usage": "İstek analitiği ve akış topolojisi",
+
+    "plugin_store": "Eklenti keşfet ve yükle",
+
     "dashboard": "İşletim Özeti",
     "quick_start": "APIKEY.FUN Kurulumu",
     "ai_providers": "Yukarı Akış Model Yönlendirmesi",
@@ -133,9 +138,7 @@
     "plugins": "Kurulum, güncelleme ve yapılandırma",
     "logs": "İstek İzleme",
     "config_management": "Ağ Geçidi Yapılandırması",
-    "system_info": "Çalışma Zamanı ve Tanılama",
-    "usage": "İstek analitiği ve akış topolojisi",
-    "plugin_store": "Eklenti keşfet ve yükle"
+    "system_info": "Çalışma Zamanı ve Tanılama"
   },
   "dashboard": {
     "hero_verdict_good": "Tüm Sistemler Dengede",
@@ -218,6 +221,8 @@
     "sync_catalog_success": "Model kataloğu eşitlendi. Güncellenen sağlayıcılar: {{providers}}",
     "sync_catalog_unchanged": "Model kataloğu eşitlendi. Değişiklik yok.",
     "sync_catalog_failed": "Model kataloğu eşitlenemedi",
+    "delete_title": "Dosyayı Sil",
+    "delete_all_title": "Tüm Dosyaları Sil",
     "title": "Kimlik Dosyası Yönetimi",
     "meta_total": "{{count}} Kimlik Bilgisi",
     "meta_active": "{{count}} Aktif",
@@ -439,9 +444,7 @@
     "quota_refresh_single": "Kotayı Yenile",
     "quota_refresh_hint": "Yalnızca Bu Kimlik Bilgisinin Kotasını Yenile",
     "quota_refresh_success": "“{{name}}” için Kota Yenilendi",
-    "quota_refresh_failed": "“{{name}}” için Kota Yenilenemedi: {{message}}",
-    "delete_title": "Dosyayı Sil",
-    "delete_all_title": "Tüm Dosyaları Sil"
+    "quota_refresh_failed": "“{{name}}” için Kota Yenilenemedi: {{message}}"
   },
   "antigravity_subscription": {
     "plan_unknown": "Bilinmiyor",
@@ -733,6 +736,16 @@
     "import_another": "Bir Tane Daha İçe Aktar"
   },
   "oauth_excluded": {
+    "delete": "Sağlayıcıyı sil",
+
+    "delete_confirm": "{{provider}} için hariç tutulan modeller silinsin mi?",
+
+    "delete_success": "Hariç tutulan modeller silindi",
+
+    "delete_failed": "Hariç tutulan modeller silinemedi",
+
+    "delete_title": "Hariç Tutmayı Sil",
+
     "title": "OAuth Model Devre Dışı Bırakma",
     "models_label": "Devre Dışı Bırakılacak Modeller",
     "save_success": "Model Devre Dışı Bırakma Güncellendi",
@@ -741,12 +754,7 @@
     "list_empty_all": "Henüz Devre Dışı Model Yok. Başlamak için Bir Sağlayıcı Seç.",
     "upgrade_required": "Geçerli CPA Sürümü OAuth Model Devre Dışı Bırakmayı Desteklemiyor. Lütfen Yükselt.",
     "upgrade_required_title": "Lütfen CLIProxyAPI Sürümünü Yükselt",
-    "upgrade_required_desc": "Geçerli Sunucu Sürümü OAuth Model Devre Dışı Bırakmayı Getirmeyi Desteklemiyor. En Son CPA (CLIProxyAPI) Sürümüne Yükselt ve Yeniden Dene.",
-    "delete": "Sağlayıcıyı sil",
-    "delete_confirm": "{{provider}} için hariç tutulan modeller silinsin mi?",
-    "delete_success": "Hariç tutulan modeller silindi",
-    "delete_failed": "Hariç tutulan modeller silinemedi",
-    "delete_title": "Hariç Tutmayı Sil"
+    "upgrade_required_desc": "Geçerli Sunucu Sürümü OAuth Model Devre Dışı Bırakmayı Getirmeyi Desteklemiyor. En Son CPA (CLIProxyAPI) Sürümüne Yükselt ve Yeniden Dene."
   },
   "excluded_models": {
     "trigger_summary": "{{excluded}} Hariç · {{available}} Kullanılabilir",
@@ -783,6 +791,14 @@
   "oauth_model_alias": {
     "mapping_row": "Takma Ad Eşlemesi {{number}}",
     "remove_mapping": "Takma Ad Eşlemesi {{number}} Sil",
+    "delete_confirm": "{{provider}} için model takma adları silinsin mi?",
+    "delete_link_title": "Eşleme bağlantısını kaldır",
+    "delete_link_confirm": "<code>{{sourceModel}}</code> ({{provider}}) ile <code>{{alias}}</code> takma adı arasındaki eşleme kaldırılsın mı?",
+    "delete_alias_title": "Takma adı sil",
+    "delete_alias_confirm": "<code>{{alias}}</code> takma adı silinsin ve ilgili tüm modellerin bağlantısı kaldırılsın mı?",
+    "delete_success": "Model takma adları silindi",
+    "delete_failed": "Model takma adları silinemedi",
+    "delete_title": "Eşlemeleri Sil",
     "title": "OAuth Model Takma Adları",
     "model_source_loading": "Modeller Yükleniyor...",
     "model_source_unsupported": "Geçerli CPA Sürümü Model Listelerini Getirmeyi Desteklemiyor (Elle Giriş Yine Çalışır).",
@@ -826,15 +842,7 @@
     "view_mode_list": "Liste",
     "upgrade_required": "Bu Özellik Daha Yeni Bir CLIProxyAPI (CPA) Sürümü Gerektirir. Lütfen Yükselt.",
     "upgrade_required_title": "Lütfen CLIProxyAPI Sürümünü Yükselt",
-    "upgrade_required_desc": "Geçerli Sunucu OAuth Model Takma Adları API Değerini Desteklemiyor. En Son CLIProxyAPI (CPA) Sürümüne Yükselt.",
-    "delete_confirm": "{{provider}} için model takma adları silinsin mi?",
-    "delete_link_title": "Eşleme bağlantısını kaldır",
-    "delete_link_confirm": "<code>{{sourceModel}}</code> ({{provider}}) ile <code>{{alias}}</code> takma adı arasındaki eşleme kaldırılsın mı?",
-    "delete_alias_title": "Takma adı sil",
-    "delete_alias_confirm": "<code>{{alias}}</code> takma adı silinsin ve ilgili tüm modellerin bağlantısı kaldırılsın mı?",
-    "delete_success": "Model takma adları silindi",
-    "delete_failed": "Model takma adları silinemedi",
-    "delete_title": "Eşlemeleri Sil"
+    "upgrade_required_desc": "Geçerli Sunucu OAuth Model Takma Adları API Değerini Desteklemiyor. En Son CLIProxyAPI (CPA) Sürümüne Yükselt."
   },
   "model_rules": {
     "section_label": "Model Kuralları",
@@ -866,6 +874,10 @@
     "search_empty": "Aramayla Eşleşen Eşleme Yok"
   },
   "auth_login": {
+    "do_not_use_proxy": "Proxy Kullanma",
+
+    "do_not_use_proxy_hint": "İşaretlendiğinde OAuth girişi yapılandırılmış proxy'yi atlayarak doğrudan bağlanır. Proxy'yi kullanmak için işareti kaldırın.",
+
     "devin_oauth_cancel": "Devin Girişini İptal Et",
     "devin_oauth_cancelled": "Devin Girişi İptal Edildi.",
     "devin_oauth_cancel_error": "Devin Girişi İptal Edilemedi:",
@@ -1031,9 +1043,7 @@
     "login_proxy_invalid": "Geçersiz proxy URL'si. Bir ana bilgisayarla birlikte http, https, socks5 veya socks5h kullanın (socks5 için port gerekir); yol veya sorgu eklemeyin.",
     "login_proxy_in_use": "Giriş proxy üzerinden yapılıyor",
     "sign_up_prompt": "Henüz Hesap Yok Mu?",
-    "copied": "Kopyalandı",
-    "do_not_use_proxy": "Proxy Kullanma",
-    "do_not_use_proxy_hint": "İşaretlendiğinde OAuth girişi yapılandırılmış proxy'yi atlayarak doğrudan bağlanır. Proxy'yi kullanmak için işareti kaldırın."
+    "copied": "Kopyalandı"
   },
   "stats": {
     "success": "Başarılı",
@@ -1045,6 +1055,8 @@
     "no_requests": "İstek Yok"
   },
   "logs": {
+    "clear_confirm_title": "Günlükleri Temizle",
+
     "preview_too_large": "Bu İstek Günlüğü 2 MiB Önizleme Sınırını Aşıyor. Görmek için İndir.",
     "read_status_live": "Sürekli Okunuyor",
     "read_status_paused": "Okuma Duraklatıldı",
@@ -1129,8 +1141,7 @@
     "search_empty_desc": "Farklı Bir Anahtar Sözcük Dene veya Süzgeçleri Temizle.",
     "double_click_copy_hint": "Ham Günlük Satırını Kopyalamak için Çift Tıkla",
     "copy_success": "Günlük Panoya Kopyalandı",
-    "copy_failed": "Kopyalama Başarısız",
-    "clear_confirm_title": "Günlükleri Temizle"
+    "copy_failed": "Kopyalama Başarısız"
   },
   "config_management": {
     "title": "Yapılandırma Paneli",
@@ -1972,6 +1983,20 @@
     "empty_src": "Eklenti Sayfası URL'si Boş",
     "empty_src_desc": "Bu Eklenti Menüsü Gömülebilir Bir Sayfa URL'si Sağlamıyor."
   },
+  "update_modal": {
+    "title": "Güncelleme Mevcut",
+    "message": "Üst depodan bir güncelleme mevcut: {{version}} (commit {{commit}}).",
+    "current_version": "Mevcut sürüm: {{version}}",
+    "dismiss": "Kapat",
+    "check_again": "Yeniden Kontrol Et",
+    "view_repo": "GitHub'da Görüntüle",
+    "show_changelog": "Değişiklik günlüğünü göster",
+    "hide_changelog": "Değişiklik günlüğünü gizle",
+    "changelog_title": "Değişiklik Günlüğü",
+    "changelog_description": "{{version}} için sürüm notları proje değişiklik günlüğünde mevcuttur.",
+    "view_changelog": "GitHub'da tüm değişiklik günlüğünü görüntüle",
+    "version_unknown": "Bilinmiyor"
+  },
   "system_info": {
     "models_refresh_button": "Listeyi yenile",
     "models_refresh_success": "Kullanılabilir model listesi yenilendi: {{count}}.",
@@ -2347,6 +2372,9 @@
       "apiKeyCreatePlaceholder": "API Anahtarını Gir",
       "apiKeyEditPlaceholder": "Değişmeden Tutmak için Boş Bırak",
       "baseUrl": "Temel URL",
+      "directConnection": "Doğrudan bağlantı (proxy olmadan)",
+      "directConnectionHint": "Etkinleştirildiğinde bu sağlayıcı sistem proxy'sini atlayarak doğrudan bağlanır.",
+      "directConnectionOverridesProxyUrl": "Doğrudan bağlantı aşağıdaki proxy URL'sini geçersiz kılar.",
       "proxyUrl": "Proxy URL",
       "prefix": "Önek",
       "priority": "Öncelik",
@@ -2415,10 +2443,7 @@
         "advanced": "Gelişmiş"
       },
       "headerName": "Başlık adı",
-      "headerValue": "Başlık değeri",
-      "directConnection": "Doğrudan bağlantı (proxy olmadan)",
-      "directConnectionHint": "Etkinleştirildiğinde bu sağlayıcı sistem proxy'sini atlayarak doğrudan bağlanır.",
-      "directConnectionOverridesProxyUrl": "Doğrudan bağlantı aşağıdaki proxy URL'sini geçersiz kılar."
+      "headerValue": "Başlık değeri"
     },
     "delete": {
       "title": "Kaynağı Sil",
@@ -2606,19 +2631,5 @@
     "remove_pattern": "{{row}}. regex satırını sil",
     "move_up": "{{row}}. regex satırını yukarı taşı",
     "move_down": "{{row}}. regex satırını aşağı taşı"
-  },
-  "update_modal": {
-    "title": "Güncelleme Mevcut",
-    "message": "Üst depodan bir güncelleme mevcut: {{version}} (commit {{commit}}).",
-    "current_version": "Mevcut sürüm: {{version}}",
-    "dismiss": "Kapat",
-    "check_again": "Yeniden Kontrol Et",
-    "view_repo": "GitHub'da Görüntüle",
-    "show_changelog": "Değişiklik günlüğünü göster",
-    "hide_changelog": "Değişiklik günlüğünü gizle",
-    "changelog_title": "Değişiklik Günlüğü",
-    "changelog_description": "{{version}} için sürüm notları proje değişiklik günlüğünde mevcuttur.",
-    "view_changelog": "GitHub'da tüm değişiklik günlüğünü görüntüle",
-    "version_unknown": "Bilinmiyor"
   }
 }
