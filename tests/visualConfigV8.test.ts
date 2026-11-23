@@ -255,18 +255,26 @@ describe('v8 scalar read/write path parity', () => {
           ? !baseline
           : numericFields.has(field)
             ? '1'
-            : field === 'routingStrategy'
-              ? 'fill-first'
-              : field === 'disableImageGeneration'
-                ? 'chat'
-                : 'fixture-updated';
+            : field === 'providerRequestTimeouts'
+              ? '{"codex":"5m"}'
+              : field === 'routingStrategy'
+                ? 'fill-first'
+                : field === 'disableImageGeneration'
+                  ? 'chat'
+                  : 'fixture-updated';
       const config = runVisualConfig(fixture, [{ [field]: value }]);
       const output = config.applyVisualChangesToYaml(fixture);
       const path = [...entry.yamlKeys!];
       if (field === 'tlsEnable') path.push('enable');
       if (field === 'pluginsEnabled') path.push('enabled');
       const expected =
-        field === 'apiKeysText' ? [value] : numericFields.has(field) ? Number(value) : value;
+        field === 'apiKeysText'
+          ? [value]
+          : field === 'providerRequestTimeouts'
+            ? '5m'
+            : numericFields.has(field)
+              ? Number(value)
+              : value;
       expect(
         path.reduce<unknown>(
           (node, key) => (node as Record<string, unknown>)[key],
