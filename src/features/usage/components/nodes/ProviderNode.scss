@@ -8,8 +8,8 @@
     gap: 10px;
     padding: 10px 16px;
     border-radius: 8px;
-    border: 2px solid var(--color-border);
-    background: var(--color-bg);
+    border: 2px solid var(--border-color);
+    background: var(--bg-secondary);
     min-width: 150px;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: none;
@@ -35,7 +35,7 @@
   .provider-label {
     font-size: 16px;
     font-weight: 500;
-    color: var(--color-text);
+    color: var(--text-primary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

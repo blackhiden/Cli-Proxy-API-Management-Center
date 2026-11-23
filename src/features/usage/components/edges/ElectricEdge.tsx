@@ -30,7 +30,7 @@ export const ElectricEdge = memo(({
           id={id}
           path={edgePath}
           style={{
-            stroke: 'var(--color-border)',
+            stroke: 'var(--border-color)',
             strokeWidth: 1,
             opacity: 0.3,
           }}
