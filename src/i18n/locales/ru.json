@@ -92,9 +92,7 @@
     "error_legacy_backend": "Этот сервер поддерживает Management API v0, но не v8. Обновите CLIProxyAPI до v8 или новее, чтобы использовать эту страницу управления.",
     "error_server": "Backend не смог обработать запрос управления, проверьте журналы сервера",
     "error_cors": "Блокировка CORS, проверьте конфигурацию сервера",
-    "error_ssl": "Ошибка проверки SSL/TLS сертификата",
-    "hide_key": "Скрыть ключ",
-    "show_key": "Показать ключ"
+    "error_ssl": "Ошибка проверки SSL/TLS сертификата"
   },
   "header": {
     "refresh_all": "Обновить всё",
@@ -114,7 +112,8 @@
     "plugins": "Плагины",
     "config_management": "Панель конфигурации",
     "logs": "Просмотр логов",
-    "system_info": "Информация системы"
+    "system_info": "Информация системы",
+    "usage": "Использование и аналитика"
   },
   "nav_groups": {
     "operate": "Работа",
@@ -134,7 +133,9 @@
     "plugins": "Установка, обновление и настройка",
     "logs": "Трассировка запросов",
     "config_management": "Базовая конфигурация шлюза",
-    "system_info": "Состояние и диагностика"
+    "system_info": "Состояние и диагностика",
+    "usage": "Аналитика запросов и топология потока",
+    "plugin_store": "Обнаружение и установка плагинов"
   },
   "dashboard": {
     "hero_verdict_good": "Всё стабильно",
@@ -745,7 +746,11 @@
     "upgrade_required": "Текущая версия CPA не поддерживает отключение OAuth-моделей. Пожалуйста, обновите систему.",
     "upgrade_required_title": "Пожалуйста, обновите CLI Proxy API",
     "upgrade_required_desc": "Текущая версия сервера не поддерживает получение отключения OAuth-моделей. Обновите CPA (CLI Proxy API) до последней версии и повторите попытку.",
-    "delete_title": "Удалить исключение"
+    "delete_title": "Удалить исключение",
+    "delete": "Удалить провайдера",
+    "delete_confirm": "Удалить исключённые модели для {{provider}}?",
+    "delete_success": "Исключённые модели удалены",
+    "delete_failed": "Не удалось удалить исключённые модели"
   },
   "excluded_models": {
     "trigger_summary": "Исключено: {{excluded}} · доступно: {{available}}",
@@ -826,7 +831,14 @@
     "upgrade_required": "Эта функция требует более новой версии CLI Proxy API (CPA). Обновите систему.",
     "upgrade_required_title": "Пожалуйста, обновите CLI Proxy API",
     "upgrade_required_desc": "Текущая версия сервера не поддерживает API псевдонимов моделей OAuth. Обновите CLI Proxy API (CPA) до последней версии.",
-    "delete_title": "Удалить сопоставления"
+    "delete_title": "Удалить сопоставления",
+    "delete_confirm": "Удалить псевдонимы моделей для {{provider}}?",
+    "delete_link_title": "Отвязать сопоставление",
+    "delete_link_confirm": "Отвязать сопоставление от <code>{{sourceModel}}</code> ({{provider}}) к псевдониму <code>{{alias}}</code>?",
+    "delete_alias_title": "Удалить псевдоним",
+    "delete_alias_confirm": "Удалить псевдоним <code>{{alias}}</code> и отвязать все связанные модели?",
+    "delete_success": "Псевдонимы моделей удалены",
+    "delete_failed": "Не удалось удалить псевдонимы моделей"
   },
   "model_rules": {
     "section_label": "Правила моделей",
@@ -1406,7 +1418,7 @@
         "auth": {
           "auth_dir": "Каталог OAuth (oauth.auth-dir)"
         },
-  "system": {
+        "system": {
           "debug": "Режим отладки",
           "commercial_mode": "Коммерческий режим",
           "commercial_mode_desc": "Отключить тяжёлое промежуточное ПО для поддержки высокой нагрузки",
@@ -1552,7 +1564,8 @@
           "fair": "Средний",
           "good": "Хороший",
           "strong": "Надёжный"
-        }
+        },
+        "name_save_error": "Не удалось сохранить в хранилище браузера. Проверьте настройки хранилища."
       },
       "payload_rules": {
         "rule": "Правило",
@@ -1678,7 +1691,6 @@
     "view_changelog": "Открыть полный журнал изменений на GitHub",
     "version_unknown": "Неизвестно"
   },
-
   "footer": {
     "api_version": "Версия CLI Proxy API",
     "build_date": "Время сборки",
@@ -1689,9 +1701,18 @@
     "chinese": "中文",
     "chinese_tw": "繁體中文（台灣）",
     "english": "English",
-    "russian": "Русский"
+    "russian": "Русский",
+    "vietnamese": "Tiếng Việt",
+    "korean": "한국어",
+    "turkish": "Турецкий"
   },
   "notification": {
+    "trusted_proxies_restart_required": "Настройки доверенных прокси сохранены. Перезапустите бэкенд для их применения.",
+    "region_label": "Уведомления",
+    "type_success": "Успешно",
+    "type_info": "Информация",
+    "type_warning": "Предупреждение",
+    "type_error": "Ошибка",
     "request_log_updated": "Настройка журналирования запросов обновлена",
     "login_storage_cleared": "Локальные данные входа очищены",
     "data_refreshed": "Данные успешно обновлены",
@@ -1705,16 +1726,13 @@
     "login_failed": "Вход не выполнен",
     "commercial_mode_restart_required": "Режим коммерческого использования изменён. Перезапустите сервис, чтобы применить изменения",
     "copy_failed": "Не удалось скопировать",
-    "link_copied": "Ссылка скопирована в буфер обмена",
-    "load_failed": "Ошибка загрузки",
-    "save_failed": "Ошибка сохранения"
+    "link_copied": "Ссылка скопирована в буфер обмена"
   },
   "sidebar": {
     "toggle_expand": "Развернуть боковую панель",
     "toggle_collapse": "Свернуть боковую панель",
     "expand": "Развернуть",
     "collapse": "Свернуть",
-    "subtitle": "Консоль управления CLI Proxy API",
     "auth_files_count": "Файлов аутентификации: {{count}}"
   },
   "theme": {
@@ -2062,57 +2080,6 @@
     "clear_login_desc": "Очистите локально сохранённые данные входа и выполните выход.",
     "clear_login_button": "Очистить данные входа",
     "clear_login_confirm": "Очистить локальные данные входа и выйти?"
-  },
-  "notification": {
-    "trusted_proxies_restart_required": "Настройки доверенных прокси сохранены. Перезапустите бэкенд для их применения.",
-    "region_label": "Уведомления",
-    "type_success": "Успешно",
-    "type_info": "Информация",
-    "type_warning": "Предупреждение",
-    "type_error": "Ошибка",
-    "request_log_updated": "Настройка журналирования запросов обновлена",
-    "login_storage_cleared": "Локальные данные входа очищены",
-    "data_refreshed": "Данные успешно обновлены",
-    "connection_required": "Сначала установите подключение",
-    "refresh_failed": "Не удалось обновить",
-    "update_failed": "Не удалось обновить",
-    "add_failed": "Не удалось добавить",
-    "delete_failed": "Не удалось удалить",
-    "upload_failed": "Не удалось загрузить",
-    "download_failed": "Не удалось скачать",
-    "login_failed": "Вход не выполнен",
-    "commercial_mode_restart_required": "Режим коммерческого использования изменён. Перезапустите сервис, чтобы применить изменения",
-    "copy_failed": "Не удалось скопировать",
-    "link_copied": "Ссылка скопирована в буфер обмена"
-  },
-  "language": {
-    "switch": "Язык",
-    "chinese": "中文",
-    "chinese_tw": "繁體中文（台灣）",
-    "english": "English",
-    "russian": "Русский",
-    "vietnamese": "Tiếng Việt",
-    "korean": "한국어",
-    "turkish": "Турецкий"
-  },
-  "theme": {
-    "switch": "Тема",
-    "light": "Шерстяная бумага",
-    "white": "Чисто-белая",
-    "dark": "Тёмная",
-    "auto": "Следовать системе"
-  },
-  "sidebar": {
-    "toggle_expand": "Развернуть боковую панель",
-    "toggle_collapse": "Свернуть боковую панель",
-    "expand": "Развернуть",
-    "collapse": "Свернуть",
-    "auth_files_count": "Файлов аутентификации: {{count}}"
-  },
-  "footer": {
-    "api_version": "Версия CLI Proxy API",
-    "build_date": "Время сборки",
-    "version": "Версия интерфейса управления"
   },
   "providersPage": {
     "connections": {

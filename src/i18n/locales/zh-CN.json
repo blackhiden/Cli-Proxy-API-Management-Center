@@ -92,9 +92,7 @@
     "error_legacy_backend": "当前后端可使用 v0 管理接口，但不支持 v8。请将 CLIProxyAPI 升级至 v8 或更高版本后再使用此管理页面。",
     "error_server": "后端处理管理接口时发生错误，请查看服务日志",
     "error_cors": "跨域请求被阻止，请检查服务器配置",
-    "error_ssl": "SSL/TLS 证书验证失败",
-    "hide_key": "隐藏密钥",
-    "show_key": "显示密钥"
+    "error_ssl": "SSL/TLS 证书验证失败"
   },
   "header": {
     "refresh_all": "刷新全部",
@@ -114,7 +112,8 @@
     "plugins": "插件",
     "config_management": "配置面板",
     "logs": "日志查看",
-    "system_info": "中心信息"
+    "system_info": "中心信息",
+    "usage": "用量分析"
   },
   "nav_groups": {
     "operate": "运行",
@@ -134,7 +133,9 @@
     "plugins": "安装、更新与配置",
     "logs": "请求追踪与排查",
     "config_management": "网关基础配置",
-    "system_info": "运行与诊断信息"
+    "system_info": "运行与诊断信息",
+    "usage": "请求分析与流量拓扑",
+    "plugin_store": "发现并安装插件"
   },
   "dashboard": {
     "hero_verdict_good": "运行平稳",
@@ -739,7 +740,11 @@
     "upgrade_required": "当前 CPA 版本不支持 OAuth 模型禁用，请升级 CPA 版本",
     "upgrade_required_title": "需要升级 CPA 版本",
     "upgrade_required_desc": "当前服务器版本不支持获取 OAuth 模型禁用功能，请升级到最新版本的 CPA（CLI Proxy API）后重试。",
-    "delete_title": "删除排除项"
+    "delete_title": "删除排除项",
+    "delete": "删除提供商",
+    "delete_confirm": "删除 {{provider}} 的模型排除规则？",
+    "delete_success": "已删除模型排除规则",
+    "delete_failed": "删除模型排除规则失败"
   },
   "excluded_models": {
     "trigger_summary": "已排除 {{excluded}} · {{available}} 可用",
@@ -820,7 +825,14 @@
     "upgrade_required": "当前 CPA 版本不支持模型别名功能，请升级 CPA 版本",
     "upgrade_required_title": "需要升级 CPA 版本",
     "upgrade_required_desc": "当前服务器版本不支持 OAuth 模型别名功能，请升级到最新版本的 CPA（CLI Proxy API）后重试。",
-    "delete_title": "删除映射"
+    "delete_title": "删除映射",
+    "delete_confirm": "删除 {{provider}} 的模型别名？",
+    "delete_link_title": "取消映射关联",
+    "delete_link_confirm": "取消 <code>{{sourceModel}}</code>（{{provider}}）到别名 <code>{{alias}}</code> 的映射？",
+    "delete_alias_title": "删除别名",
+    "delete_alias_confirm": "删除别名 <code>{{alias}}</code> 并取消所有相关模型的映射？",
+    "delete_success": "已删除模型别名",
+    "delete_failed": "删除模型别名失败"
   },
   "model_rules": {
     "section_label": "模型规则",
@@ -1385,7 +1397,7 @@
         "auth": {
           "auth_dir": "OAuth 认证文件目录 (oauth.auth-dir)"
         },
-  "system": {
+        "system": {
           "debug": "调试模式",
           "commercial_mode": "商业模式",
           "commercial_mode_desc": "禁用高开销中间件以支持高并发",
@@ -1531,7 +1543,8 @@
           "fair": "一般",
           "good": "良好",
           "strong": "很强"
-        }
+        },
+        "name_save_error": "无法保存到浏览器存储，请检查浏览器存储设置。"
       },
       "payload_rules": {
         "rule": "规则",
@@ -1657,7 +1670,6 @@
     "view_changelog": "在 GitHub 上查看完整更新日志",
     "version_unknown": "未知"
   },
-
   "footer": {
     "api_version": "CLI Proxy API 版本",
     "build_date": "构建时间",
@@ -1668,9 +1680,18 @@
     "chinese": "中文",
     "chinese_tw": "繁體中文（台灣）",
     "english": "English",
-    "russian": "Русский"
+    "russian": "Русский",
+    "vietnamese": "Tiếng Việt",
+    "korean": "한국어",
+    "turkish": "土耳其语"
   },
   "notification": {
+    "trusted_proxies_restart_required": "可信代理配置已保存，重启后端后生效。",
+    "region_label": "通知",
+    "type_success": "成功",
+    "type_info": "提示",
+    "type_warning": "警告",
+    "type_error": "错误",
     "request_log_updated": "请求日志设置已更新",
     "login_storage_cleared": "本地登录信息已清理",
     "data_refreshed": "数据刷新成功",
@@ -1684,16 +1705,13 @@
     "login_failed": "登录失败",
     "commercial_mode_restart_required": "商业模式开关已变更，请重启服务后生效",
     "copy_failed": "复制失败",
-    "link_copied": "已复制",
-    "load_failed": "加载失败",
-    "save_failed": "保存失败"
+    "link_copied": "已复制"
   },
   "sidebar": {
     "toggle_expand": "展开侧边栏",
     "toggle_collapse": "收起侧边栏",
     "expand": "展开",
     "collapse": "收起",
-    "subtitle": "CLI Proxy API 管理控制台",
     "auth_files_count": "认证文件：{{count}} 个"
   },
   "theme": {
@@ -2012,15 +2030,6 @@
     "gate_step3_prompt": "如需确认，请在下方输入框中键入 “{{token}}”",
     "gate_step3_action": "安装此插件"
   },
-  "plugin_resource": {
-    "page_count": "{{count}} 个页面",
-    "load_failed": "加载插件页面失败",
-    "unavailable": "插件页面不可用",
-    "not_found": "未找到插件页面",
-    "not_found_desc": "该插件页面未在当前后端插件列表中声明。",
-    "empty_src": "插件页面地址为空",
-    "empty_src_desc": "该插件菜单未提供可嵌入的页面地址。"
-  },
   "system_info": {
     "models_refresh_button": "刷新列表",
     "models_refresh_success": "可用模型列表已刷新，共 {{count}} 个。",
@@ -2050,57 +2059,6 @@
     "clear_login_desc": "清理本地保存的登录信息并退出登录。",
     "clear_login_button": "清理登录信息",
     "clear_login_confirm": "确认清理本地登录信息并退出登录？"
-  },
-  "notification": {
-    "trusted_proxies_restart_required": "可信代理配置已保存，重启后端后生效。",
-    "region_label": "通知",
-    "type_success": "成功",
-    "type_info": "提示",
-    "type_warning": "警告",
-    "type_error": "错误",
-    "request_log_updated": "请求日志设置已更新",
-    "login_storage_cleared": "本地登录信息已清理",
-    "data_refreshed": "数据刷新成功",
-    "connection_required": "请先建立连接",
-    "refresh_failed": "刷新失败",
-    "update_failed": "更新失败",
-    "add_failed": "添加失败",
-    "delete_failed": "删除失败",
-    "upload_failed": "上传失败",
-    "download_failed": "下载失败",
-    "login_failed": "登录失败",
-    "commercial_mode_restart_required": "商业模式开关已变更，请重启服务后生效",
-    "copy_failed": "复制失败",
-    "link_copied": "已复制"
-  },
-  "language": {
-    "switch": "语言",
-    "chinese": "中文",
-    "chinese_tw": "繁體中文（台灣）",
-    "english": "English",
-    "russian": "Русский",
-    "vietnamese": "Tiếng Việt",
-    "korean": "한국어",
-    "turkish": "土耳其语"
-  },
-  "theme": {
-    "switch": "主题",
-    "light": "羊毛纸",
-    "white": "纯白",
-    "dark": "暗色",
-    "auto": "跟随系统"
-  },
-  "sidebar": {
-    "toggle_expand": "展开侧边栏",
-    "toggle_collapse": "收起侧边栏",
-    "expand": "展开",
-    "collapse": "收起",
-    "auth_files_count": "认证文件：{{count}} 个"
-  },
-  "footer": {
-    "api_version": "CLI Proxy API 版本",
-    "build_date": "构建时间",
-    "version": "管理中心版本"
   },
   "providersPage": {
     "connections": {

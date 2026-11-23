@@ -112,7 +112,8 @@
     "plugins": "플러그인",
     "config_management": "설정 패널",
     "logs": "로그 뷰어",
-    "system_info": "관리 센터 정보"
+    "system_info": "관리 센터 정보",
+    "usage": "사용량 및 분석"
   },
   "nav_groups": {
     "operate": "운영",
@@ -132,7 +133,9 @@
     "plugins": "설치, 업데이트 및 설정",
     "logs": "요청 추적",
     "config_management": "게이트웨이 설정",
-    "system_info": "런타임 및 진단"
+    "system_info": "런타임 및 진단",
+    "usage": "요청 분석 및 흐름 토폴로지",
+    "plugin_store": "플러그인 검색 및 설치"
   },
   "dashboard": {
     "hero_verdict_good": "모든 시스템 정상",
@@ -436,7 +439,9 @@
     "quota_refresh_single": "할당량 새로 고침",
     "quota_refresh_hint": "이 자격 증명의 할당량만 새로 고침합니다",
     "quota_refresh_success": "\"{{name}}\"의 할당량을 새로 고쳤습니다",
-    "quota_refresh_failed": "\"{{name}}\"의 할당량 새로 고침 실패: {{message}}"
+    "quota_refresh_failed": "\"{{name}}\"의 할당량 새로 고침 실패: {{message}}",
+    "delete_title": "파일 삭제",
+    "delete_all_title": "모든 파일 삭제"
   },
   "antigravity_subscription": {
     "plan_unknown": "알 수 없음",
@@ -736,7 +741,12 @@
     "list_empty_all": "아직 비활성화된 모델이 없습니다. 공급자를 선택해 시작하세요.",
     "upgrade_required": "현재 CPA 버전에서는 OAuth 모델 비활성화를 지원하지 않습니다. 업그레이드하세요.",
     "upgrade_required_title": "CLI Proxy API를 업그레이드하세요",
-    "upgrade_required_desc": "현재 서버 버전은 OAuth 모델 비활성화 조회를 지원하지 않습니다. 최신 CPA(CLI Proxy API) 버전으로 업그레이드한 후 다시 시도하세요."
+    "upgrade_required_desc": "현재 서버 버전은 OAuth 모델 비활성화 조회를 지원하지 않습니다. 최신 CPA(CLI Proxy API) 버전으로 업그레이드한 후 다시 시도하세요.",
+    "delete": "공급자 삭제",
+    "delete_confirm": "{{provider}}의 제외 모델을 삭제하시겠습니까?",
+    "delete_success": "제외 모델을 삭제했습니다",
+    "delete_failed": "제외 모델을 삭제하지 못했습니다",
+    "delete_title": "제외 삭제"
   },
   "excluded_models": {
     "trigger_summary": "{{excluded}}개 제외됨 · {{available}}개 사용 가능",
@@ -816,7 +826,15 @@
     "view_mode_list": "목록",
     "upgrade_required": "이 기능은 최신 버전의 CLI Proxy API(CPA)가 필요합니다. 업그레이드하세요.",
     "upgrade_required_title": "CLI Proxy API를 업그레이드하세요",
-    "upgrade_required_desc": "현재 서버는 OAuth 모델 별칭 API를 지원하지 않습니다. 최신 버전의 CLI Proxy API(CPA)로 업그레이드하세요."
+    "upgrade_required_desc": "현재 서버는 OAuth 모델 별칭 API를 지원하지 않습니다. 최신 버전의 CLI Proxy API(CPA)로 업그레이드하세요.",
+    "delete_confirm": "{{provider}}의 모델 별칭을 삭제하시겠습니까?",
+    "delete_link_title": "매핑 연결 해제",
+    "delete_link_confirm": "<code>{{sourceModel}}</code>({{provider}})에서 별칭 <code>{{alias}}</code>로의 매핑을 연결 해제하시겠습니까?",
+    "delete_alias_title": "별칭 삭제",
+    "delete_alias_confirm": "별칭 <code>{{alias}}</code>을 삭제하고 관련된 모든 모델의 매핑을 해제하시겠습니까?",
+    "delete_success": "모델 별칭을 삭제했습니다",
+    "delete_failed": "모델 별칭을 삭제하지 못했습니다",
+    "delete_title": "매핑 삭제"
   },
   "model_rules": {
     "section_label": "모델 규칙",
@@ -1013,7 +1031,9 @@
     "login_proxy_invalid": "프록시 URL이 올바르지 않습니다. 호스트와 함께 http, https, socks5 또는 socks5h를 사용하세요(socks5는 포트 필요). 경로나 쿼리는 넣을 수 없습니다.",
     "login_proxy_in_use": "프록시를 통해 로그인 중",
     "sign_up_prompt": "계정이 없나요?",
-    "copied": "복사됨"
+    "copied": "복사됨",
+    "do_not_use_proxy": "프록시 사용 안 함",
+    "do_not_use_proxy_hint": "선택하면 OAuth 로그인이 구성된 프록시를 우회하여 직접 연결합니다. 선택을 해제하면 구성의 프록시를 사용합니다."
   },
   "stats": {
     "success": "성공",
@@ -1109,7 +1129,8 @@
     "search_empty_desc": "다른 키워드를 시도하거나 필터를 초기화하세요.",
     "double_click_copy_hint": "더블클릭하여 원본 로그 줄을 복사하세요",
     "copy_success": "로그를 클립보드에 복사했습니다",
-    "copy_failed": "복사에 실패했습니다"
+    "copy_failed": "복사에 실패했습니다",
+    "clear_confirm_title": "로그 지우기"
   },
   "config_management": {
     "title": "설정 패널",
@@ -1383,7 +1404,7 @@
         "auth": {
           "auth_dir": "OAuth 자격 증명 디렉터리 (oauth.auth-dir)"
         },
-  "system": {
+        "system": {
           "debug": "디버그 모드",
           "commercial_mode": "상용 모드",
           "commercial_mode_desc": "높은 동시성을 지원하기 위해 오버헤드가 큰 미들웨어를 비활성화합니다.",
@@ -1529,7 +1550,8 @@
           "fair": "보통",
           "good": "좋음",
           "strong": "강함"
-        }
+        },
+        "name_save_error": "브라우저 저장소에 저장할 수 없습니다. 브라우저 저장소 설정을 확인하세요."
       },
       "payload_rules": {
         "rule": "규칙",
@@ -2393,7 +2415,10 @@
         "advanced": "고급"
       },
       "headerName": "헤더 이름",
-      "headerValue": "헤더 값"
+      "headerValue": "헤더 값",
+      "directConnection": "직접 연결(프록시 없음)",
+      "directConnectionHint": "활성화하면 이 공급자는 시스템 프록시를 우회하여 직접 연결합니다.",
+      "directConnectionOverridesProxyUrl": "직접 연결은 아래 프록시 URL을 재정의합니다."
     },
     "delete": {
       "title": "리소스 삭제",
@@ -2581,5 +2606,19 @@
     "remove_pattern": "{{row}}행 정규식 규칙 삭제",
     "move_up": "{{row}}행 정규식 규칙 위로 이동",
     "move_down": "{{row}}행 정규식 규칙 아래로 이동"
+  },
+  "update_modal": {
+    "title": "업데이트 가능",
+    "message": "상위 저장소에서 업데이트를 사용할 수 있습니다: {{version}} (커밋 {{commit}}).",
+    "current_version": "현재 버전: {{version}}",
+    "dismiss": "닫기",
+    "check_again": "다시 확인",
+    "view_repo": "GitHub에서 보기",
+    "show_changelog": "변경 기록 표시",
+    "hide_changelog": "변경 기록 숨기기",
+    "changelog_title": "변경 기록",
+    "changelog_description": "{{version}}의 릴리스 정보는 프로젝트 변경 기록에서 확인할 수 있습니다.",
+    "view_changelog": "GitHub에서 전체 변경 기록 보기",
+    "version_unknown": "알 수 없음"
   }
 }

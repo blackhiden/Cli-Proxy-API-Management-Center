@@ -112,7 +112,8 @@
     "plugins": "Plugin",
     "config_management": "Bảng cấu hình",
     "logs": "Trình xem Log",
-    "system_info": "Thông tin Trung tâm Quản lý"
+    "system_info": "Thông tin Trung tâm Quản lý",
+    "usage": "Sử dụng & Phân tích"
   },
   "nav_groups": {
     "operate": "Vận hành",
@@ -132,7 +133,9 @@
     "plugins": "Cài đặt, cập nhật & cấu hình",
     "logs": "Truy vết yêu cầu",
     "config_management": "Cấu hình gateway",
-    "system_info": "Runtime & chẩn đoán"
+    "system_info": "Runtime & chẩn đoán",
+    "usage": "Phân tích yêu cầu & topology luồng",
+    "plugin_store": "Khám phá & cài đặt plugin"
   },
   "dashboard": {
     "hero_verdict_good": "Mọi hệ thống ổn định",
@@ -509,7 +512,7 @@
     "seven_day_cowork": "Giới hạn tuần của Cowork",
     "iguana_necktie": "Iguana Necktie",
     "seven_day_fable": "Giới hạn tuần của Fable 5",
-    "cloud_session_credits": "Tín dụng phiên đám mây",
+    "cloud_session_credits": "Tín dụng phiên cloud",
     "extra_usage_label": "Sử dụng thêm",
     "extra_usage_enabled": "Đã bật",
     "extra_usage_disabled": "Chưa bật",
@@ -528,8 +531,7 @@
     "plan_max": "Max",
     "plan_max5": "Max 5x",
     "plan_max20": "Max 20x",
-    "plan_team": "Team",
-    "cloud_session_credits": "Tín dụng phiên cloud"
+    "plan_team": "Team"
   },
   "codex_quota": {
     "title": "Quota Codex",
@@ -1188,7 +1190,7 @@
         "auth": {
           "auth_dir": "Thư mục xác thực (auth-dir)"
         },
-  "system": {
+        "system": {
           "debug": "Chế độ Debug",
           "commercial_mode": "Chế độ thương mại",
           "commercial_mode_desc": "Tắt middleware tốn tài nguyên để hỗ trợ đồng thời cao",
@@ -1334,7 +1336,8 @@
         },
         "name_label": "Tên / mô tả",
         "name_placeholder": "Ví dụ: Laptop của Alice",
-        "name_hint": "Tên được lưu vào cấu hình máy chủ khi bạn lưu thay đổi. Xóa trường này để xóa tên."
+        "name_hint": "Tên được lưu vào cấu hình máy chủ khi bạn lưu thay đổi. Xóa trường này để xóa tên.",
+        "name_save_error": "Không thể lưu vào bộ nhớ trình duyệt. Kiểm tra cài đặt bộ nhớ trình duyệt."
       },
       "payload_rules": {
         "rule": "Quy tắc",

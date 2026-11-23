@@ -77,7 +77,7 @@ function parseSensitivePatternsReplace(raw: unknown): SensitivePatternReplacemen
   });
 }
 
-function areSensitiveReplacementsEqual(
+function areStringRecordsEqual(
   left: Record<string, string> | SensitivePatternReplacement[],
   right: Record<string, string> | SensitivePatternReplacement[]
 ): boolean {
@@ -1673,7 +1673,6 @@ function getNextDirtyFields(
       'rmPanelRepo',
       'authDir',
       'apiKeysText',
-      'apiKeyNames',
       'debug',
       'commercialMode',
       'loggingToFile',
@@ -1691,9 +1690,15 @@ function getNextDirtyFields(
     ] as Array<keyof VisualConfigValues>
   ).forEach(updateScalarDirty);
 
+  if (Object.prototype.hasOwnProperty.call(patch, 'apiKeyNames')) {
+    updateDirty(
+      'apiKeyNames',
+      areStringRecordsEqual(nextValues.apiKeyNames, baselineValues.apiKeyNames)
+    );
+  }
   for (const [field] of SENSITIVE_REPLACEMENT_FIELDS) {
     if (Object.prototype.hasOwnProperty.call(patch, field)) {
-      updateDirty(field, areSensitiveReplacementsEqual(nextValues[field], baselineValues[field]));
+      updateDirty(field, areStringRecordsEqual(nextValues[field], baselineValues[field]));
     }
   }
   if (Object.prototype.hasOwnProperty.call(patch, 'pluginStoreSources')) {

@@ -77,8 +77,8 @@
     "remember_password_label": "記住密碼",
     "management_key_label": "管理金鑰",
     "management_key_placeholder": "請輸入管理金鑰",
-    "show_key": "顯示金鑰",
-    "hide_key": "隱藏金鑰",
+    "show_key": "顯示密鑰",
+    "hide_key": "隱藏密鑰",
     "submit_button": "登入",
     "submitting": "連線中...",
     "error_backend_detail": "後端返回",
@@ -92,9 +92,7 @@
     "error_legacy_backend": "目前後端可使用 v0 管理介面，但不支援 v8。請將 CLIProxyAPI 升級至 v8 或更新版本後再使用此管理頁面。",
     "error_server": "後端處理管理介面時發生錯誤，請查看服務日誌",
     "error_cors": "跨域請求被阻擋，請檢查伺服器設定",
-    "error_ssl": "SSL/TLS 憑證驗證失敗",
-    "hide_key": "隱藏密鑰",
-    "show_key": "顯示密鑰"
+    "error_ssl": "SSL/TLS 憑證驗證失敗"
   },
   "header": {
     "refresh_all": "全部重新整理",
@@ -114,7 +112,8 @@
     "plugins": "插件",
     "config_management": "設定面板",
     "logs": "記錄檢視",
-    "system_info": "中心資訊"
+    "system_info": "中心資訊",
+    "usage": "用量分析"
   },
   "nav_groups": {
     "operate": "運行",
@@ -134,7 +133,9 @@
     "plugins": "安裝、更新與設定",
     "logs": "請求追蹤與排查",
     "config_management": "閘道基礎設定",
-    "system_info": "運行與診斷資訊"
+    "system_info": "運行與診斷資訊",
+    "usage": "請求分析與流量拓撲",
+    "plugin_store": "發現並安裝外掛"
   },
   "dashboard": {
     "hero_verdict_good": "運行平穩",
@@ -739,7 +740,11 @@
     "upgrade_required": "目前 CPA 版本不支援 OAuth 模型停用，請升級 CPA 版本",
     "upgrade_required_title": "需要升級 CPA 版本",
     "upgrade_required_desc": "目前伺服器版本不支援取得 OAuth 模型停用功能，請升級到最新版本的 CPA（CLI Proxy API）後重試。",
-    "delete_title": "刪除排除項"
+    "delete_title": "刪除排除項",
+    "delete": "刪除提供商",
+    "delete_confirm": "刪除 {{provider}} 的模型排除規則？",
+    "delete_success": "已刪除模型排除規則",
+    "delete_failed": "刪除模型排除規則失敗"
   },
   "excluded_models": {
     "trigger_summary": "已排除 {{excluded}} · {{available}} 可用",
@@ -820,7 +825,14 @@
     "upgrade_required": "目前 CPA 版本不支援模型別名功能，請升級 CPA 版本",
     "upgrade_required_title": "需要升級 CPA 版本",
     "upgrade_required_desc": "目前伺服器版本不支援 OAuth 模型別名功能，請升級到最新版本的 CPA（CLI Proxy API）後重試。",
-    "delete_title": "刪除映射"
+    "delete_title": "刪除映射",
+    "delete_confirm": "刪除 {{provider}} 的模型別名？",
+    "delete_link_title": "取消映射關聯",
+    "delete_link_confirm": "取消 <code>{{sourceModel}}</code>（{{provider}}）到別名 <code>{{alias}}</code> 的映射？",
+    "delete_alias_title": "刪除別名",
+    "delete_alias_confirm": "刪除別名 <code>{{alias}}</code> 並取消所有相關模型的映射？",
+    "delete_success": "已刪除模型別名",
+    "delete_failed": "刪除模型別名失敗"
   },
   "model_rules": {
     "section_label": "模型規則",
@@ -1385,7 +1397,7 @@
         "auth": {
           "auth_dir": "OAuth 驗證檔案目錄（oauth.auth-dir）"
         },
-  "system": {
+        "system": {
           "debug": "除錯模式",
           "commercial_mode": "商業模式",
           "commercial_mode_desc": "停用高開銷中介軟體以支援高並行",
@@ -1531,7 +1543,8 @@
           "fair": "一般",
           "good": "良好",
           "strong": "很強"
-        }
+        },
+        "name_save_error": "無法儲存到瀏覽器儲存空間，請檢查瀏覽器儲存設定。"
       },
       "payload_rules": {
         "rule": "規則",
@@ -1657,7 +1670,6 @@
     "view_changelog": "在 GitHub 上查看完整更新日誌",
     "version_unknown": "未知"
   },
-
   "footer": {
     "api_version": "CLI Proxy API 版本",
     "build_date": "建置時間",
@@ -1668,9 +1680,18 @@
     "chinese": "簡體中文",
     "chinese_tw": "繁體中文（台灣）",
     "english": "英文",
-    "russian": "俄文"
+    "russian": "俄文",
+    "vietnamese": "Tiếng Việt",
+    "korean": "한국어",
+    "turkish": "土耳其文"
   },
   "notification": {
+    "trusted_proxies_restart_required": "可信任代理設定已儲存，重新啟動後端後生效。",
+    "region_label": "通知",
+    "type_success": "成功",
+    "type_info": "提示",
+    "type_warning": "警告",
+    "type_error": "錯誤",
     "request_log_updated": "請求記錄設定已更新",
     "login_storage_cleared": "本地登入資訊已清理",
     "data_refreshed": "資料重新整理成功",
@@ -1684,16 +1705,13 @@
     "login_failed": "登入失敗",
     "commercial_mode_restart_required": "商業模式開關已變更，請重啟服務後生效",
     "copy_failed": "複製失敗",
-    "link_copied": "已複製",
-    "load_failed": "載入失敗",
-    "save_failed": "儲存失敗"
+    "link_copied": "已複製"
   },
   "sidebar": {
     "toggle_expand": "展開側邊欄",
     "toggle_collapse": "收起側邊欄",
     "expand": "展開",
     "collapse": "收起",
-    "subtitle": "CLI Proxy API 管理控制台",
     "auth_files_count": "驗證檔案：{{count}} 個"
   },
   "theme": {
@@ -2012,15 +2030,6 @@
     "gate_step3_prompt": "如需確認，請在下方輸入框中鍵入 “{{token}}”",
     "gate_step3_action": "安裝此插件"
   },
-  "plugin_resource": {
-    "page_count": "{{count}} 個頁面",
-    "load_failed": "載入插件頁面失敗",
-    "unavailable": "插件頁面不可用",
-    "not_found": "找不到插件頁面",
-    "not_found_desc": "目前後端插件清單未宣告此插件頁面。",
-    "empty_src": "插件頁面位址為空",
-    "empty_src_desc": "此插件選單未提供可嵌入的頁面位址。"
-  },
   "system_info": {
     "models_refresh_button": "重新整理清單",
     "models_refresh_success": "可用模型清單已重新整理，共 {{count}} 個。",
@@ -2050,57 +2059,6 @@
     "clear_login_desc": "清理本地儲存的登入資訊並登出。",
     "clear_login_button": "清理登入資訊",
     "clear_login_confirm": "確認清理本地登入資訊並登出？"
-  },
-  "notification": {
-    "trusted_proxies_restart_required": "可信任代理設定已儲存，重新啟動後端後生效。",
-    "region_label": "通知",
-    "type_success": "成功",
-    "type_info": "提示",
-    "type_warning": "警告",
-    "type_error": "錯誤",
-    "request_log_updated": "請求記錄設定已更新",
-    "login_storage_cleared": "本地登入資訊已清理",
-    "data_refreshed": "資料重新整理成功",
-    "connection_required": "請先建立連線",
-    "refresh_failed": "重新整理失敗",
-    "update_failed": "更新失敗",
-    "add_failed": "新增失敗",
-    "delete_failed": "刪除失敗",
-    "upload_failed": "上傳失敗",
-    "download_failed": "下載失敗",
-    "login_failed": "登入失敗",
-    "commercial_mode_restart_required": "商業模式開關已變更，請重啟服務後生效",
-    "copy_failed": "複製失敗",
-    "link_copied": "已複製"
-  },
-  "language": {
-    "switch": "語言",
-    "chinese": "簡體中文",
-    "chinese_tw": "繁體中文（台灣）",
-    "english": "英文",
-    "russian": "俄文",
-    "vietnamese": "Tiếng Việt",
-    "korean": "한국어",
-    "turkish": "土耳其文"
-  },
-  "theme": {
-    "switch": "主題",
-    "light": "羊毛紙",
-    "white": "純白",
-    "dark": "深色",
-    "auto": "跟隨系統"
-  },
-  "sidebar": {
-    "toggle_expand": "展開側邊欄",
-    "toggle_collapse": "收起側邊欄",
-    "expand": "展開",
-    "collapse": "收起",
-    "auth_files_count": "驗證檔案：{{count}} 個"
-  },
-  "footer": {
-    "api_version": "CLI Proxy API 版本",
-    "build_date": "建置時間",
-    "version": "管理中心版本"
   },
   "providersPage": {
     "connections": {
