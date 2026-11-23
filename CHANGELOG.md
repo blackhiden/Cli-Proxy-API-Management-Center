@@ -2,6 +2,46 @@
 
 ## [Unreleased]
 
+## [1.29.1] - 2026-11-23
+
+### Merged
+
+- Merged `upstream/main` at `aef56a47` into `dev` (tag `v1.29.0`). The merge commit is `64564b37`.
+- Resolved three conflicts by combining both sides:
+  - `SponsorProviderForm.tsx`: kept upstream's `FormSection` layout and accessibility improvements while
+    preserving the fork's direct-connection switch and proxy override behavior.
+  - `useVisualConfig.ts`: used upstream's comment/anchor-preserving `writeClientKeys` and kept the fork's
+    `access.api-key-names` persistence on top of it.
+  - `visualConfigV8.test.ts`: kept the fork's key-name regression test alongside all upstream YAML
+    preservation tests.
+- Preserved all protected fork features: OAuth `noProxy`/direct connection behavior, protected Codex and
+  Antigravity OAuth providers, OAuth result modal, update notification system, and usage feature.
+
+### Added (from upstream)
+
+- Provider workbench redesign with native connection forms, native provider groups, disabled-state handling,
+  connection-pool validation, brand panels, provider picker, resource cards, and sheet-view navigation.
+- OAuth error-rule configuration in the visual config editor, with API normalization and localized validation.
+- GitHub Copilot OAuth and quota support, provider artwork/logo helpers, and new connection-pool API modules.
+- Expanded test coverage for native connection forms, group settings, provider workbench presentation,
+  connection editing, OAuth error rules, and CSS custom-property contracts.
+
+### Fixed
+
+- Mapped legacy CSS custom properties in the preserved usage feature to existing theme tokens so the new
+  upstream CSS contract test passes without removing or downgrading the feature.
+- A concurrent local commit fixed the pre-existing `providerRequestTimeouts` scalar-parity test; that fix is
+  included in this release.
+
+### Validation
+
+- `bun run verify`: 2509 pass, 1 todo, 18 fail. The remaining failures are the known locale-completeness,
+  LoginRevealVeil source-shape, and visual-config rebase suites; no new failure category remains.
+- `bun run lint`: 0 errors, 4 pre-existing warnings. `bun run build`: passed; single-file `dist/index.html`
+  is 4,200.40 kB (gzip 1,356.68 kB).
+- Browser verification of the changed upstream UI was not performed; no backend or mocked-auth session was
+  available for the affected provider/configuration routes.
+
 ## [1.28.6] - 2026-11-22
 
 ### Changed
