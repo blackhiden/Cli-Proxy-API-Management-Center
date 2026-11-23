@@ -19,6 +19,11 @@ describe('provider direct connection (resolveProxyUrl)', () => {
     expect(resolveProxyUrl(false, ' none ')).toBeUndefined();
   });
 
+  test('absent direct-connection control preserves an explicitly entered direct marker', () => {
+    expect(resolveProxyUrl(undefined, 'direct')).toBe('direct');
+    expect(resolveProxyUrl(undefined, ' none ')).toBe('none');
+  });
+
   test('unchecked keeps an explicit proxy URL override', () => {
     expect(resolveProxyUrl(false, 'socks5://proxy.example:1080')).toBe(
       'socks5://proxy.example:1080'
