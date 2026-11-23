@@ -25,7 +25,7 @@
     gap: 12px;
     font-size: 28px;
     font-weight: 600;
-    color: var(--color-text);
+    color: var(--text-primary);
     margin: 0;
   }
 
@@ -35,7 +35,7 @@
 
   .usage-subtitle {
     font-size: 14px;
-    color: var(--color-text-muted);
+    color: var(--text-muted);
     margin: 0;
   }
 
@@ -59,23 +59,23 @@
     text-align: center;
     gap: 8px;
     padding: 24px 16px;
-    background: var(--color-surface);
-    border: 1px solid var(--color-border-subtle);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-secondary);
     border-radius: 14px;
-    box-shadow: var(--shadow-soft);
+    box-shadow: var(--shadow);
 
     .stat-label {
       font-size: 11px;
       text-transform: uppercase;
       font-weight: 600;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       letter-spacing: 0.5px;
     }
 
     .stat-value {
       font-size: 24px;
       font-weight: 700;
-      color: var(--color-text);
+      color: var(--text-primary);
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;
@@ -84,23 +84,23 @@
 
     .stat-hint {
       font-size: 10px;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
     }
 
     &.stat-primary .stat-value {
-      color: var(--color-primary);
+      color: var(--primary-color);
     }
 
     &.stat-info .stat-value {
-      color: var(--color-info);
+      color: var(--info-color);
     }
 
     &.stat-success .stat-value {
-      color: var(--color-success);
+      color: var(--success-color);
     }
 
     &.stat-warning .stat-value {
-      color: var(--color-warning);
+      color: var(--warning-color);
     }
   }
 
@@ -116,18 +116,18 @@
     width: 100%;
     min-width: 0;
     border-radius: 8px;
-    border: 1px solid var(--color-border);
-    background: var(--color-bg-subtle);
+    border: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
     overflow: hidden;
   }
 
   // Recent Requests
   .recent-requests {
     .section-card {
-      background: var(--color-surface);
-      border: 1px solid var(--color-border-subtle);
+      background: var(--bg-primary);
+      border: 1px solid var(--border-secondary);
       border-radius: 14px;
-      box-shadow: var(--shadow-soft);
+      box-shadow: var(--shadow);
       padding: 24px;
       display: flex;
       flex-direction: column;
@@ -137,14 +137,14 @@
 
     .section-header {
       padding: 8px 4px;
-      border-bottom: 1px solid var(--color-border);
+      border-bottom: 1px solid var(--border-color);
     }
 
     .section-label {
       font-size: 12px;
       font-weight: 600;
       text-transform: uppercase;
-      color: var(--color-text-muted);
+      color: var(--text-muted);
       letter-spacing: 0.5px;
     }
 
@@ -163,7 +163,7 @@
       thead {
         position: sticky;
         top: 0;
-        background: var(--color-bg);
+        background: var(--bg-secondary);
         z-index: 10;
 
         th {
@@ -171,10 +171,10 @@
           text-align: left;
           font-weight: 600;
           font-size: 11px;
-          color: var(--color-text-muted);
+          color: var(--text-muted);
           text-transform: uppercase;
           letter-spacing: 0.5px;
-          border-bottom: 1px solid var(--color-border);
+          border-bottom: 1px solid var(--border-color);
 
           &.text-right {
             text-align: right;
@@ -184,11 +184,11 @@
 
       tbody {
         tr {
-          border-bottom: 1px solid rgba(var(--color-border-rgb), 0.5);
+          border-bottom: 1px solid color-mix(in srgb, var(--border-color) 50%, transparent);
           transition: background 0.15s ease;
 
           &:hover {
-            background: var(--color-bg-subtle);
+            background: var(--bg-tertiary);
           }
 
           td {
@@ -208,11 +208,11 @@
         border-radius: 50%;
 
         &.status-success {
-          background: var(--color-success);
+          background: var(--success-color);
         }
 
         &.status-error {
-          background: var(--color-error);
+          background: var(--error-color);
         }
       }
 
@@ -230,16 +230,16 @@
         font-size: 11px;
 
         .token-in {
-          color: var(--color-primary);
+          color: var(--primary-color);
         }
 
         .token-out {
-          color: var(--color-success);
+          color: var(--success-color);
         }
       }
 
       .time-cell {
-        color: var(--color-text-muted);
+        color: var(--text-muted);
         white-space: nowrap;
         font-size: 11px;
       }

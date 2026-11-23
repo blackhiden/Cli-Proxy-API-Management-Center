@@ -55,6 +55,56 @@ describe('v8 visual config contract', () => {
     expect(output.access?.['api-key-names']).toEqual({ 'fixture-client': 'Shell' });
   });
 
+  test('client key edits keep unchanged YAML lines and comments even when indices shift', () => {
+    const before = [
+      'access:',
+      '  api-keys:',
+      '    # client list',
+      '    - "fixture-a" # first',
+      "    - 'fixture-b' # second",
+      '    - "fixture-c" # third',
+      '',
+    ].join('\n');
+    const apply = (keys: string[]) =>
+      runVisualConfig(before, [{ apiKeysText: keys.join('\n') }]).applyVisualChangesToYaml(before);
+    expect(apply(['fixture-a', 'fixture-new', 'fixture-c'])).toBe(
+      before.replace('fixture-b', 'fixture-new')
+    );
+    expect(apply(['fixture-b', 'fixture-c', 'fixture-new'])).toBe(
+      before.replace('    - "fixture-a" # first\n', '') + '    - fixture-new\n'
+    );
+  });
+
+  test('replacing a tagged non-string client key writes a string and retains its comment', () => {
+    const before = 'access:\n  api-keys:\n    - !!int 42 # changed\n    - !!str keep # unchanged\n';
+    const output = runVisualConfig(before, [{ apiKeysText: '123\nkeep' }]).applyVisualChangesToYaml(
+      before
+    );
+    expect(parseYaml(output).access['api-keys']).toEqual(['123', 'keep']);
+    expect(output).toContain('# changed');
+    expect(output).toContain('!!str keep # unchanged');
+  });
+
+  test('reordering client keys with repeated anchors preserves external alias targets', () => {
+    const before = [
+      'access:',
+      '  api-keys:',
+      '    - &client fixture-a # first',
+      '    - *client',
+      '    - &client fixture-b # second',
+      'external: *client',
+      '',
+    ].join('\n');
+    const keys = ['fixture-b', 'fixture-a', 'fixture-a'];
+    const output = runVisualConfig(before, [
+      { apiKeysText: keys.join('\n') },
+    ]).applyVisualChangesToYaml(before);
+    expect(parseYaml(output)).toEqual({ access: { 'api-keys': keys }, external: 'fixture-b' });
+    expect(output).toContain('external: *client');
+    expect(output).toContain('# first');
+    expect(output).toContain('# second');
+  });
+
   test('OAuth edits stay OAuth-only and preserve unmoved routing and plugin fields', () => {
     const config = runVisualConfig(fixture, [
       {
@@ -205,18 +255,26 @@ describe('v8 scalar read/write path parity', () => {
           ? !baseline
           : numericFields.has(field)
             ? '1'
-            : field === 'routingStrategy'
-              ? 'fill-first'
-              : field === 'disableImageGeneration'
-                ? 'chat'
-                : 'fixture-updated';
+            : field === 'providerRequestTimeouts'
+              ? '{"codex":"5m"}'
+              : field === 'routingStrategy'
+                ? 'fill-first'
+                : field === 'disableImageGeneration'
+                  ? 'chat'
+                  : 'fixture-updated';
       const config = runVisualConfig(fixture, [{ [field]: value }]);
       const output = config.applyVisualChangesToYaml(fixture);
       const path = [...entry.yamlKeys!];
       if (field === 'tlsEnable') path.push('enable');
       if (field === 'pluginsEnabled') path.push('enabled');
       const expected =
-        field === 'apiKeysText' ? [value] : numericFields.has(field) ? Number(value) : value;
+        field === 'apiKeysText'
+          ? [value]
+          : field === 'providerRequestTimeouts'
+            ? '5m'
+            : numericFields.has(field)
+              ? Number(value)
+              : value;
       expect(
         path.reduce<unknown>(
           (node, key) => (node as Record<string, unknown>)[key],

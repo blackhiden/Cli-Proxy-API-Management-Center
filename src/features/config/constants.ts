@@ -65,7 +65,7 @@ export const COMMON_FIELD_IDS = [
  */
 export const SECTION_VALIDATION_FIELDS: Record<VisualSectionId, readonly VisualConfigFieldPath[]> =
   {
-    connectivity: ['port', 'trustedProxies', 'discoveryServiceType'],
+    connectivity: ['port', 'serverId', 'trustedProxies', 'discoveryServiceType'],
     network: [
       'requestRetry',
       'maxRetryCredentials',
@@ -92,6 +92,7 @@ export const SECTION_VALIDATION_FIELDS: Record<VisualSectionId, readonly VisualC
       'codexLiveMediaRelayPublicIP',
       'codexLiveMediaRelayUDPPortMin',
       'codexLiveMediaRelayUDPPortMax',
+      'oauthErrorRules',
       'codexLiveMediaRelayICEServers',
     ],
     payload: [],
@@ -132,6 +133,8 @@ export const FIELD_VALUE_KEYS: Record<string, readonly string[]> = {
 
   // ── connectivity ──────────────────────────────────────────────────────────
   githubToken: ['githubToken'],
+  serverId: ['serverId'],
+  oauthErrorRules: ['oauthErrorRules'],
   trustedProxies: ['trustedProxies'],
   discoveryEnabled: ['discoveryEnabled'],
   discoveryServiceName: ['discoveryServiceName'],

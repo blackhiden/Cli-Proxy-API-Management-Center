@@ -1,8 +1,8 @@
 # CODE_GRAPH: CLI Proxy API Management Center
 
-**Last Updated:** 2026-11-22
-**Last Scanned Commit:** `ed47c53d22da7654bd3df63c1ac01a90e434b208`
-**Scan Mode:** Incremental rescan after upstream merge
+**Last Updated:** 2026-11-23
+**Last Scanned Commit:** `27f2b6da323451f77942d8abc64c3dd10355c094`
+**Scan Mode:** Incremental rescan after upstream v1.29.0 merge
 **Purpose:** High-level structural map for AI agents and developers to understand the project architecture instantly and reduce file-reading overhead.
 
 ---
@@ -31,7 +31,7 @@ This document is the persistent scan checkpoint for the repository. The hash abo
 3. Otherwise, inspect only changes since that commit:
 
    ```bash
-   git diff --name-only ed47c53d22da7654bd3df63c1ac01a90e434b208..HEAD -- \
+   git diff --name-only 27f2b6da323451f77942d8abc64c3dd10355c094..HEAD -- \
      src tests package.json vite.config.ts tsconfig.json .github docs
    ```
 
@@ -40,9 +40,10 @@ This document is the persistent scan checkpoint for the repository. The hash abo
 
 ### Scan scope for this revision
 
-- Full source tree under `src/` and `tests/` at `7b9fcf7`, then incremental review of the upstream
-  merge at `ed47c53` (payload replacement editor, visual-config rebase, model display names,
-  discovery selection, and locale updates).
+- Full source tree under `src/` and `tests/` at `7b9fcf7`, incremental review of the upstream merge at
+  `ed47c53`, then the upstream v1.29.0 merge at `64564b37` and CSS token fix at `27f2b6da`
+  (provider workbench redesign, native connection forms/groups, OAuth error rules, Copilot quota,
+  connection-pool APIs, and locale updates).
 - Build/test configuration: `package.json`, `vite.config.ts`, `tsconfig.json`, `.github/workflows/`.
 - All root and `docs/` Markdown files.
 - Backend contract evidence was not re-fetched from `../CLIProxyAPI`; this scan maps the frontend as implemented and treats `AGENTS.md` plus source code as authoritative where older docs disagree.
@@ -286,7 +287,7 @@ Dev-only: /__preview/quota-tiers is added only when import.meta.env.DEV is true
 
 - **Role:** Provider workbench for keys, headers, proxies, model mappings, sponsor providers, and connectivity tests.
 - **Exports:** `ProvidersWorkbenchPage`, descriptors, adapters, provider helpers.
-- **Key Files:** `descriptors.ts` (UI capabilities), `adapters.ts` (config-to-resource mapping), `useProviderWorkbench.ts`, `ProvidersWorkbenchPage.tsx`, `sheets/`, `sponsor*.ts`, `aiCodeMirror.ts`, `modelEntries.ts`, `errorRules.ts`, `thinkingLevels.ts`, `discoverySelection.ts`.
+- **Key Files:** `descriptors.ts` (UI capabilities), `adapters.ts` (config-to-resource mapping), `useProviderWorkbench.ts`, `ProvidersWorkbenchPage.tsx`, `sheets/`, `components/` (brand panels, provider picker, connection/resource cards), `nativeConnectionForm.ts`, `nativeGroupSettings.ts`, `nativeSections.ts`, `connectionCardSummary.ts`, `resourceView.ts`, `validateConnectionPool.ts`, `sponsor*.ts`, `aiCodeMirror.ts`, `modelEntries.ts`, `errorRules.ts`, `thinkingLevels.ts`, `discoverySelection.ts`.
 - **Dependencies:** `providersApi`, `modelsApi`, `apiCallApi`, config store, shared UI, types.
 - **Incoming References:** `MainRoutes.tsx` for `/ai-providers` and `/quick-start`.
 
@@ -316,7 +317,7 @@ Dev-only: /__preview/quota-tiers is added only when import.meta.env.DEV is true
 
 #### [src/features/quota/*]
 
-- **Role:** Quota cards and timelines for Antigravity, Claude, Codex, Devin, Kimi, Meta, plugin quotas, and xAI.
+- **Role:** Quota cards and timelines for Antigravity, Claude, Codex, Copilot, Devin, Kimi, Meta, plugin quotas, and xAI.
 - **Exports:** `QuotaPage`, `QUOTA_ADAPTERS`, quota logic/UI helpers.
 - **Key Files:** `QuotaPage.tsx`, `providers/index.ts` (adapter registry), `providers/<provider>/data.ts` and `*QuotaBody.tsx`, `hooks/useQuotaBatchLoader.ts`, `hooks/useQuotaActions.ts`, `cardTier.ts`, `resetSchedule.ts`, `quotaTimelineModel.ts`, `preview/QuotaTierPreview.tsx`.
 - **Dependencies:** `authFilesApi`, `apiCallApi`, provider-specific API modules, `useQuotaStore`, `utils/quota/*`, shared UI.
@@ -335,7 +336,7 @@ Dev-only: /__preview/quota-tiers is added only when import.meta.env.DEV is true
 
 - **Role:** Visual and YAML configuration editor with search, validation, diff preview, and draft recovery.
 - **Exports:** `ConfigPage`, config UI/state helpers.
-- **Key Files:** `ConfigPage.tsx`, `hooks/useConfigDocument.ts`, `hooks/useFieldJump.ts`, `hooks/useSourceSearch.ts`, `components/`, `sections/`, `visualConfig*.ts`, `apiKeyNames.ts`, `searchIndex.ts`, `sponsors.ts`, `uiState.ts`, `types.ts`.
+- **Key Files:** `ConfigPage.tsx`, `hooks/useConfigDocument.ts`, `hooks/useFieldJump.ts`, `hooks/useSourceSearch.ts`, `components/`, `sections/`, `visualConfig*.ts`, `visualOAuthErrorRules.ts`, `apiKeyNames.ts`, `searchIndex.ts`, `sponsors.ts`, `uiState.ts`, `types.ts`.
 - **Dependencies:** `configFileApi`, `configPatch`, `apiClient`, `useVisualConfig`, CodeMirror, config/theme/notification stores.
 - **Incoming References:** `MainRoutes.tsx`.
 
@@ -482,6 +483,11 @@ Dev-only: /__preview/quota-tiers is added only when import.meta.env.DEV is true
 
 - **Role:** Generic proxied request helper via `/requests/api-call`; normalizes status/header/body and exposes `captureApiCallApi()`.
 - **Incoming References:** Provider connectivity tests, quota providers, plugin release checks, sponsor usage checks.
+
+#### [src/services/api/connectionPool.ts], [errorRules.ts], [nativeDisabled.ts], [nativeProviderGroups.ts]
+
+- **Role:** Connection-pool validation, provider error-rule configuration, native-provider disabled state, and native provider group reads/writes.
+- **Incoming References:** `features/providers`, `features/config`, and their contract tests.
 
 #### [src/services/api/config.ts], [configFile.ts], [configPatch.ts], [configValue.ts]
 
@@ -767,8 +773,8 @@ bun run preview
 
 ### Known Full-Suite State
 
-- The last recorded full verification in `session.md` was `2402 pass, 1 todo, 19 fail`; the failures were reproduced on unmodified `HEAD` and are unrelated to the retired navigation entry.
-- This scan did not re-run the full suite. It ran the four focused suites above: `40 pass, 1 todo, 0 fail`.
+- The latest full verification after the upstream v1.29.0 merge was `2509 pass, 1 todo, 18 fail`; the remaining failures are locale completeness, LoginRevealVeil source shape, and visual-config rebase suites.
+- The previous baseline was `2419 pass, 1 todo, 19 fail`; upstream fixed the `providerRequestTimeouts` scalar-parity test, and the new CSS custom-property contract was satisfied by mapping usage-feature styles to existing theme tokens.
 - The single TODO is OAuth result modal re-integration with the current OAuth page architecture.
 
 ---
@@ -883,11 +889,11 @@ bun run preview
 
 ### Current Scan Result
 
-- **Scanned commit:** `7b9fcf7a98ce89ec1fb71e4644b1bb5744c36fdc`.
-- **Mode:** Full scan; no prior hash existed in this document.
-- **Focused tests:** `bun test tests/navigationRemoval.test.ts tests/updateNotification.test.ts tests/protectedOAuthProviders.test.ts tests/oauthResultModal.test.ts` — 40 pass, 1 todo, 0 fail.
+- **Scanned commit:** `27f2b6da323451f77942d8abc64c3dd10355c094`.
+- **Mode:** Incremental rescan after the upstream v1.29.0 merge and CSS token fix.
+- **Focused tests:** protected-feature/merge suites were run during conflict resolution; final results are covered by the full suite below.
 - **Type check:** `bun run type-check` — pass.
-- **Full suite:** Not re-run during this documentation scan; last recorded result is in `session.md`.
+- **Full suite:** `bun run verify` — 2509 pass, 1 todo, 18 known failures; `bun run lint` — 0 errors, 4 pre-existing warnings; `bun run build` — pass.
 
 ### Maintenance Policy
 
