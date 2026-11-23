@@ -1,3 +1,7 @@
+import type { ErrorRuleDraft } from '@/features/providers/errorRules';
+
+export type OAuthChannelRules = { channel: string; rules: ErrorRuleDraft[] };
+
 export type PayloadParamValueType = 'string' | 'number' | 'boolean' | 'json';
 export type DisableImageGenerationMode = 'false' | 'true' | 'chat' | 'passthrough';
 export type RoutingStrategy = 'round-robin' | 'weighted-round-robin' | 'fill-first';
@@ -14,6 +18,8 @@ export type CodexLiveICEServerDraft = {
 };
 
 export type VisualConfigFieldPath =
+  | 'serverId'
+  | 'oauthErrorRules'
   | 'trustedProxies'
   | 'discoveryServiceType'
   | 'transientErrorCooldownSeconds'
@@ -43,6 +49,8 @@ export type VisualConfigFieldPath =
   | 'providerRequestTimeouts';
 
 export type VisualConfigValidationErrorCode =
+  | 'invalid_server_id'
+  | 'invalid_oauth_error_rules'
   | 'invalid_trusted_proxies'
   | 'invalid_discovery_service_type'
   | 'invalid_duration'
@@ -136,6 +144,8 @@ export type PluginStoreAuthRule = {
 
 /** UI draft keys; YAML persistence uses the v8 tree, not these flattened names. */
 export type VisualConfigValues = {
+  oauthErrorRules: OAuthChannelRules[];
+  serverId: string;
   githubToken: string;
   trustedProxies: string[];
   discoveryEnabled: boolean;
@@ -249,6 +259,8 @@ export const makeClientId = () => {
 };
 
 export const DEFAULT_VISUAL_VALUES: VisualConfigValues = {
+  oauthErrorRules: [],
+  serverId: '',
   githubToken: '',
   trustedProxies: [],
   discoveryEnabled: false,
