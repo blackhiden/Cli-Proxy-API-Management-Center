@@ -2,6 +2,40 @@
 
 ## [Unreleased]
 
+## [1.29.2] - 2026-11-23
+
+### Merged
+
+- Merged `upstream/main` at `3128b0ba` into `dev` as `3923fa80`.
+- Resolved one conflict in `BaseProviderForm.tsx` by combining upstream's `savedProxyUrl` and native
+  member-field selector with the fork's direct-connection checkbox, disabled proxy input, and
+  override hint.
+- Preserved all protected fork features: OAuth `noProxy`, protected Codex and Antigravity providers,
+  OAuth result modal, update notifications, and usage feature.
+
+### Added (from upstream)
+
+- Native provider group member-field inheritance, probe transport resolution, config YAML helpers,
+  Antigravity validation, quota error message, auth-file status/refresh/model-catalog action split,
+  and routing `applyPlan`.
+- Strict locale parity test covering keys, interpolation tokens, and plural forms across all seven
+  locales.
+
+### Fixed
+
+- Completed locale parity for all seven locales without dropping existing duplicate locale keys.
+- Compared `apiKeyNames` structurally during visual-config rebase so unchanged names no longer mark
+  the editor dirty.
+- Preserved explicitly entered `proxy-url: "direct"` in native member forms when no direct-connection
+  control is present, while unchecked fork forms still clear the marker.
+
+### Validation
+
+- `bun run verify`: 2434 pass, 1 todo, 0 fail. Lint: 0 errors, 4 pre-existing warnings. Build:
+  passed; single-file `dist/index.html` is 4,204.67 kB (gzip 1,359.52 kB).
+- Focused protected-feature/merge suites: 114 pass, 1 known todo, 0 fail.
+- Browser verification was not performed; no backend or mocked-auth session was available.
+
 ## [1.29.1] - 2026-11-23
 
 ### Merged
