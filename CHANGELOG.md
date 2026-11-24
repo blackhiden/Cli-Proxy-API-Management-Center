@@ -2,6 +2,31 @@
 
 ## [Unreleased]
 
+## [1.29.3] - 2026-11-24
+
+### Merged
+
+- Merged `upstream/main` at `3866a168` into `dev` as `01e0d5ae`.
+- Resolved four locale conflicts (`en`, `vi`, `zh-CN`, `zh-TW`) by combining upstream terminology with
+  fork-only keys. Kept the fork's server-persisted API-key-name hint in `zh-TW` because upstream's
+  browser-storage wording contradicts the implemented `access.api-key-names` behavior.
+- Preserved all protected fork features: OAuth `noProxy`, protected Codex and Antigravity providers,
+  OAuth result modal, update notifications, and usage feature.
+
+### Added (from upstream)
+
+- Excluded-model rule editor now tracks a draft against published rules and candidates, preserves raw
+  input across its own updates, resets on external changes, and remounts per auth file.
+- Auth-file delete confirmation uses localized `{{name}}` interpolation; quota idle labels,
+  quota-management wording, and language names were updated across locales.
+
+### Validation
+
+- Focused protected-feature/merge suites: 75 pass, 1 known todo, 0 fail.
+- `bun run verify`: 2434 pass, 1 todo, 0 fail. Lint: 0 errors, 4 pre-existing warnings. Build:
+  passed; single-file `dist/index.html` is 4,201.85 kB (gzip 1,358.67 kB).
+- Browser verification was not performed; no backend or mocked-auth session was available.
+
 ## [1.29.2] - 2026-11-23
 
 ### Merged
