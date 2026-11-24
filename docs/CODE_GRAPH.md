@@ -1,8 +1,8 @@
 # CODE_GRAPH: CLI Proxy API Management Center
 
-**Last Updated:** 2026-11-23
-**Last Scanned Commit:** `6d1fabeac2822f8b3cb5399843679f56c1adaf0b`
-**Scan Mode:** Incremental rescan after upstream `3128b0ba` merge
+**Last Updated:** 2026-11-24
+**Last Scanned Commit:** `01e0d5ae422133efa1cff5ee1704bf499ad85a8c`
+**Scan Mode:** Incremental rescan after upstream `3866a168` merge
 **Purpose:** High-level structural map for AI agents and developers to understand the project architecture instantly and reduce file-reading overhead.
 
 ---
@@ -31,7 +31,7 @@ This document is the persistent scan checkpoint for the repository. The hash abo
 3. Otherwise, inspect only changes since that commit:
 
    ```bash
-   git diff --name-only 6d1fabeac2822f8b3cb5399843679f56c1adaf0b..HEAD -- \
+   git diff --name-only 01e0d5ae422133efa1cff5ee1704bf499ad85a8c..HEAD -- \
      src tests package.json vite.config.ts tsconfig.json .github docs
    ```
 
@@ -41,9 +41,10 @@ This document is the persistent scan checkpoint for the repository. The hash abo
 ### Scan scope for this revision
 
 - Full source tree under `src/` and `tests/` at `7b9fcf7`, incremental review of the upstream merges at
-  `ed47c53` and `64564b37`, the CSS token fix at `27f2b6da`, and the upstream `3128b0ba` merge at
-  `3923fa80` plus locale/visual-config reconciliation at `6d1fabea` (native member-field inheritance,
-  probe transport, config YAML helpers, auth-file action split, quota error message, and locale parity).
+  `ed47c53` and `64564b37`, the CSS token fix at `27f2b6da`, the upstream `3128b0ba` merge at
+  `3923fa80` plus locale/visual-config reconciliation at `6d1fabea`, and the upstream `3866a168` merge
+  at `01e0d5ae` (excluded-model rule-editor draft tracking, auth-file delete confirmation interpolation,
+  quota wording, and locale terminology).
 - Build/test configuration: `package.json`, `vite.config.ts`, `tsconfig.json`, `.github/workflows/`.
 - All root and `docs/` Markdown files.
 - Backend contract evidence was not re-fetched from `../CLIProxyAPI`; this scan maps the frontend as implemented and treats `AGENTS.md` plus source code as authoritative where older docs disagree.
@@ -268,7 +269,7 @@ Dev-only: /__preview/quota-tiers is added only when import.meta.env.DEV is true
 #### [src/components/excludedModels/*], [src/components/modelAlias/*], [src/components/providers/*]
 
 - **Role:** Shared domain UI that is used by more than one feature but not promoted to generic UI primitives.
-- **Examples:** excluded-model rules/picker, model-alias mapping diagram, provider status bar, sensitive-replacement editor, recent-request hook.
+- **Examples:** excluded-model rules/picker (draft tracked against published rules and candidates), model-alias mapping diagram, provider status bar, sensitive-replacement editor, recent-request hook.
 
 ---
 
@@ -766,7 +767,7 @@ bun run preview
 
 ### Known Full-Suite State
 
-- The latest full verification after the upstream `3128b0ba` merge is `2434 pass, 1 todo, 0 fail`; locale parity and visual-config rebase were reconciled with the fork features.
+- The latest full verification after the upstream `3866a168` merge is `2434 pass, 1 todo, 0 fail`; locale parity and visual-config rebase remain reconciled with the fork features.
 - Earlier baselines were `2509 pass, 1 todo, 18 fail` after the v1.29.0 merge and `2419 pass, 1 todo, 19 fail` before it.
 - The single TODO is OAuth result modal re-integration with the current OAuth page architecture.
 
@@ -882,8 +883,8 @@ bun run preview
 
 ### Current Scan Result
 
-- **Scanned commit:** `6d1fabeac2822f8b3cb5399843679f56c1adaf0b`.
-- **Mode:** Incremental rescan after the upstream `3128b0ba` merge and locale/visual-config reconciliation.
+- **Scanned commit:** `01e0d5ae422133efa1cff5ee1704bf499ad85a8c`.
+- **Mode:** Incremental rescan after the upstream `3866a168` merge and locale conflict reconciliation.
 - **Focused tests:** protected-feature/merge suites were run during conflict resolution; final results are covered by the full suite below.
 - **Type check:** `bun run type-check` — pass.
 - **Full suite:** `bun run verify` — 2434 pass, 1 todo, 0 fail; `bun run lint` — 0 errors, 4 pre-existing warnings; `bun run build` — pass.
